@@ -1,0 +1,97 @@
+.banner-slider {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-color: black;
+}
+
+.banner-slider .imgcont {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-slider .imgcont .zoom-image {
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s ease-in-out;
+}
+
+.imgcont:hover .zoom-image {
+    transform: scale(1.1);
+}
+
+
+.banner-slider .imgcont .txtcont {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.banner-slider .imgcont .txtcontin {
+    top: 50%;
+    position: absolute;
+    left: 10%;
+    transform: translateY(-50%);
+}
+
+.banner-slider .imgcont .txtcont h1 {
+    font-size: 5rem;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.banner-slider .imgcont .txtcont h2 {
+    font-size: 2rem;
+    color: var(--col2);
+    font-family: 'Cinzel', serif;
+    font-weight: 100;
+    text-transform: uppercase;
+    width: 600px;
+}
+
+.banner-slider .imgcont .txtcont h3 {
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+
+.banner-slider .imgcont .txtcont button {
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid var(--col2);
+    color: var(--col2);
+    padding: 10px 20px;
+    font-size: 2rem;
+    font-family: 'Cinzel', serif;
+    font-weight: 100;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+.banner-slider .imgcont .txtcont button:hover {
+    background-color: var(--col2);
+    color: #fff;
+    cursor: pointer;
+    transition: all 1s ease;
+}
+
+/* zoom image animation  */

@@ -1,0 +1,102 @@
+.homeabout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 100px 0px;
+}
+
+.homeabout .row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    margin: 0px 0px;
+    padding: 0px 0px;
+}
+
+.homeabout .row .left{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 0px;
+    margin: 0px 0px;
+}
+
+.homeabout .row .left img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.homeabout .row .right{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 0px;
+    margin: 0px 0px;
+}
+
+.homeabout .row .right h1{
+    font-size: 3.0rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    text-align: left;
+    width: 100%;
+    color: var(--col2);
+}
+
+.homeabout .row .right h2{
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: left;
+    color: var(--col3);
+    letter-spacing: 2px;
+    word-spacing: 5px;
+}
+
+.homeabout .row .right p{
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: left;
+    color: gray;
+    letter-spacing: 2px;
+    word-spacing: 5px;
+}
+
+.homeabout .row .right span{
+    color: var(--col3);
+    font-weight: bolder;
+}
+
+.homeabout .row .right a{
+    color: var(--col2);
+}
+
+.homeabout button{
+    background: none;
+    border: 1px solid var(--col2);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin: 1rem;
+    cursor: pointer;
+    color: var(--col2);
+}
+
+.homeabout button:hover{
+    background-color: var(--col2);
+    color: white;
+    transform: scale(1.1);
+    transition: all 0.6s ease-in-out;
+}

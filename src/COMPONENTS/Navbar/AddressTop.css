@@ -1,0 +1,30 @@
+.addresstop {
+    background-color: #1b2024;
+    color: white;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.addressin {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.addressin .addressleft {
+    display: flex;
+    align-items: center;
+}
+
+.addressin .addressleft div {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.addressin .addressleft div svg {
+    width: 20px;
+    margin-right: 10px;
+}

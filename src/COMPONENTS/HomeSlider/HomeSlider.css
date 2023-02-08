@@ -1,0 +1,54 @@
+.homesliderout{
+    display: flex;
+    justify-content: center;
+}
+
+.homeslider{
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background: white;
+    margin: 10px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.homeslider button{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ffffff;
+    transition: all 0.6s ease-in-out;
+    z-index: 2;
+    background-color: black;
+    margin: 0px 10px;
+    padding: 10px 10px;
+}
+
+
+.homeslider .leftbtn{
+    left: 0;
+}
+
+.homeslider .rightbtn{
+    right: 0;
+}
+
+.homeslider img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.6s ease-in-out;
+}
+
+.homeslider button:hover{
+    background-color: #00000025;
+    color: white;
+
+}
