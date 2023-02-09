@@ -3,54 +3,65 @@ import img1 from '../../ASSETS/HomeSlider/slide-1.jpg'
 import img2 from '../../ASSETS/HomeSlider/slide-2.jpg'
 import './Banner.css'
 const BannerSlider = () => {
-  const data = [
-    {
-      id: 1,
-      img: img1,
-      h1: 'BEST MENTO 2023',
-      h2: 'Work From Home Promotion Menu 2023',
-      h3: '',
-      btnlink: '#',
-    },
-    {
-      id: 2,
-      img: img2,
-      h1: '',
-      h2: 'Premium Steamboat Package for 2 pax',
-      h3: 'Work From Home Promotion Menu 2023',
-      btnlink: '#',
-    }
-  ]
-  const [current, setCurrent] = useState(data[0])
+
+  const [data, setData] = useState([])
+  const [current, setCurrent] = useState('')
+
+  const getbannerdata = () => {
+    fetch("http://154.26.130.251:134/B2CBannerImage/GetAll?OrganizationId=1")
+      .then(res => res.json())
+      .then(res => {
+        if (res.Code == 200) {
+          // console.log(res.Data[1])
+          setData(res.Data)
+          setCurrent(res.Data[0])
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => {
-        const index = data.findIndex((item) => item.id === prev.id)
-        const next = data[index + 1] || data[0]
-        return next
-      })
-    }, 5000)
-    return () => clearInterval(interval)
+    getbannerdata()
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (data.length > 0) {
+        let index = data.indexOf(current)
+        if (index == data.length - 1) {
+          setCurrent(data[0])
+        }
+        else {
+          setCurrent(data[index + 1])
+        }
+      }
+
+      console.log(current)
+    }, 5000);
+    return () => clearTimeout(timer);
   }, [current])
 
-  //call zoom  animation on image when page loads for the first time and when the image changes
+
   return (
     <div
       className='banner-slider'
     >
+
+
       <div className='imgcont'>
-        <img src={current.img} alt=''  className='zoom-image'/>
+        <img src={current.BannerImageFilePath} alt='' className='zoom-image' />
         <div className='txtcont'>
           <div className='txtcontin'>
-            <h1>{current.h1}</h1>
+            <h1>{current.Title}</h1>
             <h2>{current.h2}</h2>
             <h3>{current.h3}</h3>
-            {/* <h3>Korean, Japanese, Local Bento Cuisine Choices</h3> */}
             <button>ORDER NOW</button>
           </div>
         </div>
       </div>
+
     </div>
   )
 }
