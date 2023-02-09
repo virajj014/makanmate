@@ -8,7 +8,7 @@ const BannerSlider = () => {
   const [current, setCurrent] = useState('')
 
   const getbannerdata = () => {
-    fetch("http://154.26.130.251:134/B2CBannerImage/GetAll?OrganizationId=1")
+    fetch("http://154.26.130.251:134/B2CBannerImage/GetAllActive?OrganizationId=1")
       .then(res => res.json())
       .then(res => {
         if (res.Code == 200) {
@@ -38,7 +38,7 @@ const BannerSlider = () => {
         }
       }
 
-      console.log(current)
+      // console.log(current)
     }, 5000);
     return () => clearTimeout(timer);
   }, [current])
