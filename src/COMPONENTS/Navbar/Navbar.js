@@ -18,7 +18,8 @@ const Navbar = () => {
         <div className={scroll ? 'nav background' : 'nav'}>
             <div className='navin'>
                 <div className='navleft'>
-                    <span>MAKAN MATE</span>
+                    {/* <span>MAKAN MATE</span> */}
+                    <img src={logo} alt='logo' />
                 </div>
                 <div className='navright'>
                     <ul>
