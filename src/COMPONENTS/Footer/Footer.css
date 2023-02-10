@@ -6,6 +6,7 @@
     flex-direction: column;
     padding-top: 50px;
     padding-bottom: 0px;
+    width: 100%;
 }
 
 .footer .c1 {
@@ -19,26 +20,31 @@
 }
 
 .footer .c1 svg {
-    width: 30px;
-    height: 30px;
+    font-size: 10px;
+    width: 5%;
     color: var(--col2);
     margin-right: 10px;
 }
 
 .footer .logo {
-    font-size: 40px;
+    font-size: 30px;
+    font-weight: 100;
 }
 
 .footer .c1 .r1 {
-    width: 20%;
+    width: 30%;
 }
 
 .footer .c1 .r1 div {
     display: flex;
     margin: 20px 0px;
     align-items: center;
+    width: 100%;
 }
 
+.footer .c1 .r1 div p{
+    width: 80%;
+}
 .footer .c1 .r2 {
     width: 20%;
     display: flex;
@@ -54,6 +60,9 @@
     text-decoration: none;
     color: white;
     margin: 5px 0px;
+    font-size: 14px;
+    font-weight: 100;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 
@@ -72,15 +81,19 @@
     text-decoration: none;
     color: white;
     margin: 5px 0px;
+    font-weight: 100;
+    font-family: 'Times New Roman', Times, serif;
 }
-.footer .c1 a:hover{
+
+.footer .c1 a:hover {
     color: var(--col2);
     cursor: pointer;
 }
+
 .footer .c1 .r3 .securepayments {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .footer .c1 .r3 .securepayments img {
@@ -95,19 +108,19 @@
 .footer .c2 {
     display: flex;
     justify-content: space-evenly;
-    margin: 50px 0px;
+    margin: 20px 0px;
     color: var(--col2);
 }
 
-.footer .c2 div{
+.footer .c2 div {
     display: flex;
     align-items: center;
 }
 
 
-.footer .c3{
+.footer .c3 {
     background-color: var(--col2);
-    color: var(--col3);
+    color: var(--col1);
     width: 100%;
     padding: 10px 0px;
     text-align: center;

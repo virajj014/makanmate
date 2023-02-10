@@ -7,6 +7,7 @@ import Welcomecont from '../COMPONENTS/Welcome/Welcomecont'
 import HomeSlider from '../COMPONENTS/HomeSlider/HomeSlider'
 import HomeAbout from '../COMPONENTS/HomeAboutBottom/HomeAbout'
 import Footer from '../COMPONENTS/Footer/Footer'
+import MakanMart from '../COMPONENTS/Product/MakanMart'
 const Home = () => {
 
 
@@ -15,10 +16,17 @@ const Home = () => {
       <Navbar />
       <BannerSlider />
       <Welcomecont />
+      {/* <div style={{
+        width: '100%',
+        height: '1px',
+        backgroundColor: 'var(--col3)',
+        opacity: '0.2'
+      }}></div> */}
       <CategoriesSlider />
       {/* <HomeSlider/> */}
-      <HomeAbout/>
-      <Footer/>
+      <MakanMart />
+      <HomeAbout />
+      <Footer />
     </div>
   )
 }

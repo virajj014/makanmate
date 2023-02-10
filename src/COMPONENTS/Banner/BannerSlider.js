@@ -54,10 +54,10 @@ const BannerSlider = () => {
         <img src={current.BannerImageFilePath} alt='' className='zoom-image' />
         <div className='txtcont'>
           <div className='txtcontin'>
-            <h1>{current.Title}</h1>
-            <h2>{current.h2}</h2>
-            <h3>{current.h3}</h3>
-            <button>ORDER NOW</button>
+            {/* <h1>{current.Title}</h1> */}
+            {/* <h2>{current.h2}</h2> */}
+            {/* <h3>{current.h3}</h3> */}
+            {/* <button>ORDER NOW</button> */}
           </div>
         </div>
       </div>

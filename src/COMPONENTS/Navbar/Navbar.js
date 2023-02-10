@@ -1,7 +1,10 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import logo from '../../ASSETS/logo.png'
 import './Navbar.css'
 const Navbar = () => {
+    //navigation
+
     const [scroll, setScroll] = React.useState(false)
     const windowheight = window.innerHeight;
     React.useEffect(() => {
@@ -23,8 +26,12 @@ const Navbar = () => {
                 </div>
                 <div className='navright'>
                     <ul>
-                        <li>HOME</li>
-                        <li>ABOUT</li>
+                        <Link to='/' style={
+                            {textDecoration: 'none', color: 'black'}
+                        }><li>HOME</li></Link>
+                        <Link to='/about' style={
+                            {textDecoration: 'none', color: 'black'}
+                        }><li>ABOUT</li></Link>
                         <li>MENU</li>
                         <li>PANSEAS FOOD</li>
                         <li>EVENT</li>
