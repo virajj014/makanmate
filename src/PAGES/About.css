@@ -44,12 +44,12 @@
 
 @keyframes showup {
     0% {
-        top: 70%;
+        bottom: -100px;
         opacity: 0;
     }
 
     100% {
-        top: 50%;
+        bottom: 0;
         opacity: 0.8;
     }
 }
@@ -132,4 +132,40 @@
 .about .c2in h1 {
     margin-bottom: 10px;
     color: var(--col2);
+}
+
+/* left animation */
+
+.about .c2in:nth-child(odd){
+    animation: left 2s ease-in-out;
+}
+
+@keyframes left {
+    0% {
+        margin-left: -100px;
+        opacity: 0;
+    }
+
+    100% {
+        margin-left: 20px;
+        opacity: 1;
+    }
+}
+
+/* right animation */
+
+.about .c2in:nth-child(even){
+    animation: right 2s ease-in-out;
+}
+
+@keyframes right {
+    0% {
+        margin-right: -100px;
+        opacity: 0;
+    }
+
+    100% {
+        margin-right: 20px;
+        opacity: 1;
+    }
 }
