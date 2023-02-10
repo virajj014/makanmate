@@ -76,14 +76,14 @@
 }
 
 .homeslider .slidertext h2 {
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 100;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: var(--col2);
 }
 
 .homeslider .slidertext h3 {
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     font-weight: 100;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: white;
@@ -92,9 +92,9 @@
 .homeslider .slidertext h4 {
     border: 1px solid var(--col2);
     padding: 10px 20px;
-    font-size: 1.5rem;
+    font-size: 2.1rem;
     font-weight: 100;
-    width: 200px;
+    width: 250px;
     margin-top: 20px;
 }
 
