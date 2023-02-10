@@ -98,6 +98,13 @@
     margin-top: 20px;
 }
 
+.homeslider .slidertext h4:hover {
+    background-color: var(--col2);
+    color: white;
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: all 0.6s ease-in-out;
+}
 
 /* add a black blur over img */
 .homeslider .blur {
