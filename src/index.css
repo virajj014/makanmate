@@ -27,3 +27,22 @@ code {
   --col2: #FF630F;
   --col3: #1b2024;
 }
+
+
+.showup{
+  animation: showup 2s ease-in-out;
+}
+
+/* bring text animating up */
+
+@keyframes showup {
+  0% {
+    bottom: -100px;
+    opacity: 0;
+  }
+
+  100% {
+    bottom: 0;
+    opacity: 0.8;
+  }
+}

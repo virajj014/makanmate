@@ -14,18 +14,19 @@ const Home = () => {
   return (
     <div>
       <Navbar />
-      <BannerSlider />
-      <Welcomecont />
-      {/* <div style={{
-        width: '100%',
-        height: '1px',
-        backgroundColor: 'var(--col3)',
-        opacity: '0.2'
-      }}></div> */}
-      <CategoriesSlider />
-      {/* <HomeSlider/> */}
-      <MakanMart />
-      <HomeAbout />
+      <HomeSlider />
+      <div className='showup'>
+        <Welcomecont />
+      </div>
+      <div className='showup'>
+        <CategoriesSlider />
+      </div>
+      <div className='showup'>
+        <MakanMart />
+      </div>
+      <div className='showup'>
+        <HomeAbout />
+      </div>
       <Footer />
     </div>
   )
