@@ -32,7 +32,11 @@ const Navbar = () => {
                         <Link to='/about' style={
                             {textDecoration: 'none', color: 'black'}
                         }><li>ABOUT</li></Link>
-                        <li>MENU</li>
+
+                        <Link to='/menu/cateringmenu/all' style={
+                            {textDecoration: 'none', color: 'black'}
+                        }><li>MENU</li></Link>
+                     
                         <li>PANSEAS FOOD</li>
                         <li>EVENT</li>
                         <li>CONTACT</li>

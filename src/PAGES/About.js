@@ -9,10 +9,6 @@ const About = () => {
 
     // add show up animation to left and right divs
 
-
-
-
-
     return (
         <div>
             <div className='about'>
