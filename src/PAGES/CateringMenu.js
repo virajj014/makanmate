@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Navigation } from 'swiper'
 import Navbar from '../COMPONENTS/Navbar/Navbar'
 import './CateringMenu.css'
@@ -12,7 +13,7 @@ const CateringMenu = () => {
     //         .catch((error) => console.error(error))
     // }
 
-    const [products , setproducts] = React.useState([])
+    const [products, setproducts] = React.useState([])
 
     const getproducts = async () => {
         let temp = [];
@@ -23,7 +24,7 @@ const CateringMenu = () => {
                 "description": "Bento Set",
                 "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
                 "price": 25
-            },{
+            }, {
                 "id": 2,
                 "name": "Marinated Chicken Satay with Peanut Sauce 12pcs",
                 "description": "Bento Special",
@@ -43,7 +44,7 @@ const CateringMenu = () => {
                 "description": "Bento Set",
                 "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
                 "price": 25
-            },{
+            }, {
                 "id": 2,
                 "name": "Marinated Chicken Satay with Peanut Sauce 12pcs",
                 "description": "Bento Special",
@@ -63,7 +64,7 @@ const CateringMenu = () => {
                 "description": "Bento Set",
                 "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
                 "price": 25
-            },{
+            }, {
                 "id": 2,
                 "name": "Marinated Chicken Satay with Peanut Sauce 12pcs",
                 "description": "Bento Special",
@@ -90,6 +91,8 @@ const CateringMenu = () => {
             <div className='header'>
                 <h1>Menu</h1>
             </div>
+
+            <h2 className='head2'>Products by category</h2>
             <div className='c1'>
                 <div className='c11'>
                     <div className='searchbar'>
@@ -107,6 +110,9 @@ const CateringMenu = () => {
                         <option value="price-desc">Sort by price: high to low</option>
                     </select>
                 </div>
+            </div>
+
+            <div className='c2'>
                 <div className='c12'>
                     <p>Bento Set</p>
                     <p>Bento Special</p>
@@ -129,26 +135,30 @@ const CateringMenu = () => {
                     <p>Western Seminar</p>
                     <p>Wow Wow West</p>
                 </div>
-            </div>
-            <div className='products'>
-                {
-                    products.map((product) => {
-                        return (
-                            <div className='product'>
-                                <div className='productimage'>
-                                    <img src={product.image} alt='product' />
-                                </div>
-                                <div className='productinfo'>
-                                    <h3>{product.name}</h3>
-                                    {/* <p>{product.description}</p> */}
-                                    <p>$ {product.price}</p>
-                                </div>
+                <div className='products'>
+                    {
+                        products.map((product) => {
+                            return (
+                                <div className='product'>
+                                    <div className='productimage'>
+                                        <img src={product.image} alt='product' />
+                                    </div>
+                                    <div className='productinfo'>
+                                        <h3>{product.name}</h3>
+                                        {/* <p>{product.description}</p> */}
+                                        <p>$ {product.price}</p>
+                                    </div>
 
-                                <button>Buy</button>
-                            </div>
-                        )
-                    })
-                }
+                                    <Link to={`/product/${product.id}`}
+                                        style={{ textDecoration: 'none' ,width:'100%',display:'flex',justifyContent:'center'}}
+                                    >
+                                        <button>Buy</button>
+                                    </Link>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
         </div>
     )

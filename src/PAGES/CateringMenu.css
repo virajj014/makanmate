@@ -11,16 +11,16 @@
   width: 90%;
   margin: 10px 0px;
   background-color: white;
-  padding: 20px;
+  /* padding: 20px; */
   border-radius: 25px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.461);
+  /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.461); */
 }
 
 .categorymenu .c11 {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  margin-bottom: 2em;
+  /* margin-bottom: 2em; */
 }
 
 .categorymenu .searchbar {
@@ -32,6 +32,7 @@
   /* padding: 10px; */
   background-color: white;
   overflow: hidden;
+  margin: 0px 10px;
 }
 
 .categorymenu .searchbar svg {
@@ -59,31 +60,6 @@
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.categorymenu .c12 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-}
-
-.categorymenu .c12 p {
-  margin: 0.5em;
-  background-color: var(--col2);
-  border-radius: 25px;
-  text-align: center;
-  /* min-width: 200px; */
-  padding: 10px 20px;
-  font-family: 'Times New Roman', Times, serif;
-  color: white;
-  font-size: 0.9em;
-}
-
-.categorymenu .c12 p:hover {
-  cursor: pointer;
-  background-color: var(--col3);
-  transform: scale(1.05);
-  transition: 1s ease;
-}
 
 
 .categorymenu .header {
@@ -175,7 +151,7 @@
 
 .categorymenu .productinfo p {
   min-width: 20%;
-  align-self: flex-end;
+  align-self: center;
   font-size: 1.2em;
   color: var(--col2);
   font-weight: 700;
@@ -184,4 +160,42 @@
 .categorymenu button:hover {
   background-color: var(--col2);
   color: white;
+}
+
+
+
+.c2 {
+  display: flex;
+  flex-direction: row;
+  align-items: top;
+  width: 100%;
+  margin: 10px 0px;
+  background-color: white;
+  /* padding: 20px; */
+  border-radius: 25px;
+  /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.461); */
+}
+
+.categorymenu .c12 {
+  /* min-height: 100vh; */
+}
+
+.categorymenu .c12 p {
+  background-color: var(--col2);
+  color: white;
+  padding: 10px;
+}
+
+.categorymenu .c12 p:hover {
+  background-color: white;
+  color: var(--col2);
+  border: 1px solid var(--col2);
+  cursor: pointer;
+}
+
+.categorymenu .head2{
+  color: var(--col2);
+  font-size: 3em;
+  font-weight: 100;
+  margin: 20px 0px;
 }

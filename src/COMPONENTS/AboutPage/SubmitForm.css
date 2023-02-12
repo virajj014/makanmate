@@ -1,0 +1,107 @@
+.submitform {
+    width: 50%;
+    margin: 50px auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    border: 1px solid var(--col2);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.submitform h2 {
+    font-size: 2em;
+    margin-bottom: 50px;
+}
+.submitform label{
+    font-size: 1.2em;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    display: block;
+    /* background-color: aqua; */
+    text-align: left;
+}
+.submitform label span{
+    color: red;
+    font-size: 1.2em;
+    font-weight: 900;
+    margin-right: 5px;
+}
+.form-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.form-input input,
+.form-input textarea {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.form-input label {
+    font-size: 1.2em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.form-input .error {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.radio {
+    display: flex;
+    justify-content: center;
+}
+
+.radio div {
+    margin: 0 20px;
+}
+
+button[type='submit'] {
+    background-color: var(--col2);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.2em;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+button[type='submit']:disabled {
+    background-color: lightblue;
+    cursor: not-allowed;
+}
+
+button[type='submit']:hover {
+    background-color: var(--col3);
+}
+
+.submitform .star-rating{
+    /* background-color: black; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.submitform .star-rating .star svg{
+   fill: rgb(175, 175, 175);
+}
+
+.submitform .star-rating .star svg:hover{
+    fill: var(--col2);
+}
+
+
+.submitform .star-rating .star1 svg{
+    fill: var(--col2);
+}

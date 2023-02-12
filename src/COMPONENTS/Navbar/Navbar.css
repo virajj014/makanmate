@@ -21,7 +21,7 @@
 }
 .navin{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
     max-width: 1200px;
@@ -32,6 +32,7 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
+    justify-content: center;
 }
 
 .navleft img{
@@ -71,4 +72,25 @@
 .background{
     background-color: var(--col3);
     transition: all 1s ease;
+}
+
+.navright ul li button{
+    background-color: var(--col2);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 16px;
+    min-width: 200px;
+}
+
+.navright ul li button:hover{
+    background-color: var(--col1);
+    cursor: pointer;
+}
+
+svg{
+    color: white;
+    width: 30px;
 }

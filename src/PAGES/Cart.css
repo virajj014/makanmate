@@ -1,0 +1,295 @@
+.cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.cart .header {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--col2);
+    background: url(../ASSETS/HomeSlider/slide-1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 400px;
+}
+
+
+.cart .header h1 {
+    padding-top: 150px;
+    font-size: 4em;
+    font-weight: 100;
+    color: white;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.676);
+    text-align: center;
+}
+
+.cartin {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.cartin .left {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 20px;
+}
+
+.cartin .left table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cartin .left table tr {
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.cartin .left table tr th {
+    padding: 15px 10px;
+    text-align: left;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--col2);
+}
+
+.cartin .left table tr td {
+    padding: 15px 10px;
+}
+
+.cartin .left table tr td img {
+    width: 50px;
+    height: 50px;
+}
+
+.cartin table .product {
+    display: flex;
+    align-items: center;
+}
+
+.cartin table .product .name {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.cartin .left table tr td .price {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--col2);
+}
+
+.cartin .left table tr td .quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100px;
+    height: 30px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.cartin .left table tr td .quantity button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: var(--col2);
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--col1);
+}
+
+.cartin .left table tr td .quantity .count {
+    color: var(--col2);
+    font-size: 1.2em;
+}
+
+.cartin .left table tr td .total{
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--col3);
+}
+
+.cartin .couponupdate{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.cartin .couponupdate .coupon{
+    display: flex;
+    align-items: center;
+}
+
+.cartin .couponupdate .coupon input{
+    width: 200px;
+    /* height: 30px; */
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 1em;
+    padding: 5px 10px;
+}
+
+.cartin .couponupdate button{
+    min-width: 100px;
+    border: none;
+    background-color: var(--col2);
+    color: var(--col1);
+    font-size: 1em;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+
+.cartin .couponupdate button:hover{
+    background-color: var(--col3);
+}
+
+.cartin .right {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 20px;
+}
+
+.cartin .right .t1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.cartin .right .t1 label {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--col2);
+}
+
+.cartin .right .t2 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.cartin .right .t2 label {
+    font-size: 1.0em;
+    font-weight: 700;
+    color: var(--col3);
+}
+
+.cartin .right .t2 .shipping {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.cartin .right .t2 .t3{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+.cartin .right .t2 .t3 label {
+    font-size: 0.8em;
+    font-weight: 700;
+    color: var(--col3);
+    margin-left: 10px;
+
+
+}
+
+.cartin .right p{
+   width: 100%;
+    text-align: right;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.0em;
+    margin: 10px 0px;
+}
+
+.cartin .right p a{
+    color: var(--col2);
+    font-weight: 700;
+}
+
+.cartin .shippingcalc{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.cartin .shippingcalc select{
+    width: 100%;
+    height: 30px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 1em;
+    padding: 5px 10px;
+    margin: 5px 0px;
+}
+.cartin .shippingcalc input{
+    width: 100%;
+    height: 30px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 1em;
+    padding: 5px 10px;
+    margin: 5px 0px;
+}
+
+.cartin .shippingcalc button{
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: var(--col2);
+    color: var(--col1);
+    font-size: 1em;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 5px 0px;
+    padding: 5px 10px;
+}
+
+.cartin .shippingcalc button:hover{
+    background-color: var(--col3);
+}
+
+.cartin .bigbtn{
+    width: 100%;
+    height: 50px;
+    border: none;
+    background-color: var(--col2);
+    color: var(--col1);
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 20px 0px;
+    padding: 5px 10px;
+}
+
+.cartin .bigbtn:hover{
+    background-color: var(--col3);
+}

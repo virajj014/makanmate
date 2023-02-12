@@ -138,7 +138,7 @@
 
 @keyframes fromtop {
     0% {
-        top: -100px;
+        top: 40%;
         opacity: 0;
     }
 
