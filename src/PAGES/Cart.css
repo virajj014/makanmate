@@ -21,275 +21,520 @@
 }
 
 
-.cart .header h1 {
-    padding-top: 150px;
-    font-size: 4em;
-    font-weight: 100;
-    color: white;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.676);
-    text-align: center;
-}
-
-.cartin {
+.progress {
     display: flex;
-    justify-content: center;
-    margin-top: 50px;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.383);
+    margin: 20px;
+
 }
 
-.cartin .left {
-    width: 50%;
+.progress .c1 {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 0px 20px;
+    color: var(--col3);
+    cursor: pointer;
 }
 
-.cartin .left table {
+.progress .c1 svg {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    color: var(--col3);
+}
+
+.progress .c1 p {
+    text-align: center;
+    color: var(--col3);
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+
+
+
+.cartcont {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    max-width: 1200px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.383);
+    margin: 20px;
+}
+
+.cartcont table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.cartin .left table tr {
-    border-bottom: 1px solid #e1e1e1;
+.cartcont table tr {
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.cartin .left table tr th {
-    padding: 15px 10px;
+.cartcont table tr th {
+    padding: 10px 0;
     text-align: left;
-    font-size: 1.2em;
+    font-size: 16px;
     font-weight: 700;
-    color: var(--col2);
+    color: var(--col3);
 }
 
-.cartin .left table tr td {
-    padding: 15px 10px;
-}
-
-.cartin .left table tr td img {
-    width: 50px;
-    height: 50px;
-}
-
-.cartin table .product {
-    display: flex;
-    align-items: center;
-}
-
-.cartin table .product .name {
-    margin-left: 10px;
+.cartcont table tr td {
+    padding: 10px 0;
+    text-align: left;
     font-size: 16px;
     font-weight: 700;
 }
 
-.cartin .left table tr td .price {
-    font-size: 1.2em;
-    font-weight: 700;
-    color: var(--col2);
+.cartcont table tr img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
 }
 
-.cartin .left table tr td .quantity {
+.cartcont .product {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100px;
-    height: 30px;
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    overflow: hidden;
+    width: 300px;
 }
 
-.cartin .left table tr td .quantity button {
+.cartcont .quantity {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+}
+
+.cartcont .quantity button {
     width: 30px;
     height: 30px;
-    border: none;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
     background-color: var(--col2);
-    cursor: pointer;
-    font-size: 1.2em;
+    color: var(--col3);
+    font-size: 16px;
     font-weight: 700;
-    color: var(--col1);
+    cursor: pointer;
+    color: white;
 }
 
-.cartin .left table tr td .quantity .count {
+.cartcont .quantity p {
+    width: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: white;
+    color: var(--col3);
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.cartcont .subtotal{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.cartcont .subtotal p {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--col3);
+    margin: 0px 10px;
+}
+
+
+.progress .c11 {
+    display: flex;
+    flex-direction: column;
+    color: var(--col3);
+    cursor: pointer;
+}
+
+.progress .c11 svg {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
     color: var(--col2);
-    font-size: 1.2em;
 }
 
-.cartin .left table tr td .total{
-    font-size: 1.2em;
+.progress .c11 p {
+    text-align: center;
+    color: var(--col2);
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.cart .btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    max-width: 1200px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.cart .btns button {
+    min-width: 150px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--col2);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    color: white;
+    margin: 5px ;
+}
+.cart .btns button:hover{
+    background-color: var(--col3);
+    color: white;
+}
+
+
+/* shipping */
+.shippingcont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    width: 70%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.383);
+}
+
+.shippingcont .previous {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    padding: 10px 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.shippingcont h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--col2);
+    margin-bottom: 10px;
+}
+
+.shippingcont .radio {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.shippingcont .radio input {
+    margin-right: 10px;
+}
+.shippingcont .radio p{
+    font-size: 16px;
     font-weight: 700;
     color: var(--col3);
 }
 
-.cartin .couponupdate{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.cartin .couponupdate .coupon{
-    display: flex;
-    align-items: center;
-}
-
-.cartin .couponupdate .coupon input{
-    width: 200px;
-    /* height: 30px; */
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    padding: 0 10px;
-    font-size: 1em;
-    padding: 5px 10px;
-}
-
-.cartin .couponupdate button{
-    min-width: 100px;
-    border: none;
-    background-color: var(--col2);
-    color: var(--col1);
-    font-size: 1em;
-    font-weight: 700;
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 5px 10px;
-}
-
-.cartin .couponupdate button:hover{
-    background-color: var(--col3);
-}
-
-.cartin .right {
-    width: 30%;
+.shippingadd{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0px 20px;
+    width: 60%;
+    padding: 10px 20px;
+    /* background-color: rgb(255, 255, 255); */
+    border-radius: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.383); */
+    /* margin: 10px; */
 }
 
-.cartin .right .t1 {
-    display: flex;
-    justify-content: space-between;
+.shippingadd input{
     width: 100%;
-    margin-top: 20px;
+    height: 50px;
+    border: 2px solid #cacaca;
+    border-radius: 5px;
+    background-color: white;
+    color: var(--col3);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 0 10px;
+    margin-bottom: 10px;
 }
 
-.cartin .right .t1 label {
-    font-size: 1.2em;
+.shippingadd button{
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--col2);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    color: white;
+}
+
+
+/* PAYMENT CONTAINER */
+.paymentcont {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    width: 50%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.383);
+    margin: 10px;
+    padding: 20px;
+}
+
+.paymentcont .left{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 50%;
+    padding: 10px 20px;
+   
+}
+
+.paymentcont .left h2 {
+    font-size: 20px;
     font-weight: 700;
     color: var(--col2);
+    margin-bottom: 10px;
 }
 
-.cartin .right .t2 {
+.paymentcont .left img{
+    width: 80%;
+    margin-left: 10px;
+}
+
+.paymentcont .paymenttypes{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    align-items: flex-start;
     width: 100%;
-    margin-top: 20px;
-    border: 1px solid #e1e1e1;
+}
+
+.paymenttypes .c1{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 60%;
+    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
     border-radius: 5px;
     padding: 10px;
 }
 
-.cartin .right .t2 label {
-    font-size: 1.0em;
+.paymentagreement{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.paymentagreement input{
+    margin-right: 10px;
+}
+.paymentagreement  label a{
+    color: var(--col2);
+}
+
+.paymentcont .right{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 50%;
+    padding: 10px 20px;
+}
+
+.paymentcont .right table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.paymentcont .right table tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.paymentcont .right table tr td {
+    padding: 10px 0;
+}
+.paymentcont .right table tr{
+    font-size: 16px;
     font-weight: 700;
     color: var(--col3);
 }
-
-.cartin .right .t2 .shipping {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
+.paymentcont .right table tr:first-child {
+    font-weight: 700;
+    color: var(--col2);
 }
-.cartin .right .t2 .t3{
+.paymentcont .right table tr td:last-child {
+    text-align: right;
+    width: 20%;
+}
+
+.paymentcont .right .c1{
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: 700;
 }
 
-.cartin .right .t2 .t3 label {
-    font-size: 0.8em;
+
+/* //////////////////////////////////////////////////////////////////// */
+
+.confirmationcont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    width: 90%;
+}
+
+.confirmationcont .c1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.confirmationcont .c1 svg{
+    width: 100px;
+    height: 100px;
+    color: var(--col2);
+}
+
+.confirmationcont .c1 h2{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--col2);
+    margin-top: 10px;
+}
+.confirmationcont .c2 h2{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--col2);
+    margin-top: 10px;
+    width: 100%;
+}
+.confirmationcont .c2{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 100%;
+}
+
+.confirmationcont .c2 div{
+    display: flex;
+    width: 45%;
+    justify-content: space-between;
+}
+
+.confirmationcont .c2 div p{
+    width: 45%;
+    
+}
+.confirmationcont .c2 div p:first-child{
+    font-weight: 300;
+    color: var(--col3);
+    font-size: 15px;
+}
+.confirmationcont .c2 div p:last-child{
+    font-weight: 600;
+    color: var(--col3);
+    font-size: 15px;
+}
+.confirmationcont .c3{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 100%;
+}
+
+.confirmationcont .c3 table{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--col3);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.confirmationcont .c3 table tr{
+    border: 1px solid var(--col3);
+ 
+}
+.confirmationcont .c3 table tr th{
+    padding: 10px;
+    border: 1px solid var(--col3);
+    text-align: center;
+}
+.confirmationcont .c3 table tr td{
+    padding: 10px;
+    border: 1px solid var(--col3);
+    text-align: center;
+}
+
+.confirmationcont .c3 div{
+    display: flex;
+    width: 45%;
+    justify-content: space-between;
+}
+
+.confirmationcont .c3 div p:first-child{
+    font-weight: 300;
+    color: var(--col3);
+    font-size: 15px;
+}
+
+.confirmationcont .c3 div p:last-child{
     font-weight: 700;
     color: var(--col3);
-    margin-left: 10px;
-
-
-}
-
-.cartin .right p{
-   width: 100%;
-    text-align: right;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 1.0em;
-    margin: 10px 0px;
-}
-
-.cartin .right p a{
-    color: var(--col2);
-    font-weight: 700;
-}
-
-.cartin .shippingcalc{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 20px;
-}
-
-.cartin .shippingcalc select{
-    width: 100%;
-    height: 30px;
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    padding: 0 10px;
-    font-size: 1em;
-    padding: 5px 10px;
-    margin: 5px 0px;
-}
-.cartin .shippingcalc input{
-    width: 100%;
-    height: 30px;
-    border: 1px solid #e1e1e1;
-    border-radius: 5px;
-    padding: 0 10px;
-    font-size: 1em;
-    padding: 5px 10px;
-    margin: 5px 0px;
-}
-
-.cartin .shippingcalc button{
-    width: 100%;
-    height: 30px;
-    border: none;
-    background-color: var(--col2);
-    color: var(--col1);
-    font-size: 1em;
-    font-weight: 700;
-    cursor: pointer;
-    margin: 5px 0px;
-    padding: 5px 10px;
-}
-
-.cartin .shippingcalc button:hover{
-    background-color: var(--col3);
-}
-
-.cartin .bigbtn{
-    width: 100%;
-    height: 50px;
-    border: none;
-    background-color: var(--col2);
-    color: var(--col1);
-    font-size: 1.2em;
-    font-weight: 700;
-    cursor: pointer;
-    margin: 20px 0px;
-    padding: 5px 10px;
-}
-
-.cartin .bigbtn:hover{
-    background-color: var(--col3);
+    font-size: 17px;
 }

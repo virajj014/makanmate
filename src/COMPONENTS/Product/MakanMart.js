@@ -13,6 +13,7 @@ const MakanMart = () => {
     const [current, setCurrent] = useState('')
 
     const getbannerdata = () => {
+        // MM and MT filter
         fetch("http://154.26.130.251:134/CategoryR/GetAllActive?OrganizationId=1")
             .then(res => res.json())
             .then(res => {
@@ -42,11 +43,11 @@ const MakanMart = () => {
                 {
                     data.filter(
                         (item, index) => {
-                            if (showall) {
+                            if (showall && item.BranchCode == "MM") {
                                 return true
                             }
                             else {
-                                if (index < 8) {
+                                if (index < 8 && item.BranchCode == "MM") {
                                     return true
                                 }
                                 else {

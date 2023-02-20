@@ -12,7 +12,8 @@
     font-size: 2em;
     margin-bottom: 50px;
 }
-.submitform label{
+
+.submitform label {
     font-size: 1.2em;
     margin-top: 20px;
     margin-bottom: 5px;
@@ -20,12 +21,14 @@
     /* background-color: aqua; */
     text-align: left;
 }
-.submitform label span{
+
+.submitform label span {
     color: red;
     font-size: 1.2em;
     font-weight: 900;
     margin-right: 5px;
 }
+
 .form-input {
     display: flex;
     flex-direction: column;
@@ -85,23 +88,29 @@ button[type='submit']:hover {
     background-color: var(--col3);
 }
 
-.submitform .star-rating{
+.submitform .star-rating {
     /* background-color: black; */
     display: flex;
     flex-direction: row;
     justify-content: center;
+
 }
 
 
-.submitform .star-rating .star svg{
-   fill: rgb(175, 175, 175);
+.submitform .star-rating .star svg {
+    color: #ccc;
+    width: 30px;
+    height: 30px;
 }
 
-.submitform .star-rating .star svg:hover{
+.submitform .star-rating .star svg:hover {
     fill: var(--col2);
 }
 
 
-.submitform .star-rating .star1 svg{
+.submitform .star-rating .star1 svg {
+    width: 30px;
+    height: 30px;
     fill: var(--col2);
+    color: var(--col2);
 }

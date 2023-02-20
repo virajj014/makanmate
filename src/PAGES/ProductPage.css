@@ -24,10 +24,12 @@
     aspect-ratio: 1/1;
     cursor: pointer;
 }
+
 .productpage .pc1 .c11 .imgset .active {
     border: 5px solid var(--col2);
     width: 95%;
 }
+
 .productpage .pc1 .c11 .imgbig {
     width: 70%;
     /* background-color: aqua; */
@@ -111,26 +113,220 @@
 /*  */
 .productpage .pc2 {
     display: flex;
-    flex-direction: column;
+    padding: 20px;
+    justify-content: center;
     margin-top: 50px;
+}
+
+.productpage .pc2 .left {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.productpage .pc2 .tabs{
+    display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    width: 90%;
-    margin: 0px auto;
+    margin-bottom: 20px;
 }
 
-.productpage .pc2 h1{
-    font-size: 2rem;
+.productpage .pc2 .tabs .active{
+    border: none;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 20px;
+    color: var(--col2);
+    cursor: pointer;
+    border-bottom: 2px solid var(--col2);
+    margin: 0px 10px;
+}
+.productpage .pc2 .tabs .inactive{
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: gray;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin: 0px 10px;
+}
+
+
+.productpage .reviewcont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /* background-color: aqua; */
+    padding: 10px;
+    width: 100%;
+}
+
+.productpage .reviewcont form{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /* background-color: aqua; */
+    padding: 5px;
+    width: 100%;
+
+}
+
+.productpage .reviewcont form div{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    /* background-color: aqua; */
+    padding: 0px;
+    width: 100%;
+}
+
+.productpage .reviewcont form div label{
+    font-size: 15px;
+    font-weight: 600;
     color: var(--col2);
 }
+.productpage .reviewcont form div input{
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--col2);
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
 
-.productpage .pc2 p{
-    font-size: 1.5rem;
-    font-weight: 2400;
-    margin-bottom: 20px;
-    color: gray;
+.productpage .reviewcont form div textarea{
+    width: 100%;
+    height: 100px;
+    border: 1px solid var(--col2);
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.productpage .reviewcont form button{
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: var(--col2);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+
+.productpage .reviewcont .review{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /* background-color: aqua; */
+    padding: 10px;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow:  0px 0px 10px 0px rgba(0,0,0,0.2);
+}
+
+.productpage .reviewcont .reviewhead{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid var(--col2);
+}
+
+.productpage .reviewcont .reviewhead .name{
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--col3);
+}
+
+.productpage .reviewcont .reviewhead .date{background-color: var(--col2);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.productpage .reviewcont .reviewdesc{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
     font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--col3);
+}
+
+
+/* ///////////////////////////////////// */
+.productpage .pc2 .right {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.productpage .pc2 .right h1{
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--col2);
+}
+.productpage .pc2 .addons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    /* background-color: aqua; */
+    padding: 10px;
+}
+.productpage .pc2 .addon{
+    width: 30%;
+    background-color: white;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+}
+
+.productpage .pc2 .addon img{
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.productpage .pc2 .addon .addonname{
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--col3);
+    margin-top: 10px;
+}
+.productpage .pc2 .addon .addonprice{
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--col2);
+    margin-top: 10px;
+    text-align: center;
+}
+
+.productpage .pc2 .addon button{
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: var(--col2);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
 }

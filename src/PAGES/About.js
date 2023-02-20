@@ -13,7 +13,7 @@ const About = () => {
         <div>
             <div className='about'>
                 <Navbar />
-                <div className='c1'>
+                <div className='header'>
                     <img src={"https://makanmate.com/wp-content/uploads/2022/09/catering-chef-cooking-1536x864.jpg"} alt='about' />
                     <h1>ABOUT US</h1>
                 </div>

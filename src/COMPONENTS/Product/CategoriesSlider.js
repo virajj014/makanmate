@@ -42,11 +42,11 @@ const CategoriesSlider = () => {
                 {
                     data.filter(
                         (item, index) => {
-                            if (showall) {
+                            if (showall && item.BranchCode == "MT") {
                                 return true
                             }
                             else {
-                                if (index < 8) {
+                                if (index < 8 && item.BranchCode == "MT") {
                                     return true
                                 }
                                 else {

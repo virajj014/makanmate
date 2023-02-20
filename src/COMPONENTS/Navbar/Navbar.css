@@ -1,96 +1,250 @@
-.nav{
-    display: flex;
-    justify-content: space-between;
-    background: linear-gradient(#000000c6, #ffffff00);
-    position: fixed;
+.nav {
     width: 100%;
-    z-index: 1;
-    align-items: center;
-    padding: 10px 0px;
-    background-color: #1b2024;
-}
-.nav1{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0);
     position: fixed;
-    width: 100%;
-    z-index: 1;
-    align-items: center;
-    padding-top: 20px;
-    background-color: #1b2024;
+    z-index: 100;
 }
-.navin{
+
+.navin {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.navleft{
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    justify-content: center;
-}
-
-.navleft img{
-    width: 100px;
-    margin-right: 10px;
-}
-
-.navright ul{
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    text-decoration: none;
-}
-
-.navright ul li{
-    list-style: none;
-    margin: 0 10px;
-    color: white;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-
-.navright ul li:hover{
-    color: var(--col2);
-    cursor: pointer;
-}
-
-
-.navleft span{
-    color: var(--col2);
-    font-size: 25px;
-    font-weight: 100;
-}
-
-
-.background{
     background-color: var(--col3);
-    transition: all 1s ease;
+    padding: 10px;
 }
 
-.navright ul li button{
-    background-color: var(--col2);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    font-size: 16px;
-    min-width: 200px;
+.navin img {
+    width: 100px;
+    height: 50px;
+    object-fit: contain;
 }
 
-.navright ul li button:hover{
-    background-color: var(--col1);
+.navin ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* width: 50%; */
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.navin ul li {
+    padding: 10px;
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: var(--col1);
     cursor: pointer;
 }
 
-svg{
-    color: white;
+.navin ul button {
+    background-color: var(--col2);
+    color: var(--col1);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    min-width: 150px;
+}
+
+.navin ul svg {
     width: 30px;
+    height: 30px;
+    object-fit: contain;
+    margin-right: 5px;
+}
+
+.navin ul li:hover {
+    color: var(--col2);
+}
+
+.navin ul button:hover {
+    background-color: var(--col1);
+    color: var(--col2);
+}
+
+
+
+/* /////////////////////////////////////////////////////////// */
+.logincontainer {
+    width: 80%;
+    height: 70vh;
+    
+    margin-top: 10%;
+    position: absolute;
+    /* position: fixed; */
+
+    left: 50%;
+
+    transform: translateX(-50%);
+    background-color: var(--col3);
+    z-index: 100;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+}
+
+.logincontainer .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2rem;
+    color: var(--col2);
+    cursor: pointer;
+    z-index: 200;
+}
+
+.logincontainer .close svg {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.logincontainer .logincontin {
+    display: flex;
+    overflow: hidden;
+    height: 100%;
+}
+
+.logincontainer .logincontin .left {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.logincontainer .logincontin .left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px 0 0 20px;
+}
+
+.logincontainer .logincontin .right {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    /* background-color: white; */
+}
+
+.logincontainer .logincontin .right  h1{
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--col2);
+    margin-bottom:10px;
+}
+
+.logincontainer .logincontin .right .inp1{
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: var(--col1);
+    background-color: rgba(85, 85, 85, 0.269);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.184);
+    outline: 1px solid var(--col2);
+}
+
+
+.logincontainer .logincontin .right p{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--col2);
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.logincontainer .logincontin .right .btn1{
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: var(--col1);
+    background-color: var(--col2);
+    cursor: pointer;
+}
+
+.logincontainer .logincontin .right p span{
+    color: var(--col1);
+    text-decoration: underline;
+}
+
+/* //////////////// */
+.formcont{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-bottom: 10px;
+    border: 1px solid var(--col2);
+    border-radius: 10px;
+    background-color: rgba(85, 85, 85, 0.269);
+}
+
+.formcont button{
+    width: 20%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--col1);
+    background-color: var(--col2);
+    margin: 0px;
+}
+
+.formcont .inp2{
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: var(--col1);
+    background-color: rgba(85, 85, 85, 0);
+    /* box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.184); */
+    /* outline: 1px solid var(--col2); */
+    outline: none;
+    border: none;
+    margin: 0px;
+}
+
+.formcont select{
+    width: 20%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--col2);
+    background-color: rgba(85, 85, 85, 0);
+    /* box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.184); */
+    /* outline: 1px solid var(--col2); */
+    outline: none;
+    border: none;
+    margin: 0px;
+}
+
+.formcont option{
+    color: var(--col2);
+    background-color: var(--col3);
+}
+
+.formcont select:focus > option:checked { 
+    background: var(--col2) !important;
+    color: var(--col1) !important;
 }

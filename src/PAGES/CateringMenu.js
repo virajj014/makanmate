@@ -89,75 +89,127 @@ const CateringMenu = () => {
         <div className='categorymenu'>
             <Navbar />
             <div className='header'>
-                <h1>Menu</h1>
+                <img src={"https://makanmate.com/wp-content/uploads/2022/09/catering-chef-cooking-1536x864.jpg"} alt='about' />
+                <h1>Category Menu</h1>
             </div>
 
-            <h2 className='head2'>Products by category</h2>
-            <div className='c1'>
-                <div className='c11'>
-                    <div className='searchbar'>
-                        <input type='text' placeholder='Search' />
-                        {/* search icon */}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                        </svg>
-                    </div>
-                    <select name="category" id="category">
-                        <option value="popularity">Sort by popularity</option>
-                        <option value="rating">Sort by average rating</option>
-                        <option value="latest">Sort by latest</option>
-                        <option value="price">Sort by price: low to high</option>
-                        <option value="price-desc">Sort by price: high to low</option>
-                    </select>
-                </div>
-            </div>
+
+
 
             <div className='c2'>
-                <div className='c12'>
-                    <p>Bento Set</p>
-                    <p>Bento Special</p>
-                    <p>Chinese New Year Addons</p>
-                    <p>Chinese New Year Menu</p>
-                    <p>Delight Menu</p>
-                    <p>Healthier Choice</p>
-                    <p>High Tea</p>
-                    <p>Indian Menu</p>
-                    <p>Korean Menu</p>
-                    <p>Makanmart</p>
-                    <p>Delicious Dim Sum</p>
-                    <p>Tantalising Meat</p>
-                    <p>Mini Catering</p>
-                    <p>Premium Bento</p>
-                    <p>Sedap Menu</p>
-                    <p>Seminar</p>
-                    <p>Special Celebration</p>
-                    <p>Vegetarian Catering</p>
-                    <p>Western Seminar</p>
-                    <p>Wow Wow West</p>
-                </div>
-                <div className='products'>
-                    {
-                        products.map((product) => {
-                            return (
-                                <div className='product'>
-                                    <div className='productimage'>
-                                        <img src={product.image} alt='product' />
-                                    </div>
-                                    <div className='productinfo'>
-                                        <h3>{product.name}</h3>
-                                        {/* <p>{product.description}</p> */}
-                                        <p>$ {product.price}</p>
-                                    </div>
+                <div className='c2col'>
+                    <h2 className='head3'>Menu<br />Categories</h2>
+                    <div className='c12'>
+                        <p>Bento Set</p>
+                        <p>Bento Special</p>
+                        <p>Chinese New Year Addons</p>
+                        <p>Chinese New Year Menu</p>
+                        <p>Delight Menu</p>
+                        <p>Healthier Choice</p>
+                        <p>High Tea</p>
+                        <p>Indian Menu</p>
+                        <p>Korean Menu</p>
+                        <p>Makanmart</p>
+                        <p>Delicious Dim Sum</p>
+                        <p>Tantalising Meat</p>
+                        <p>Mini Catering</p>
+                        <p>Premium Bento</p>
+                        <p>Sedap Menu</p>
+                        <p>Seminar</p>
+                        <p>Special Celebration</p>
+                        <p>Vegetarian Catering</p>
+                        <p>Western Seminar</p>
+                        <p>Wow Wow West</p>
+                    </div>
+                    <div className='filterbyprice'>
+                        <h2 className='head3'>Filter by price</h2>
+                        <div>
+                            <p>0$</p>
+                            <input type='range' min='0' max='100' />
+                            <p>100$</p>
+                        </div>
+                        <button>sort</button>
+                    </div>
 
-                                    <Link to={`/product/${product.id}`}
-                                        style={{ textDecoration: 'none' ,width:'100%',display:'flex',justifyContent:'center'}}
-                                    >
-                                        <button>Buy</button>
-                                    </Link>
-                                </div>
-                            )
-                        })
-                    }
+                    <div className='latestaddon'>
+                        <h2 className='head3'>Latest Addons</h2>
+                        <div className='addonsproducts'>
+                        {
+                            products
+                            .filter((product,index) => {
+                                return index < 4
+                            })
+                            .map((product) => {
+                                return (
+                                    <div className='product1'>
+                                        <div className='product1image'>
+                                            <img src={product.image} alt='product' />
+                                        </div>
+                                        <div className='product1info'>
+                                            <h3>{product.name}</h3>
+                                            {/* <p>{product.description}</p> */}
+                                            <p>$ {product.price}</p>
+                                        </div>
+
+                                        <Link to={`/product/${product.id}`}
+                                            style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
+                                        >
+                                            <button>Buy</button>
+                                        </Link>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    </div>
+                </div>
+
+                <div className='c2col'>
+                    <div className='c1'>
+                        <h2 className='head2'>Products by category</h2>
+                        <div className='c11'>
+                            <div className='searchbar'>
+                                <input type='text' placeholder='Search' />
+                                {/* search icon */}
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                </svg>
+                            </div>
+                            <select name="category" id="category">
+                                <option value="popularity">Sort by popularity</option>
+                                <option value="rating">Sort by average rating</option>
+                                <option value="latest">Sort by latest</option>
+                                <option value="price">Sort by price: low to high</option>
+                                <option value="price-desc">Sort by price: high to low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className='products'>
+                        {
+                            products.map((product) => {
+                                return (
+                                    <div className='product'>
+                                        <div className='productimage'>
+                                            <img src={product.image} alt='product' />
+                                        </div>
+                                        <div className='productinfo'>
+                                            <h3>{product.name}</h3>
+                                            {/* <p>{product.description}</p> */}
+                                            <p>$ {product.price}</p>
+                                        </div>
+
+                                        <Link to={`/product/${product.id}`}
+                                            style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
+                                        >
+                                            <button>Buy</button>
+                                        </Link>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+
+                   
                 </div>
             </div>
         </div>

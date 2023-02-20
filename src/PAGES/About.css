@@ -6,77 +6,6 @@
     background-color: rgb(255, 255, 255);
 }
 
-.about .c1 {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 80vh;
-}
-
-.about .c1 img {
-    width: 100%;
-    object-fit: cover;
-    height: 100%;
-}
-
-
-
-@keyframes showup {
-    0% {
-        bottom: -100px;
-        opacity: 0;
-    }
-
-    100% {
-        bottom: 0;
-        opacity: 0.8;
-    }
-}
-
-.about .c1 h1 {
-    font-size: 60px;
-    font-weight: 300;
-    margin-bottom: 20px;
-    font-family: 'Times New Roman', Times, serif;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--col2);
-    /* animation: showup 2s ease-in-out; */
-    background-color: rgba(0, 0, 0, 0.507);
-    width: 100%;
-    text-align: center;
-}
-
-
-/* bring text animating up */
-
-.about .c1 div p {
-    font-size: 20px;
-    font-weight: 100;
-    font-family: 'Times New Roman', Times, serif;
-    width: 80%;
-    margin: 0 auto;
-}
-
-
-/* on scroll effect on div */
-
-.about .c1 div button {
-    background-color: var(--col1);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 20px;
-    font-weight: 100;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}
 
 .about .c2 {
     width: 100%;
@@ -190,14 +119,14 @@
 
 
 .about .c11 p {
-    font-size: 17px;
-    font-weight: 100;
-    /* font-family: 'Times New Roman', Times, serif; */
-    width: 80%;
+    font-size: 25px;
+    font-weight: 800;
+    font-family: 'Times New Roman', Times, serif;
+    width: 70%;
     margin: 0 auto;
     text-align: center;
     animation: showup 1s ease-in-out;
-    color: black;
+    color: var(--col3);
     font-weight: 100;
 
 }

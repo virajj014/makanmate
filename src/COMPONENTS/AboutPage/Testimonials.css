@@ -70,6 +70,9 @@
 
 
 .testimonials .card .star-rating .star svg{
+    width: 20px;
+    height: 20px;
+    margin: 0px 5px;
    fill: var(--col2);
 }
 
@@ -79,5 +82,8 @@
 
 
 .testimonials .card .star-rating .star1 svg{
+    width: 20px;
+    height: 20px;
     fill: rgb(255, 251, 0);
+    color: rgb(255, 251, 0);
 }

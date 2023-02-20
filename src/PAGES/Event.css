@@ -1,0 +1,69 @@
+.event {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.event .header {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--col2);
+    background: url(../ASSETS/HomeSlider/slide-1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 400px;
+}
+
+
+
+
+.event .s1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 200px;
+}
+
+.event .s1 h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--col2);
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.event .s1 p {
+    font-size: 1em;
+    font-weight: 100;
+    color: var(--col3);
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.event .s2 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    flex-wrap: wrap;
+}
+
+.event .s2 img{
+    width: 40%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    margin: 10px;
+}

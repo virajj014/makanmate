@@ -1,0 +1,97 @@
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.contact .header {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--col2);
+    background: url(../ASSETS/HomeSlider/slide-1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 400px;
+}
+
+
+.contactin{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 400px;
+    padding: 50px 0px;
+}
+
+.contactin .description{
+    font-weight: 400;
+    font-size: 18px;
+    margin-right: 20px;
+    width: 40%;
+}
+
+.contactin .description span{
+    font-weight: 700;
+}
+
+.contactin .description a{
+    color: var(--col2);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.contact form{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact form input{
+    width: 100%;
+    height: 40px;
+    margin: 10px 0px;
+    border: 1px solid var(--col2);
+    border-radius: 5px;
+    padding: 0px 10px;
+}
+
+.contact form textarea{
+    width: 100%;
+    height: 200px;
+    margin: 10px 0px;
+    border: 1px solid var(--col2);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.contact form button{
+    width: 100px;
+    height: 40px;
+    background-color: var(--col2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 10px 0px;
+    cursor: pointer;
+}
+
+.contact form label{
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.contact form label span{
+    color: red;
+}
