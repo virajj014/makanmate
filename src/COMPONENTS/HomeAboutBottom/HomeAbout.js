@@ -1,6 +1,7 @@
 import React from 'react'
 import img1 from './lobster.png'
 import './HomeAbout.css'
+import { Link } from 'react-router-dom'
 const HomeAbout = () => {
     return (
         <div className='homeabout'>
@@ -18,7 +19,9 @@ const HomeAbout = () => {
                 </div>
             </div>
 
-            <button>ABOUT MAKANMATE</button>
+            <Link to='/about'>
+                <button>ABOUT MAKANMATE</button>
+            </Link>
         </div>
     )
 }

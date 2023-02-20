@@ -6,6 +6,7 @@ import img3 from './img3.jpg'
 import img4 from './img4.jpg'
 import img5 from './img5.jpg'
 import './CategoriesSlider.css'
+import { Link, useNavigation } from 'react-router-dom'
 
 const CategoriesSlider = () => {
     const [data, setData] = useState([])
@@ -29,6 +30,8 @@ const CategoriesSlider = () => {
     useEffect(() => {
         getbannerdata()
     }, [])
+
+
 
     return (
         <div className='categoriesout'>
@@ -56,22 +59,32 @@ const CategoriesSlider = () => {
                         }
                     ).map((item, index) => {
                         return (
-                            <div className='card'>
-                                <img src={item.PreviewImageURL} alt='img1' />
-                                <h3>{item.CategoryName}</h3>
-                            </div>
+                            <Link to={`/menu/cateringmenu/${item.CategoryName}`} key={index}
+                             style={{textDecoration:'none'}}
+                             className='card'
+                            >
+                                {/* <div className='card'
+                                    key={index}
+
+
+                                > */}
+                                    <img src={item.PreviewImageURL} alt='img1'
+                                    />
+                                    <h3>{item.CategoryName}</h3>
+                                {/* </div> */}
+                            </Link>
                         )
                     })
                 }
             </div>
 
             <button
-             onClick={() => {
-                setShowall(!showall)
-             }}
+                onClick={() => {
+                    setShowall(!showall)
+                }}
             >{
-                showall ? 'Show Less' : 'Show More'
-            }</button>
+                    showall ? 'Show Less' : 'Show More'
+                }</button>
         </div>
     )
 }

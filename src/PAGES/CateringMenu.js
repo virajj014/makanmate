@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Navigation } from 'swiper'
 import Navbar from '../COMPONENTS/Navbar/Navbar'
 import './CateringMenu.css'
@@ -12,78 +12,31 @@ const CateringMenu = () => {
     //         .then((json) => setdata(json))
     //         .catch((error) => console.error(error))
     // }
-
+    const { mycategoryid } = useParams();
     const [products, setproducts] = React.useState([])
-
-    const getproducts = async () => {
+    const [selectedCategory, setselectedCategory] = React.useState(mycategoryid)
+    const getproducts = async (categoryname) => {
         let temp = [];
-        temp = [
-            {
-                "id": 1,
-                "name": "Marinated Chicken Satay with Peanut Sauce 25pcs",
-                "description": "Bento Set",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
-                "price": 25
-            }, {
-                "id": 2,
-                "name": "Marinated Chicken Satay with Peanut Sauce 12pcs",
-                "description": "Bento Special",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/Norwegian-Salmon-Fillet-Fresh-Frozen-300x300.jpg",
-                "price": 12
-            },
-            {
-                "id": 3,
-                "name": "Marinated Chicken Satay with Peanut Sauce 25pcs",
-                "description": "Bento Set",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
-                "price": 25
-            },
-            {
-                "id": 1,
-                "name": "Marinated Chicken Satay with Peanut Sauce 25pcs",
-                "description": "Bento Set",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
-                "price": 25
-            }, {
-                "id": 2,
-                "name": "Marinated Chicken Satay with Peanut Sauce 12pcs",
-                "description": "Bento Special",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/Norwegian-Salmon-Fillet-Fresh-Frozen-300x300.jpg",
-                "price": 12
-            },
-            {
-                "id": 3,
-                "name": "Marinated Chicken Satay with Peanut Sauce 25pcs",
-                "description": "Bento Set",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
-                "price": 25
-            },
-            {
-                "id": 1,
-                "name": "Marinated Chicken Satay with Peanut Sauce 25pcs",
-                "description": "Bento Set",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
-                "price": 25
-            }, {
-                "id": 2,
-                "name": "Marinated Chicken Satay with Peanut Sauce 12pcs",
-                "description": "Bento Special",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/Norwegian-Salmon-Fillet-Fresh-Frozen-300x300.jpg",
-                "price": 12
-            },
-            {
-                "id": 3,
-                "name": "Marinated Chicken Satay with Peanut Sauce 25pcs",
-                "description": "Bento Set",
-                "image": "https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg",
-                "price": 25
-            },
-        ]
-        setproducts(temp)
+
+        fetch('http://154.26.130.251:134/ProductRest/GetAllSearch?OrganizationId=1&Category=' + categoryname)
+            .then((response) => response.json())
+            .then((json) => {
+                // console.log(json)
+                console.log(json?.Result)
+                if (json?.Result) {
+                    temp = json?.Result
+                }
+                setproducts(temp)
+
+            })
+            .catch((error) => console.error(error))
+
     }
 
     React.useEffect(() => {
-        getproducts()
+        console.log(mycategoryid)
+        getproducts(mycategoryid)
+        window.scrollTo(0, 0)
     }, [])
     return (
         <div className='categorymenu'>
@@ -97,29 +50,239 @@ const CateringMenu = () => {
 
 
             <div className='c2'>
-                <div className='c2col'>
+                <div className='c2col1'>
                     <h2 className='head3'>Menu<br />Categories</h2>
                     <div className='c12'>
-                        <p>Bento Set</p>
-                        <p>Bento Special</p>
-                        <p>Chinese New Year Addons</p>
-                        <p>Chinese New Year Menu</p>
-                        <p>Delight Menu</p>
-                        <p>Healthier Choice</p>
-                        <p>High Tea</p>
-                        <p>Indian Menu</p>
-                        <p>Korean Menu</p>
-                        <p>Makanmart</p>
-                        <p>Delicious Dim Sum</p>
-                        <p>Tantalising Meat</p>
-                        <p>Mini Catering</p>
-                        <p>Premium Bento</p>
-                        <p>Sedap Menu</p>
-                        <p>Seminar</p>
-                        <p>Special Celebration</p>
-                        <p>Vegetarian Catering</p>
-                        <p>Western Seminar</p>
-                        <p>Wow Wow West</p>
+                        {
+                            selectedCategory == 'Bento Set' ?
+                                <p className='active'>Bento Set</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Bento Set')
+                                    getproducts('Bento Set')
+                                }}>Bento Set</p>
+                        }
+
+                        {
+                            selectedCategory == 'Bento Special' ?
+
+                                <p className='active'>Bento Special</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Bento Special')
+                                    getproducts('Bento Special')
+                                }
+                                }>Bento Special</p>
+                        }
+                        {
+                            selectedCategory == 'Chinese New Year Addons' ?
+
+                                <p className='active'>Chinese New Year Addons</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Chinese New Year Addons')
+                                    getproducts('Chinese New Year Addons')
+                                }
+                                }>Chinese New Year Addons</p>
+                        }
+
+                        {
+                            selectedCategory == 'Chinese New Year Menu' ?
+
+                                <p className='active'>Chinese New Year Menu</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Chinese New Year Menu')
+                                    getproducts('Chinese New Year Menu')
+                                }
+                                }>Chinese New Year Menu</p>
+                        }
+
+                        {
+                            selectedCategory == 'Delight Menu' ?
+
+                                <p className='active'>Delight Menu</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Delight Menu')
+                                    getproducts('Delight Menu')
+                                }
+                                }>Delight Menu</p>
+                        }
+
+                        {
+                            selectedCategory == 'Healthier Choice' ?
+
+                                <p className='active'>Healthier Choice</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Healthier Choice')
+                                    getproducts('Healthier Choice')
+                                }
+                                }>Healthier Choice</p>
+                        }
+
+                        {
+                            selectedCategory == 'High Tea' ?
+
+                                <p className='active'>High Tea</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('High Tea')
+                                    getproducts('High Tea')
+                                }
+                                }>High Tea</p>
+                        }
+
+                        {
+                            selectedCategory == 'Indian Menu' ?
+
+                                <p className='active'>Indian Menu</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Indian Menu')
+                                    getproducts('Indian Menu')
+                                }
+                                }>Indian Menu</p>
+                        }
+
+                        {
+                            selectedCategory == 'Korean Menu' ?
+
+                                <p className='active'>Korean Menu</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Korean Menu')
+                                    getproducts('Korean Menu')
+                                }
+                                }>Korean Menu</p>
+                        }
+
+                        {
+                            selectedCategory == 'Makanmart' ?
+
+                                <p className='active'>Makanmart</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Makanmart')
+                                    getproducts('Makanmart')
+                                }
+                                }>Makanmart</p>
+                        }
+
+                        {
+                            selectedCategory == 'Delicious Dim Sum' ?
+
+                                <p className='active'>Delicious Dim Sum</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Delicious Dim Sum')
+                                    getproducts('Delicious Dim Sum')
+                                }
+                                }>Delicious Dim Sum</p>
+                        }
+
+                        {
+                            selectedCategory == 'Tantalising Meat' ?
+
+                                <p className='active'>Tantalising Meat</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Tantalising Meat')
+                                    getproducts('Tantalising Meat')
+                                }
+                                }>Tantalising Meat</p>
+
+                        }
+                        {
+                            selectedCategory == 'Mini Catering' ?
+
+                                <p className='active'>Mini Catering</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Mini Catering')
+                                    getproducts('Mini Catering')
+                                }
+                                }>Mini Catering</p>
+
+                        }
+
+                        {
+                            selectedCategory == 'Premium Bento' ?
+                                <p className='active'>Premium Bento</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Premium Bento')
+                                    getproducts('Premium Bento')
+                                }
+                                }>Premium Bento</p>
+
+                        }
+
+                        {
+                            selectedCategory == 'Sedap Menu' ?
+                                <p className='active'>Sedap Menu</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Sedap Menu')
+                                    getproducts('Sedap Menu')
+                                }
+                                }>Sedap Menu</p>
+                        }
+                        {
+                            selectedCategory == 'Seminar' ?
+                                <p className='active'>Seminar</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Seminar')
+                                    getproducts('Seminar')
+                                }
+                                }>Seminar</p>
+                        }
+
+                        {
+                            selectedCategory == 'Special Celebration' ?
+                                <p className='active'>Special Celebration</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Special Celebration')
+                                    getproducts('Special Celebration')
+                                }
+                                }>Special Celebration</p>
+                        }
+
+                        {
+                            selectedCategory == 'Vegetarian Catering' ?
+                                <p className='active'>Vegetarian Catering</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Vegetarian Catering')
+                                    getproducts('Vegetarian Catering')
+                                }
+                                }>Vegetarian Catering</p>
+                        }
+
+                        {
+                            selectedCategory == 'Western Seminar' ?
+                                <p className='active'>Western Seminar</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Western Seminar')
+                                    getproducts('Western Seminar')
+                                }
+                                }>Western Seminar</p>
+                        }
+
+                        {
+                            selectedCategory == 'Wow Wow West' ?
+                                <p className='active'>Wow Wow West</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('Wow Wow West')
+                                    getproducts('Wow Wow West')
+                                }
+                                }>Wow Wow West</p>
+                        }
                     </div>
                     <div className='filterbyprice'>
                         <h2 className='head3'>Filter by price</h2>
@@ -134,37 +297,37 @@ const CateringMenu = () => {
                     <div className='latestaddon'>
                         <h2 className='head3'>Latest Addons</h2>
                         <div className='addonsproducts'>
-                        {
-                            products
-                            .filter((product,index) => {
-                                return index < 4
-                            })
-                            .map((product) => {
-                                return (
-                                    <div className='product1'>
-                                        <div className='product1image'>
-                                            <img src={product.image} alt='product' />
-                                        </div>
-                                        <div className='product1info'>
-                                            <h3>{product.name}</h3>
-                                            {/* <p>{product.description}</p> */}
-                                            <p>$ {product.price}</p>
-                                        </div>
+                            {
+                                products
+                                    .filter((product, index) => {
+                                        return index < 4
+                                    })
+                                    .map((product) => {
+                                        return (
+                                            <div className='product1'>
+                                                <div className='product1image'>
+                                                    <img src={product.ProductImageURL} alt='product' />
+                                                </div>
+                                                <div className='product1info'>
+                                                    <h3>{product.ProductName}</h3>
+                                                    {/* <p>{product.description}</p> */}
+                                                    <p>$ {product.SalesPrice}</p>
+                                                </div>
 
-                                        <Link to={`/product/${product.id}`}
-                                            style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
-                                        >
-                                            <button>Buy</button>
-                                        </Link>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
+                                                <Link to={`/product/${product.id}`}
+                                                    style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
+                                                >
+                                                    <button>Buy</button>
+                                                </Link>
+                                            </div>
+                                        )
+                                    })
+                            }
+                        </div>
                     </div>
                 </div>
 
-                <div className='c2col'>
+                <div className='c2col2'>
                     <div className='c1'>
                         <h2 className='head2'>Products by category</h2>
                         <div className='c11'>
@@ -184,21 +347,31 @@ const CateringMenu = () => {
                             </select>
                         </div>
                     </div>
-                    <div className='products'>
+                    {
+                        products.length > 0 ?
+                        <div className='products'>
                         {
                             products.map((product) => {
                                 return (
-                                    <div className='product'>
+                                    <div className='product'
+                                        key={product.ProductId}
+                                    >
                                         <div className='productimage'>
-                                            <img src={product.image} alt='product' />
+                                            <img src={
+                                                product.ProductImageURL
+
+                                            } alt='product' />
                                         </div>
                                         <div className='productinfo'>
-                                            <h3>{product.name}</h3>
+                                            <h3>{product.ProductName}</h3>
                                             {/* <p>{product.description}</p> */}
-                                            <p>$ {product.price}</p>
+                                            <p>$ {product.SalesPrice}
+                                            <span>${product.SalesPrice + (product.SalesPrice)*(0.2)}</span>
+                                            </p>
                                         </div>
 
-                                        <Link to={`/product/${product.id}`}
+                                        <Link to={`/product/${product.ProductId
+                                            }`}
                                             style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
                                         >
                                             <button>Buy</button>
@@ -208,8 +381,13 @@ const CateringMenu = () => {
                             })
                         }
                     </div>
+                    :
+                    <div className='products'>
+                        <h2>No products found</h2>
+                    </div>
+                    }
 
-                   
+
                 </div>
             </div>
         </div>

@@ -4,11 +4,14 @@ import Footer from '../COMPONENTS/Footer/Footer'
 import Navbar from '../COMPONENTS/Navbar/Navbar'
 import './About.css'
 import payimg from '../COMPONENTS/Footer/pay.png'
+import { useEffect } from 'react'
 const About = () => {
 
 
     // add show up animation to left and right divs
-
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
     return (
         <div>
             <div className='about'>

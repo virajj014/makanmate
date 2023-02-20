@@ -143,7 +143,16 @@
     text-align: center;
 }
 
-.cartcont .subtotal{
+.cartcont .delbtn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--col2);
+    margin-left: 10px;
+}
+
+.cartcont .subtotal {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -156,6 +165,20 @@
     font-weight: 700;
     color: var(--col3);
     margin: 0px 10px;
+}
+
+.emptycart {
+    display: flex;
+    width: 100%;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptycart p {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--col3);
 }
 
 
@@ -204,9 +227,10 @@
     font-weight: 700;
     cursor: pointer;
     color: white;
-    margin: 5px ;
+    margin: 5px;
 }
-.cart .btns button:hover{
+
+.cart .btns button:hover {
     background-color: var(--col3);
     color: white;
 }
@@ -254,13 +278,14 @@
 .shippingcont .radio input {
     margin-right: 10px;
 }
-.shippingcont .radio p{
+
+.shippingcont .radio p {
     font-size: 16px;
     font-weight: 700;
     color: var(--col3);
 }
 
-.shippingadd{
+.shippingadd {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -272,7 +297,7 @@
     /* margin: 10px; */
 }
 
-.shippingadd input{
+.shippingadd input {
     width: 100%;
     height: 50px;
     border: 2px solid #cacaca;
@@ -285,7 +310,7 @@
     margin-bottom: 10px;
 }
 
-.shippingadd button{
+.shippingadd button {
     width: 100%;
     height: 50px;
     border: none;
@@ -314,13 +339,13 @@
     padding: 20px;
 }
 
-.paymentcont .left{
+.paymentcont .left {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 50%;
     padding: 10px 20px;
-   
+
 }
 
 .paymentcont .left h2 {
@@ -330,12 +355,12 @@
     margin-bottom: 10px;
 }
 
-.paymentcont .left img{
+.paymentcont .left img {
     width: 80%;
     margin-left: 10px;
 }
 
-.paymentcont .paymenttypes{
+.paymentcont .paymenttypes {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -343,7 +368,7 @@
     width: 100%;
 }
 
-.paymenttypes .c1{
+.paymenttypes .c1 {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -354,7 +379,7 @@
     padding: 10px;
 }
 
-.paymentagreement{
+.paymentagreement {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -362,14 +387,15 @@
     margin-bottom: 10px;
 }
 
-.paymentagreement input{
+.paymentagreement input {
     margin-right: 10px;
 }
-.paymentagreement  label a{
+
+.paymentagreement label a {
     color: var(--col2);
 }
 
-.paymentcont .right{
+.paymentcont .right {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -390,21 +416,24 @@
 .paymentcont .right table tr td {
     padding: 10px 0;
 }
-.paymentcont .right table tr{
+
+.paymentcont .right table tr {
     font-size: 16px;
     font-weight: 700;
     color: var(--col3);
 }
+
 .paymentcont .right table tr:first-child {
     font-weight: 700;
     color: var(--col2);
 }
+
 .paymentcont .right table tr td:last-child {
     text-align: right;
     width: 20%;
 }
 
-.paymentcont .right .c1{
+.paymentcont .right .c1 {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -420,7 +449,7 @@
 
 /* //////////////////////////////////////////////////////////////////// */
 
-.confirmationcont{
+.confirmationcont {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -428,11 +457,11 @@
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     width: 90%;
 }
 
-.confirmationcont .c1{
+.confirmationcont .c1 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -440,26 +469,28 @@
     padding: 20px;
 }
 
-.confirmationcont .c1 svg{
+.confirmationcont .c1 svg {
     width: 100px;
     height: 100px;
     color: var(--col2);
 }
 
-.confirmationcont .c1 h2{
+.confirmationcont .c1 h2 {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--col2);
     margin-top: 10px;
 }
-.confirmationcont .c2 h2{
+
+.confirmationcont .c2 h2 {
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--col2);
     margin-top: 10px;
     width: 100%;
 }
-.confirmationcont .c2{
+
+.confirmationcont .c2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -469,27 +500,30 @@
     width: 100%;
 }
 
-.confirmationcont .c2 div{
+.confirmationcont .c2 div {
     display: flex;
     width: 45%;
     justify-content: space-between;
 }
 
-.confirmationcont .c2 div p{
+.confirmationcont .c2 div p {
     width: 45%;
-    
+
 }
-.confirmationcont .c2 div p:first-child{
+
+.confirmationcont .c2 div p:first-child {
     font-weight: 300;
     color: var(--col3);
     font-size: 15px;
 }
-.confirmationcont .c2 div p:last-child{
+
+.confirmationcont .c2 div p:last-child {
     font-weight: 600;
     color: var(--col3);
     font-size: 15px;
 }
-.confirmationcont .c3{
+
+.confirmationcont .c3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -499,41 +533,44 @@
     width: 100%;
 }
 
-.confirmationcont .c3 table{
+.confirmationcont .c3 table {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid var(--col3);
     border-radius: 10px;
     margin-bottom: 20px;
 }
-.confirmationcont .c3 table tr{
+
+.confirmationcont .c3 table tr {
     border: 1px solid var(--col3);
- 
+
 }
-.confirmationcont .c3 table tr th{
-    padding: 10px;
-    border: 1px solid var(--col3);
-    text-align: center;
-}
-.confirmationcont .c3 table tr td{
+
+.confirmationcont .c3 table tr th {
     padding: 10px;
     border: 1px solid var(--col3);
     text-align: center;
 }
 
-.confirmationcont .c3 div{
+.confirmationcont .c3 table tr td {
+    padding: 10px;
+    border: 1px solid var(--col3);
+    text-align: center;
+}
+
+.confirmationcont .c3 div {
     display: flex;
     width: 45%;
     justify-content: space-between;
 }
 
-.confirmationcont .c3 div p:first-child{
+.confirmationcont .c3 div p:first-child {
     font-weight: 300;
     color: var(--col3);
     font-size: 15px;
 }
 
-.confirmationcont .c3 div p:last-child{
+.confirmationcont .c3 div p:last-child {
     font-weight: 700;
     color: var(--col3);
     font-size: 17px;
