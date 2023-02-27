@@ -31,7 +31,9 @@ const Testimonials = () => {
     }, [])
     return (
         <div className='testimonials'>
-            <h2>Testimonials From Our Happy Customers</h2>
+            <h2
+                className='mainhead1'
+            >Testimonials From Our Happy Customers</h2>
             <Carousel
                 additionalTransfrom={0}
                 arrows

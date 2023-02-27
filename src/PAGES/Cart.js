@@ -1,4 +1,7 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
+import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
 import Footer from '../COMPONENTS/Footer/Footer'
 import Navbar from '../COMPONENTS/Navbar/Navbar'
 import './Cart.css'
@@ -6,6 +9,8 @@ const Cart = () => {
     const [active, setActive] = React.useState(1);
     const [cartdata, setcartdata] = React.useState([])
     const [subtotal, setsubtotal] = React.useState(0)
+    const [shipping, setshipping] = React.useState(0)
+    const [tax, settax] = React.useState(0)
     const getcartitemsfromlocalstorage = () => {
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
@@ -16,23 +21,20 @@ const Cart = () => {
             cart.forEach(item => {
                 total += (
                     item.productdata.SalesPrice
-                    +
-                    item.productdata.SalesPrice * item.productdata.TaxPerc
-                    / 100
                 )
                     *
                     item.quantity
             })
             setsubtotal(total)
+            setshipping(80)
+            settax(total * 0.08 + 80 * 0.08)
         }
         else {
             console.log('no items in cart')
         }
     }
 
-    React.useEffect(() => {
-        getcartitemsfromlocalstorage()
-    }, [])
+
 
 
     const removeitemfromcart = (index) => {
@@ -44,96 +46,225 @@ const Cart = () => {
         setcartdata(temp)
         getcartitemsfromlocalstorage()
     }
+
+    const [user, setuser] = React.useState({})
+    const checklogin = () => {
+        let user = localStorage.getItem('token')
+        user = JSON.parse(localStorage.getItem('token'))
+
+        // console.log(user)
+
+        if (user && user[0].B2CCustomerId) {
+            // console.log(user[0])
+            setuser(user[0])
+            getaddress(user[0])
+            return true
+        }
+        else {
+            console.log('not logged in')
+            toast.error('Please Login First')
+            return false
+        }
+    }
+    const [savedaddresses, setsavedaddresses] = React.useState([])
+    const getaddress = (userdata) => {
+        // console.log(userdata)
+        let mainaddress = {
+            AddressLine1: userdata.AddressLine1,
+            AddressLine2: userdata.AddressLine2,
+            AddressLine3: userdata.AddressLine3,
+            EmailId: userdata.EmailId,
+        }
+        let otheraddress = [];
+        fetch('http://154.26.130.251:134/B2CCustomerDeliveryAddress/GetAll?OrganizationId=1&CustomerId=' + userdata.B2CCustomerId)
+            .then(res => res.json())
+            .then(data => {
+                if (data.Data !== null) {
+                    otheraddress = data.Data
+                    let alladdress = [
+                        ...otheraddress,
+                        mainaddress
+                    ]
+                    setsavedaddresses(alladdress)
+                    console.log(alladdress)
+
+                }
+                else {
+                    let alladdress = [
+                        mainaddress
+                    ]
+                    setsavedaddresses(alladdress)
+                    console.log(alladdress)
+
+                }
+            })
+        // let alladdress = []
+        // if (userdata.Address) {
+        //     alladdress = [
+        //         ...userdata.Address,
+        //         mainaddress
+        //     ]
+        //     setsavedaddresses(alladdress)
+        // }
+        // else {
+        //     alladdress = [
+        //         mainaddress
+        //     ]
+        //     setsavedaddresses(alladdress)
+        // }
+
+    }
+
+    React.useEffect(() => {
+        getcartitemsfromlocalstorage()
+        checklogin()
+    }, [])
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [active])
+
+
+    const [newaddress, setnewaddress] = React.useState({
+        AddressLine1: '',
+        AddressLine2: '',
+        AddressLine3: '',
+    })
+    const [postalcode, setpostalcode] = React.useState('')
+    const addnewaddress = () => {
+        let temp =
+        {
+            "OrgId": 1,
+            "DeliveryId": 0,
+            "CustomerId": user.B2CCustomerId,
+            "Name": user.B2CCustomerName,
+            "AddressLine1": newaddress.AddressLine1,
+            "AddressLine2": newaddress.AddressLine2,
+            "AddressLine3": newaddress.AddressLine3,
+            "CountryId": "string",
+            "PostalCode": "string",
+            "Mobile": user.MobileNo,
+            "Phone": "string",
+            "Fax": "string",
+            "IsDefault": true,
+            "IsActive": true,
+            "CreatedBy": "string",
+            "CreatedOn": new Date(),
+            "ChangedBy": "string",
+            "ChangedOn": new Date(),
+        }
+
+        fetch('http://154.26.130.251:134/B2CCustomerDeliveryAddress/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(temp)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.Status === true && data.Code === 200) {
+                    toast.success('Address Added')
+                    getaddress(user)
+                }
+                else {
+                    toast.error('Error Adding Address')
+                }
+            })
+        // console.log(temp)
+
+    }
     return (
         <div className='cart'>
-            <Navbar />
-            <div className='header'>
-                <img src={"https://makanmate.com/wp-content/uploads/2022/09/catering-chef-cooking-1536x864.jpg"} alt='about' />
-                <h1>Your Cart</h1>
-            </div>
+            <Navbar pagename={'cart'} />
+            <StaticBanner name="Your Cart" />
             <div className='progress'>
                 {
                     active === 1 ?
                         <div className='c11'
-                            onClick={() => setActive(1)}
+                            onClick={() => {
+                                checklogin() && setActive(1)
+                            }
+                            }
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                             </svg>
-                            <p>My Cart</p>
+                            <span>My Cart</span>
+                            {/* <p>My Cart</p> */}
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => setActive(1)}
+                            onClick={() => checklogin() && setActive(1)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                             </svg>
-                            <p>My Cart</p>
+                            <span>My Cart</span>
                         </div>
                 }
                 {
                     active === 2 ?
                         <div className='c11'
-                            onClick={() => setActive(2)}
+                            onClick={() => checklogin() && setActive(2)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
                             </svg>
-                            <p>Shipping Info</p>
+                            <span>Shipping Info</span>
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => setActive(2)}
+                            onClick={() => checklogin() && setActive(2)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
                             </svg>
-                            <p>Shipping Info</p>
+                            <span>Shipping Info</span>
                         </div>
                 }
 
                 {
                     active === 3 ?
                         <div className='c11'
-                            onClick={() => setActive(3)}
+                            onClick={() => checklogin() && setActive(3)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                             </svg>
-                            <p>Payment</p>
+                            <span>Payment</span>
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => setActive(3)}
+                            onClick={() => checklogin() && setActive(3)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                             </svg>
-                            <p>Payment</p>
+                            <span>Payment</span>
                         </div>
                 }
 
                 {
                     active === 4 ?
                         <div className='c11'
-                            onClick={() => setActive(4)}
+                            onClick={() => checklogin() && setActive(4)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
                             </svg>
 
-                            <p>Confirmation</p>
+                            <span>Confirmation</span>
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => setActive(4)}
+                            onClick={() => checklogin() && setActive(4)}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
                             </svg>
 
-                            <p>Confirmation</p>
+                            <span>Confirmation</span>
                         </div>
                 }
             </div>
@@ -147,9 +278,8 @@ const Cart = () => {
                                 <thead>
                                     <tr>
                                         <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Tax</th>
                                         <th>Quantity</th>
+                                        <th>Price</th>
                                         <th>Total</th>
                                         <th></th>
                                     </tr>
@@ -159,42 +289,60 @@ const Cart = () => {
                                     {
                                         cartdata.map((item, index) => {
                                             return (
-                                                <tr key={index}>
+                                                <tr key={index}
+                                                    className='cartitemrow'
+                                                >
                                                     <td>
-                                                        <div className='product'>
+                                                        <div className='product'
+                                                            onClick={() => {
+                                                                console.log(item.productdata)
+                                                                window.location.href = `/product/${item.productdata.ProductId}`
+                                                            }}
+                                                        >
                                                             <img src={item.productdata.ProductImageURL
                                                             } alt='product1' />
                                                             <p>{item.productdata.ProductName}</p>
                                                         </div>
                                                     </td>
-
-                                                    <td>
-                                                        <p>$ {item.productdata.SalesPrice}</p>
-                                                    </td>
-
-                                                    <td>
-                                                        <p>$ {item.productdata.SalesPrice * item.productdata.TaxPerc
-                                                            / 100}</p>
-                                                    </td>
-
                                                     <td>
                                                         <div className='quantity'>
-                                                            {/* <button className='minus'>-</button> */}
-                                                            <p>{item.quantity}</p>
-                                                            {/* <button className='plus'>+</button> */}
+                                                            <button className='minus'
+                                                                onClick={() => {
+                                                                    let newcartdata = [...cartdata]
+                                                                    // console.log(newcartdata[index].quantity)
+                                                                    if (newcartdata[index].quantity > 1) {
+                                                                        newcartdata[index].quantity--
+                                                                        setcartdata(newcartdata)
+                                                                        localStorage.setItem('cart', JSON.stringify(newcartdata))
+                                                                        getcartitemsfromlocalstorage()
+
+                                                                    }
+                                                                }}
+                                                            >-</button>
+                                                            <span>{item.quantity}</span>
+                                                            <button className='plus'
+                                                                onClick={() => {
+                                                                    let newcartdata = [...cartdata]
+                                                                    // console.log(newcartdata[index].quantity)
+                                                                    newcartdata[index].quantity++
+                                                                    setcartdata(newcartdata)
+                                                                    localStorage.setItem('cart', JSON.stringify(newcartdata))
+                                                                    getcartitemsfromlocalstorage()
+                                                                }}
+                                                            >+</button>
                                                         </div>
+                                                    </td>
+                                                    <td>
+                                                        <p>$ {item.productdata.SalesPrice ? item.productdata.SalesPrice.toFixed(2) : 0.00}</p>
                                                     </td>
 
                                                     <td>
                                                         <p>$ {
-                                                            (
+                                                            ((
                                                                 item.productdata.SalesPrice
-                                                                +
-                                                                item.productdata.SalesPrice * item.productdata.TaxPerc
-                                                                / 100
                                                             )
-                                                            *
-                                                            item.quantity
+                                                                *
+                                                                item.quantity).toFixed(2)
                                                         }</p>
                                                     </td>
 
@@ -214,56 +362,55 @@ const Cart = () => {
                                             )
                                         })
                                     }
-                                    {/* <tr>
-                                <td>
-                                    <div className='product'>
-                                        <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' alt='product1' />
-                                        <p>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
-                                    </div>
-                                </td>
 
-                                <td>
-                                    <p>$ 10.00</p>
-                                </td>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td className='totaltableleft'>
+                                            Subtotal
+                                        </td>
+                                        <td className='totaltableright'>
+                                            $ {subtotal.toFixed(2)}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td className='totaltableleft'>
+                                            Shipping
+                                        </td>
+                                        <td className='totaltableright'>
+                                            $ {shipping.toFixed(2)}
+                                        </td>
+                                    </tr>
 
-                                <td>
-                                    <p>$ 0.00</p>
-                                </td>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td className='totaltableleft'>
+                                            Tax
+                                        </td>
+                                        <td className='totaltableright'>
+                                            $ {tax.toFixed(2)}
+                                        </td>
+                                    </tr>
 
-                                <td>
-                                    <div className='quantity'>
-                                        <button className='minus'>-</button>
-                                        <p>1</p>
-                                        <button className='plus'>+</button>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <p>$ 10.00</p>
-                                </td>
-
-                                <td>
-                                    <div className='delbtn'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                        </svg>
-                                    </div>
-                                </td>
-
-                            </tr> */}
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td className='totaltableleft'>
+                                            Net Total
+                                        </td>
+                                        <td className='totaltableright'>
+                                            $ {(subtotal + shipping + tax).toFixed(2)}
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                             :
                             <div className='emptycart'>
-                               <p>Your Cart is empty</p>
+                                <p>Your Cart is empty</p>
                             </div>
-                    }
-                    {
-                        cartdata.length > 0 &&
-                        <div className='subtotal'>
-                            <p>Subtotal</p>
-                            <p>$ {subtotal}</p>
-                        </div>
                     }
                 </div>
             }
@@ -272,7 +419,7 @@ const Cart = () => {
                 <div className='shippingcont'>
                     <div className='previous'>
                         <h2>Previous Address</h2>
-                        <div className='radio'>
+                        {/* <div className='radio'>
                             <input type='radio' name='address' id='address1' />
                             <p>My address 1</p>
                         </div>
@@ -280,13 +427,67 @@ const Cart = () => {
                         <div className='radio'>
                             <input type='radio' name='address' id='address2' />
                             <p>My address 2</p>
-                        </div>
-
+                        </div> */}
+                        {
+                            savedaddresses.length > 0 &&
+                            savedaddresses.map((item, index) => {
+                                return (
+                                    <div className='radio' key={index}>
+                                        <input type='radio' name='address' id={'address' + index} />
+                                        <p>{item.AddressLine1 + ' ' + ' ' + item.AddressLine2 + ' ' + item.AddressLine3}</p>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                     <h2>OR</h2>
                     <div className='shippingadd'>
-                        <input type='text' placeholder='Enter New Address' />
-                        <button>Save</button>
+                        <div className='postalcode'>
+                            <input type='text' placeholder='Enter Postal Code'
+                                value={postalcode}
+                                onChange={(e) => {
+                                    setpostalcode(e.target.value)
+                                }}
+                            />
+                            <button
+                                onClick={async () => {
+                                    let url = `https://developers.onemap.sg/commonapi/search?searchVal=${postalcode}&returnGeom=N&getAddrDetails=Y&pageNum=1`
+                                    const response = await fetch(url);
+                                    const data = await response.json();
+                                    console.log(data.results[0])
+
+                                    setnewaddress({
+                                        ...newaddress,
+                                        AddressLine3: data.results[0].ADDRESS,
+                                    })
+
+                                }}
+
+                            >Fetch</button>
+                        </div>
+                        <input type='text' placeholder='Enter Address Line 1'
+                            value={newaddress.AddressLine1}
+                            onChange={(e) => {
+                                setnewaddress({ ...newaddress, AddressLine1: e.target.value })
+                            }}
+                        />
+                        <input type='text' placeholder='Enter Address Line 2'
+                            value={newaddress.AddressLine2}
+                            onChange={(e) => {
+                                setnewaddress({ ...newaddress, AddressLine2: e.target.value })
+                            }}
+                        />
+                        <input type='text' placeholder='Enter Address Line 3'
+                            value={newaddress.AddressLine3}
+                            onChange={(e) => {
+                                setnewaddress({ ...newaddress, AddressLine3: e.target.value })
+                            }}
+                        />
+                        <button
+                            onClick={() => {
+                                addnewaddress()
+                            }}
+                        >Save</button>
                     </div>
                 </div>
             }
@@ -321,8 +522,8 @@ const Cart = () => {
 
                     <div className='right'>
                         <div className='order'>
-                            <h3>Order Summary</h3>
-                            <table>
+                            {/* <h3>Order Summary</h3> */}
+                            {/* <table>
                                 <thead>
                                     <tr>
                                         <td>Product</td>
@@ -349,9 +550,9 @@ const Cart = () => {
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> */}
 
-                            <div className='c1'>
+                            {/* <div className='c1'>
                                 <p>Subtotal</p>
                                 <p>$ 50.00</p>
                             </div>
@@ -359,11 +560,17 @@ const Cart = () => {
                             <div className='c1'>
                                 <p>Shipping</p>
                                 <p>$ 0.00</p>
-                            </div>
+                            </div> */}
 
-                            <div className='c1'>
+                            {/* <div className='c1'>
                                 <p>Tax</p>
                                 <p>$ 0.00</p>
+                            </div> */}
+
+                            <div className='c1'>
+                                <p>Net Total</p>
+                                &nbsp;&nbsp;
+                                <p>$ {subtotal + shipping + tax}</p>
                             </div>
                         </div>
                     </div>
@@ -442,13 +649,14 @@ const Cart = () => {
                                 <tr>
                                     <th>Sno.</th>
                                     <th>Product</th>
-                                    <th>Quantity</th>
                                     <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr>
+                                {/* <tr>
                                     <td>1</td>
                                     <td>Marinated Chicken Satay with Peanut Sauce 25pcs</td>
                                     <td>1</td>
@@ -460,28 +668,62 @@ const Cart = () => {
                                     <td>Marinated Chicken Satay with Peanut Sauce 25pcs</td>
                                     <td>1</td>
                                     <td>$ 25.00</td>
-                                </tr>
+                                </tr> */}
+
+                                {
+                                    cartdata.map((item, index) => {
+                                        return (
+                                            <tr>
+                                                <td>
+                                                    <p>{index + 1}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{item.productdata.ProductName}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{item.quantity}</p>
+                                                </td>
+                                                <td>
+                                                    <p>$ {item.productdata.SalesPrice ? item.productdata.SalesPrice.toFixed(2) : 0.00}</p>
+                                                </td>
+
+                                                <td>
+                                                    <p>$ {
+                                                        ((
+                                                            item.productdata.SalesPrice
+                                                        )
+                                                            *
+                                                            item.quantity).toFixed(2)
+                                                    }</p>
+                                                </td>
+
+                                            </tr>
+                                        )
+                                    })
+                                }
                             </tbody>
                         </table>
 
-                        <div>
-                            <p>Subtotal</p>
-                            <p>$ 50.00</p>
-                        </div>
+                        <div className='right'>
+                            <div>
+                                <p>Subtotal</p>
+                                <p>$ {subtotal}</p>
+                            </div>
 
-                        <div>
-                            <p>Shipping</p>
-                            <p>$ 0.00</p>
-                        </div>
+                            <div>
+                                <p>Shipping</p>
+                                <p>$ {shipping}</p>
+                            </div>
 
-                        <div>
-                            <p>Tax</p>
-                            <p>$ 0.00</p>
-                        </div>
+                            <div>
+                                <p>Tax</p>
+                                <p>$ {tax}</p>
+                            </div>
 
-                        <div>
-                            <p>Total</p>
-                            <p>$ 50.00</p>
+                            <div>
+                                <p>Total</p>
+                                <p>$ {subtotal + shipping + tax}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -492,30 +734,52 @@ const Cart = () => {
                 active == 1 && cartdata.length > 0 &&
                 <div className='btns'>
                     <div></div>
-                    <button className='nextbtn' onClick={() => setActive(active + 1)}>Next</button>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (temp) {
+                            setActive(active + 1)
+                        }
+
+
+                    }}>Next</button>
                 </div>
             }
 
             {
                 active == 2 &&
                 <div className='btns'>
-                    <button className='backbtn' onClick={() => setActive(active - 1)}>Back</button>
-                    <button className='nextbtn' onClick={() => setActive(active + 1)}>Next</button>
+                    <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (temp) {
+                            setActive(active + 1)
+                        }
+                    }}>Next</button>
                 </div>
             }
             {
                 active == 3 &&
                 <div className='btns'>
-                    <button className='backbtn' onClick={() => setActive(active - 1)}>Back</button>
-                    <button className='nextbtn' onClick={() => setActive(active + 1)}>Next</button>
+                    <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (temp) {
+                            setActive(active + 1)
+                        }
+                    }}>Next</button>
                 </div>
             }
 
             {
                 active == 4 &&
                 <div className='btns'>
-                    <button className='backbtn' onClick={() => setActive(active - 1)}>Back</button>
-                    <button className='nextbtn' onClick={() => { }}>Place Order</button>
+                    <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (temp) {
+                            alert('Order Placed')
+                        }
+                    }}>Place Order</button>
                 </div>
             }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../ASSETS/logo.png'
 import './Navbar.css'
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import { render } from "react-dom";
 
@@ -11,7 +12,7 @@ import "react-activity/dist/library.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
-const Navbar = () => {
+const Navbar = ({ pagename }) => {
     //navigation
     const [isloggedin, setisloggedin] = React.useState(false)
     useEffect(() => {
@@ -95,9 +96,9 @@ const Navbar = () => {
 
     const handleSignup = async () => {
         let address1 = {
-            "OrgId": 0,
+            "OrgId": 1,
             "DeliveryId": 0,
-            "CustomerId": "string",
+            "CustomerId": new Date().getTime(),
             "Name": signupdata.B2CCustomerName,
             "AddressLine1": signupdata.AddressLine1,
             "AddressLine2": signupdata.AddressLine2,
@@ -120,41 +121,59 @@ const Navbar = () => {
             Address: [address1]
         }
 
-        // console.log(tempdata)
-
-        fetch('http://154.26.130.251:134/B2CCustomerRegister/Create',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(tempdata),
-            }
-        )
+        console.log(tempdata)
+        fetch('http://154.26.130.251:134/B2CCustomerRegister/GetbyEmail?OrganizationId=1&EmailId=' + signupdata.EmailId)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data)
-                if (data.Code == 200) {
-                    toast.success('Signup Successfull',
-                        {
-                            position: "top-center",
-                            autoClose: 2000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            //color
-                        }
-                    )
-
-                    setshowsignup(false)
-                    setshowlogin(true)
+                // console.log(data.Data[0])
+                if (data.Data[0].EmailId !== null) {
+                    // console.log("email already exists")
+                    toast.error("Email already exists")
                 }
                 else {
-                    toast.error('Signup Failed')
+                    // console.log("email does not exists")
+
+
+                    fetch('http://154.26.130.251:134/B2CCustomerRegister/Create',
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(tempdata),
+                        }
+                    )
+                        .then((response) => response.json())
+                        .then((data) => {
+                            // console.log(data)
+                            if (data.Code == 200) {
+                                toast.success('Signup Successfull',
+                                    {
+                                        position: "top-center",
+                                        autoClose: 2000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                        //color
+                                    }
+                                )
+
+                                setshowsignup(false)
+                                setshowlogin(true)
+                            }
+                            else {
+                                toast.error('Signup Failed')
+                            }
+                        })
                 }
             })
+            .catch((error) => {
+                return false
+            })
+
+
     }
 
 
@@ -168,12 +187,16 @@ const Navbar = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(logindata),
+                body: JSON.stringify({
+                    "OrgId": 1,
+                    "UserName": logindata.Username,
+                    "Password": logindata.Password,
+                }),
             })
             .then((response) => response.json())
             .then((data) => {
                 console.log(data)
-                if (data.Code == 200) {
+                if (data.Code == 200 && data.Message == "Sucess") {
                     toast.success('Login Successfull',
                         {
                             position: "top-center",
@@ -186,7 +209,7 @@ const Navbar = () => {
                             //color
                         }
                     )
-                    localStorage.setItem('token', data.Data)
+                    localStorage.setItem('token', JSON.stringify(data.Data))
                     setisloggedin(true)
                     setshowlogin(false)
                     setshowsignup(false)
@@ -196,6 +219,23 @@ const Navbar = () => {
                 }
             })
     }
+
+
+    const [cartdataquantity, setcartdataquantity] = React.useState(0)
+    const getcartdataquantity = async () => {
+        let cart = JSON.parse(localStorage.getItem('cart'))
+        console.log(cart)
+        if (cart !== null) {
+            setcartdataquantity(cart.length)
+        }
+        // else{
+        //     setcartdataquantity(0)
+        // }
+    }
+    useEffect(() => {
+        getcartdataquantity()
+    }, [])
+
     return (
         <div className={'nav'}>
             <div className='navin'>
@@ -208,9 +248,25 @@ const Navbar = () => {
                         { textDecoration: 'none', color: 'black' }
                     }><li>ABOUT</li></Link>
 
-                    <Link to='/menu/cateringmenu/Bento Set' style={
+                    {/* <Link to='/menu/cateringmenu/Bento Set' style={
                         { textDecoration: 'none', color: 'black' }
-                    }><li>MENU</li></Link>
+                    }><li>MENU</li></Link> */}
+                    <Dropdown >
+                        <Dropdown.Toggle variant="" id="dropdown-basic"
+                        // drop icon color
+                        >
+                            MENU
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            {/* fresh vegetables */}
+                            <Dropdown.Item href="/menu/cateringmenu/Bento Set">CATERING  MENU</Dropdown.Item>
+                            {/* fresh fruits */}
+                            <Dropdown.Item href="#/action-2">MAKAN MART</Dropdown.Item>
+
+                        </Dropdown.Menu>
+                    </Dropdown>
+
                     {/* open url  https://www.panseas.com/ on click panseas food */}
                     <a href='https://www.panseas.com/' target='_blank' style={
                         { textDecoration: 'none', color: 'black' }
@@ -228,7 +284,9 @@ const Navbar = () => {
                         { textDecoration: 'none', color: 'black' }
                     }>
                         <li>
-                            <button>
+                            <button
+                            className='orderbtn'
+                            >
                                 ORDER NOW
                             </button>
                         </li>
@@ -237,10 +295,29 @@ const Navbar = () => {
                     < Link to='/cart' style={
                         { textDecoration: 'none', color: 'black' }
                     }>
-                        <li>
+                        <li
+                            style={{
+                                position: 'relative',
+                            }}
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                             </svg>
+                            <span
+                                style={{
+                                    position: 'absolute',
+                                    top: '0',
+                                    right: '0',
+                                    backgroundColor: '#FF630F',
+                                    color: 'black',
+                                    borderRadius: '50%',
+                                    width: '25px',
+                                    height: '25px',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >{cartdataquantity}</span>
                         </li>
                     </Link>
 
@@ -481,7 +558,7 @@ const Navbar = () => {
                     </div>
                 </div>
             }
-            <ToastContainer/>
+            <ToastContainer />
 
         </div>
     )

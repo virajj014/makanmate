@@ -2,61 +2,63 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: Arial, sans-serif;
-}
-
-.cart .header {
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    background-color: var(--col2);
-    background: url(../ASSETS/HomeSlider/slide-1.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 400px;
 }
 
 
-.progress {
+.cart .progress {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 50%;
-    margin: 0 auto;
-    padding: 10px 20px;
+    padding: 0px 10px;
     max-width: 1200px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.383);
     margin: 20px;
-
+    min-height: 80px;
+    align-items: center;
 }
 
-.progress .c1 {
+.cart .progress .c1 {
     display: flex;
     flex-direction: column;
-    color: var(--col3);
-    cursor: pointer;
+    align-items: center;
+    justify-content: center;
 }
 
 .progress .c1 svg {
     width: 30px;
     height: 30px;
-    margin: 0 auto;
     color: var(--col3);
 }
 
-.progress .c1 p {
-    text-align: center;
+.progress .c1 span {
+    font-size: 16px;
+    font-weight: 400;
     color: var(--col3);
-    font-size: 14px;
-    font-weight: 600;
-    margin-top: 5px;
 }
+
+
+.progress .c11 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress .c11 svg {
+    width: 30px;
+    height: 30px;
+    color: var(--col2);
+}
+
+.progress .c11 span {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--col2);
+}
+
 
 
 
@@ -80,11 +82,11 @@
     border-collapse: collapse;
 }
 
-.cartcont table tr {
+.cartcont table .cartitemrow {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.cartcont table tr th {
+.cartcont table .cartitemrow th {
     padding: 10px 0;
     text-align: left;
     font-size: 16px;
@@ -92,7 +94,7 @@
     color: var(--col3);
 }
 
-.cartcont table tr td {
+.cartcont table .cartitemrow td {
     padding: 10px 0;
     text-align: left;
     font-size: 16px;
@@ -109,6 +111,7 @@
 .cartcont .product {
     display: flex;
     width: 300px;
+    cursor: pointer;
 }
 
 .cartcont .quantity {
@@ -132,7 +135,7 @@
     color: white;
 }
 
-.cartcont .quantity p {
+.cartcont .quantity span {
     width: 30px;
     border: 1px solid #e0e0e0;
     border-radius: 5px;
@@ -153,18 +156,26 @@
 }
 
 .cartcont .subtotal {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
-    width: 100%;
+    width: 20%;
+    align-self: flex-end;
+    text-align: right;
+    /* border: 1px solid #e0e0e0; */
 }
 
-.cartcont .subtotal p {
-    font-size: 20px;
-    font-weight: 700;
+.cartcont .subtotal tr {
+    /* border: 1px solid #e0e0e0; */
+}
+
+.cartcont .subtotal tr td {
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 200;
     color: var(--col3);
-    margin: 0px 10px;
+}
+
+.cartcont .subtotal tr td:last-child {
+    font-weight: 700;
 }
 
 .emptycart {
@@ -181,28 +192,6 @@
     color: var(--col3);
 }
 
-
-.progress .c11 {
-    display: flex;
-    flex-direction: column;
-    color: var(--col3);
-    cursor: pointer;
-}
-
-.progress .c11 svg {
-    width: 30px;
-    height: 30px;
-    margin: 0 auto;
-    color: var(--col2);
-}
-
-.progress .c11 p {
-    text-align: center;
-    color: var(--col2);
-    font-size: 14px;
-    font-weight: 600;
-    margin-top: 5px;
-}
 
 .cart .btns {
     display: flex;
@@ -558,20 +547,41 @@
     text-align: center;
 }
 
-.confirmationcont .c3 div {
+.confirmationcont .c3 .right {
     display: flex;
-    width: 45%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.confirmationcont .c3 .right div {
+    display: flex;
+    gap: 20px;
+    min-width: 20%;
     justify-content: space-between;
 }
 
-.confirmationcont .c3 div p:first-child {
+.confirmationcont .c3 .right div p {
     font-weight: 300;
     color: var(--col3);
-    font-size: 15px;
+    font-size: 25px;
 }
 
-.confirmationcont .c3 div p:last-child {
-    font-weight: 700;
-    color: var(--col3);
-    font-size: 17px;
+.shippingcont .shippingadd .postalcode {
+    width: 100%;
+    display: flex;
+}
+
+
+.totaltableleft{
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.totaltableright{
+    font-size: 21px;
+    font-weight: 600;
+    min-width: 100px;
 }

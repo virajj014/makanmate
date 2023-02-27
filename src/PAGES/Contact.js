@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Navbar from '../COMPONENTS/Navbar/Navbar'
 import './Contact.css'
 import Footer from '../COMPONENTS/Footer/Footer'
+import { toast } from 'react-toastify';
+import StaticBanner from '../COMPONENTS/Banner/StaticBanner';
 const Contact = () => {
 
     const [formData, setFormData] = useState({
@@ -21,19 +23,47 @@ const Contact = () => {
     };
 
     const handleSubmit = (event) => {
+        const myobj = {
+            "OrgId": 1,
+            "ContactEntryId": new Date().getTime(),
+            "ContactPersonName": formData.name,
+            "MobileNo": formData.phone,
+            "EmailId": formData.email,
+            "Subject": formData.subject,
+            "RequestMessage": formData.message,
+            "CreatedBy": formData.name,
+            "CreatedOn": new Date(),
+        }
         event.preventDefault();
-        console.log(formData);
+        // console.log(formData);
         // Add your own code here to submit the form data to your backend or server
+
+        fetch('http://154.26.130.251:134/B2CContactEnquiry/Create',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(myobj),
+            }
+        )
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.Message == "Sucess") {
+                    toast.success("Your request has been submitted successfully. We will get back to you soon.")
+                }
+                else {
+                    toast.error("Something went wrong. Please try again later.")
+                }
+            })
     };
 
 
     return (
         <div className='contact'>
             <Navbar />
-            <div className='header'>
-                <img src={"https://makanmate.com/wp-content/uploads/2022/09/catering-chef-cooking-1536x864.jpg"} alt='about' />
-                <h1>Contact Us</h1>
-            </div>
+            <StaticBanner name="Contact Us" />
 
             <div className='contactin'>
                 <p className="description">
@@ -58,7 +88,7 @@ const Contact = () => {
                 <img src="https://makanmate.com/wp-content/uploads/2022/09/dessert-600x400.jpg" alt="" />
             </div>
             <form onSubmit={handleSubmit}>
-                <h1>Contact Us</h1>
+                <h1 className='mainhead1'>Contact Us</h1>
                 <label htmlFor="name">Name <span>*</span></label>
                 <input type="text" name="name" value={formData.name} onChange={handleChange} />
                 <label htmlFor="phone">Phone <span>*</span></label>
@@ -69,10 +99,12 @@ const Contact = () => {
                 <input type="text" name="subject" value={formData.subject} onChange={handleChange} />
                 <label htmlFor="message">Your Request Message <span>*</span></label>
                 <textarea type="text" name="message" value={formData.message} onChange={handleChange} />
-                <button type="submit">Submit</button>
+                <button type="submit"
+                    className='mainbutton1'
+                >Submit</button>
             </form>
 
-            <Footer/>
+            <Footer />
         </div>
     )
 }

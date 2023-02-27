@@ -54,10 +54,7 @@
     margin: 10px;
 }
 
-.about .c2in h1 {
-    margin-bottom: 10px;
-    color: var(--col2);
-}
+
 
 /* left animation */
 
@@ -105,28 +102,7 @@
     position: relative;
     background-color: var(--col1);
     color: white;
-    padding: 30px 20px;
-}
-
-.about .c11 h1 {
-    font-size: 30px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    /* font-family: 'Times New Roman', Times, serif; */
-    animation: showup 1s ease-in-out;
-    color: var(--col2);
+    padding: 10px 20px;
 }
 
 
-.about .c11 p {
-    font-size: 25px;
-    font-weight: 800;
-    font-family: 'Times New Roman', Times, serif;
-    width: 70%;
-    margin: 0 auto;
-    text-align: center;
-    animation: showup 1s ease-in-out;
-    color: var(--col3);
-    font-weight: 100;
-
-}

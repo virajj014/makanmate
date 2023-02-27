@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import logo from '../../ASSETS/logo.png'
 
-import img1 from './img1.jpg'
-import img2 from './img2.jpg'
-import img3 from './img3.jpg'
-import img4 from './img4.jpg'
-import img5 from './img5.jpg'
 import './CategoriesSlider.css'
 import { Link, useNavigation } from 'react-router-dom'
 
@@ -35,8 +31,8 @@ const CategoriesSlider = () => {
 
     return (
         <div className='categoriesout'>
-            <h1>OUR CATERING MENU</h1>
-            <h2>A wide selection of Mini Buffet menus for every occasion. Enhance your event experience with quality food for you and your guests!</h2>
+            <h1 className='mainhead1'>OUR CATERING MENU</h1>
+            <h2 className='mainpg1'>A wide selection of Mini Buffet menus for every occasion. Enhance your event experience with quality food for you and your guests!</h2>
             <div className='categoryin'>
                 {/* <div className='card'>
                     <img src={img1} alt='img1' />
@@ -49,7 +45,7 @@ const CategoriesSlider = () => {
                                 return true
                             }
                             else {
-                                if (index < 8 && item.BranchCode == "MT") {
+                                if (index <=15 && item.BranchCode == "MT") {
                                     return true
                                 }
                                 else {
@@ -58,6 +54,7 @@ const CategoriesSlider = () => {
                             }
                         }
                     ).map((item, index) => {
+                        
                         return (
                             <Link to={`/menu/cateringmenu/${item.CategoryName}`} key={index}
                              style={{textDecoration:'none'}}
@@ -68,8 +65,9 @@ const CategoriesSlider = () => {
 
 
                                 > */}
-                                    <img src={item.PreviewImageURL} alt='img1'
-                                    />
+                                    <img src={item.PreviewImageURL ? 
+                                    item.PreviewImageURL : logo    
+                            } alt='img1' />
                                     <h3>{item.CategoryName}</h3>
                                 {/* </div> */}
                             </Link>
@@ -79,6 +77,7 @@ const CategoriesSlider = () => {
             </div>
 
             <button
+                className='mainbutton1'
                 onClick={() => {
                     setShowall(!showall)
                 }}

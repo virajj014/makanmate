@@ -1,8 +1,11 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { Navigation } from 'swiper'
 import Navbar from '../COMPONENTS/Navbar/Navbar'
 import './CateringMenu.css'
+import logo from '../ASSETS/logo.png'
+import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
 
 const CateringMenu = () => {
     // const [data, setdata] = React.useState([])
@@ -38,20 +41,68 @@ const CateringMenu = () => {
         getproducts(mycategoryid)
         window.scrollTo(0, 0)
     }, [])
+
+
+    const navigate = useNavigate();
+
+    const [quantity, setquantity] = React.useState(1)
+    const [selecetedproduct, setselecetedproduct] = React.useState({})
+    const checkaddon = (product) => {
+        console.log(product.IsAddOnItem
+        )
+        if (product.IsAddOnItem) {
+            navigate(`/product/${product.ProductId}`)
+        }
+        else {
+            setselecetedproduct(product.ProductId)
+        }
+    }
+
+
+    const addtocart = (productdata,count) => {
+        // add to local storage
+        let cart = JSON.parse(localStorage.getItem('cart'))
+        if (cart) {
+            // check if item is already in cart
+            let itemincart = cart.find(item => item.productdata.ProductId === productdata.ProductId)
+            if (itemincart) {
+                // update quantity
+                cart = cart.map(item => {
+                    if (item.productdata.ProductId === productdata.ProductId) {
+                        return {
+                            ...item,
+                            quantity: item.quantity + count
+                        }
+                    }
+                    else {
+                        return item
+                    }
+                })
+                localStorage.setItem('cart', JSON.stringify(cart))
+            }
+            else {
+                // add new item to cart
+                cart = [...cart, { productdata, quantity: count, url: window.location.href }]
+                localStorage.setItem('cart', JSON.stringify(cart))
+            }
+        }
+        else {
+            // create cart and add item object to cart
+            cart = [{ productdata, quantity: count }]
+            localStorage.setItem('cart', JSON.stringify(cart))
+        }
+        window.location.reload()
+        toast.success('Item added to cart')
+    }
+
     return (
         <div className='categorymenu'>
             <Navbar />
-            <div className='header'>
-                <img src={"https://makanmate.com/wp-content/uploads/2022/09/catering-chef-cooking-1536x864.jpg"} alt='about' />
-                <h1>Category Menu</h1>
-            </div>
-
-
-
+            <StaticBanner name='Catering Menu' />
 
             <div className='c2'>
                 <div className='c2col1'>
-                    <h2 className='head3'>Menu<br />Categories</h2>
+                    <h2 className='head3'>Menu Categories</h2>
                     <div className='c12'>
                         {
                             selectedCategory == 'Bento Set' ?
@@ -349,42 +400,82 @@ const CateringMenu = () => {
                     </div>
                     {
                         products.length > 0 ?
-                        <div className='products'>
-                        {
-                            products.map((product) => {
-                                return (
-                                    <div className='product'
-                                        key={product.ProductId}
-                                    >
-                                        <div className='productimage'>
-                                            <img src={
-                                                product.ProductImageURL
+                            <div className='products'>
+                                {
+                                    products.map((product) => {
+                                        console.log(product.ProductImageURL)
+                                        return (
+                                            <div className='product'
+                                                key={product.ProductId}
 
-                                            } alt='product' />
-                                        </div>
-                                        <div className='productinfo'>
-                                            <h3>{product.ProductName}</h3>
-                                            {/* <p>{product.description}</p> */}
-                                            <p>$ {product.SalesPrice}
-                                            <span>${product.SalesPrice + (product.SalesPrice)*(0.2)}</span>
-                                            </p>
-                                        </div>
+                                                // onClick={() => {
+                                                //     navigate(`/product/${product.ProductId}`)
+                                                // }}
+                                            >
+                                                <div className='productimage'>
+                                                    <img src={
+                                                        product.ProductImageURL?
+                                                        product.ProductImageURL
+                                                        :
+                                                        logo
 
-                                        <Link to={`/product/${product.ProductId
+                                                    } alt='product' />
+                                                </div>
+                                                <div className='productinfo'>
+                                                    <h3>{product.ProductName}</h3>
+                                                    {/* <p>{product.description}</p> */}
+                                                    <p>$ {product.SalesPrice}
+                                                        <span>${product.SalesPrice + (product.SalesPrice) * (0.2)}</span>
+                                                    </p>
+                                                </div>
+
+                                                {/* <Link to={`/product/${product.ProductId
                                             }`}
                                             style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
-                                        >
-                                            <button>Buy</button>
-                                        </Link>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                    :
-                    <div className='products'>
-                        <h2>No products found</h2>
-                    </div>
+                                        > */}
+                                                {
+                                                    selecetedproduct == product.ProductId &&
+                                                    <div className='incrdecr'>
+                                                        <button className='decr'
+                                                            onClick={() => {
+                                                                if (quantity > 1) {
+                                                                    setquantity(quantity - 1)
+                                                                }
+                                                            }}
+                                                        >-</button>
+                                                        <p className='count'>{
+                                                            quantity
+                                                        }</p>
+                                                        <button className='incr'
+                                                            onClick={() => {
+                                                                setquantity(quantity + 1)
+                                                            }}
+                                                        >+</button>
+                                                    </div>
+                                                }
+                                                {
+                                                    selecetedproduct == product.ProductId ?
+                                                        <button
+                                                            onClick={() => {
+                                                                addtocart(product, quantity)
+                                                             }}
+                                                        >Add to cart</button>
+                                                        :
+                                                        <button
+                                                            onClick={() => {
+                                                                checkaddon(product)
+                                                            }}
+                                                        >Buy</button>
+                                                }
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            :
+                            <div className='products'>
+                                <h2>No products found</h2>
+                            </div>
                     }
 
 

@@ -33,6 +33,8 @@ const ProductPage = () => {
                         id: 1,
                         image: res?.Data[0].ProductImageURL
                     })
+                    checkifincart(res?.Data[0])
+
                 }
             })
             .catch(err => {
@@ -40,11 +42,7 @@ const ProductPage = () => {
             })
     }
 
-    React.useEffect(() => {
-        //scroll to top
-        window.scrollTo(0, 0)
-        getproductdatabyid()
-    }, [])
+
 
     const addtocart = () => {
         // add to local storage
@@ -69,7 +67,7 @@ const ProductPage = () => {
             }
             else {
                 // add new item to cart
-                cart = [...cart, { productdata, quantity: count }]
+                cart = [...cart, { productdata, quantity: count, url: window.location.href }]
                 localStorage.setItem('cart', JSON.stringify(cart))
             }
         }
@@ -79,7 +77,31 @@ const ProductPage = () => {
             localStorage.setItem('cart', JSON.stringify(cart))
         }
         toast.success('Item added to cart')
+        window.location.reload()
     }
+
+    const [itemincart, setitemincart] = React.useState(false)
+    const checkifincart = (proddata) => {
+        let cart = JSON.parse(localStorage.getItem('cart'))
+        if (cart) {
+            let itemincart = cart.find(item => item.productdata.ProductId === proddata.ProductId)
+            if (itemincart) {
+                setitemincart(true)
+            }
+            else {
+                setitemincart(false)
+            }
+        }
+        else {
+            setitemincart(false)
+        }
+    }
+
+    React.useEffect(() => {
+        //scroll to top
+        window.scrollTo(0, 0)
+        getproductdatabyid()
+    }, [])
     return (
         <div className='productpage'>
             <Navbar />
@@ -111,9 +133,9 @@ const ProductPage = () => {
 
                     <div className='c121'>
                         <p className='price'>
-                            ${productdata.SalesPrice}
+                            ${productdata.SalesPrice * count}
 
-                            <span>${productdata.SalesPrice + (productdata.SalesPrice) * (0.2)}</span>
+                            <span>${(productdata.SalesPrice + (productdata.SalesPrice) * (0.2)) * count}</span>
                         </p>
 
                         <div className='incrdecr'>
@@ -136,11 +158,20 @@ const ProductPage = () => {
                     </div>
 
                     <div className='btncont'>
-                        <button
-                            onClick={() => {
-                                addtocart()
-                            }}
-                        >Add to cart</button>
+                        {
+                            itemincart ?
+                                <button
+                                onClick={() => {
+                                    window.location.href = '/cart'
+                                }}
+                                >Go To Cart</button>
+                                :
+                                <button
+                                    onClick={() => {
+                                        addtocart()
+                                    }}
+                                >Add to cart</button>
+                        }
                         <button >Buy now</button>
                     </div>
                 </div>

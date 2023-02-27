@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
-import img1 from './img1.jpg'
-import img2 from './img2.jpg'
-import img3 from './img3.jpg'
-import img4 from './img4.jpg'
-import img5 from './img5.jpg'
+import logo from '../../ASSETS/logo.png'
 import './MakanMart.css'
 
 const MakanMart = () => {
@@ -33,8 +28,8 @@ const MakanMart = () => {
 
     return (
         <div className='categoriesout'>
-            <h1>MAKAN MART</h1>
-            <h2>A wide selection of fuss free ready-to-cook meals that takes the hassle out of meal prepping.</h2>
+            <h1 className='mainhead1'>MAKAN MART</h1>
+            <h2 className='mainpg1'>A wide selection of fuss free ready-to-cook meals that takes the hassle out of meal prepping.</h2>
             <div className='categoryin'>
                 {/* <div className='card'>
                     <img src={img1} alt='img1' />
@@ -47,7 +42,7 @@ const MakanMart = () => {
                                 return true
                             }
                             else {
-                                if (index < 8 && item.BranchCode == "MM") {
+                                if (index < 20 && item.BranchCode == "MM") {
                                     return true
                                 }
                                 else {
@@ -56,9 +51,12 @@ const MakanMart = () => {
                             }
                         }
                     ).map((item, index) => {
+                        console.log(item)
                         return (
                             <div className='card'>
-                                <img src={item.PreviewImageURL} alt='img1' />
+                                <img src={item.PreviewImageURL ? 
+                                    item.PreviewImageURL : logo    
+                            } alt='img1' />
                                 <h3>{item.CategoryName}</h3>
                             </div>
                         )
@@ -67,6 +65,7 @@ const MakanMart = () => {
             </div>
 
             <button
+                className='mainbutton1'
              onClick={() => {
                 setShowall(!showall)
              }}
