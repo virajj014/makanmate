@@ -122,7 +122,7 @@ const Navbar = ({ pagename }) => {
         }
 
         console.log(tempdata)
-        fetch('http://154.26.130.251:134/B2CCustomerRegister/GetbyEmail?OrganizationId=1&EmailId=' + signupdata.EmailId)
+        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerRegister/GetbyEmail?OrganizationId=1&EmailId=' + signupdata.EmailId)
             .then((response) => response.json())
             .then((data) => {
                 // console.log(data.Data[0])
@@ -134,7 +134,7 @@ const Navbar = ({ pagename }) => {
                     // console.log("email does not exists")
 
 
-                    fetch('http://154.26.130.251:134/B2CCustomerRegister/Create',
+                    fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerRegister/Create',
                         {
                             method: 'POST',
                             headers: {
@@ -181,7 +181,7 @@ const Navbar = ({ pagename }) => {
     const [logindata, setlogindata] = React.useState({})
 
     const handleLogin = async () => {
-        fetch('http://154.26.130.251:134/B2CCustomerRegister/CustomerLogin',
+        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerRegister/CustomerLogin',
             {
                 method: 'POST',
                 headers: {

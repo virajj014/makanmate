@@ -10,7 +10,7 @@ const CategoriesSlider = () => {
     const [current, setCurrent] = useState('')
 
     const getbannerdata = () => {
-        fetch("http://154.26.130.251:134/CategoryR/GetAllActive?OrganizationId=1")
+        fetch(process.env.REACT_APP_BACKEND_URL+"/CategoryR/GetAllActive?OrganizationId=1")
             .then(res => res.json())
             .then(res => {
                 if (res.Code == 200) {

@@ -67,14 +67,14 @@ const SubmitForm = () => {
         // alert(user.B2CCustomerId)
         // console.log(temp)
 
-        fetch('http://154.26.130.251:134/B2CCustomerTestimonial/Getbycode?OrganizationId=1&CustomerId=' + user.B2CCustomerId)
+        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerTestimonial/Getbycode?OrganizationId=1&CustomerId=' + user.B2CCustomerId)
             .then(response => response.json())
             .then(data => {
                 if (data.Data[0].B2CCustomerId == user.B2CCustomerId) {
                     toast("You have already submitted a testimonial")
                 }
                 else {
-                    fetch('http://154.26.130.251:134/B2CCustomerTestimonial/Create',
+                    fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerTestimonial/Create',
                         {
                             method: 'POST',
                             headers: {

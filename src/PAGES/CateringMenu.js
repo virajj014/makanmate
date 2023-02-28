@@ -8,23 +8,18 @@ import logo from '../ASSETS/logo.png'
 import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
 
 const CateringMenu = () => {
-    // const [data, setdata] = React.useState([])
-    // const getdatafromapi = async () => {
-    //     fetch('http://154.26.130.251:134/CategoryR/GetAllActive?OrganizationId=1')
-    //         .then((response) => response.json())
-    //         .then((json) => setdata(json))
-    //         .catch((error) => console.error(error))
-    // }
+
     const { mycategoryid } = useParams();
     const [products, setproducts] = React.useState([])
     const [selectedCategory, setselectedCategory] = React.useState(mycategoryid)
     const getproducts = async (categoryname) => {
         let temp = [];
 
-        fetch('http://154.26.130.251:134/ProductRest/GetAllSearch?OrganizationId=1&Category=' + categoryname)
+        fetch(process.env.REACT_APP_BACKEND_URL + '/ProductRest/GetAllSearch?OrganizationId=1&Category=' + categoryname)
             .then((response) => response.json())
             .then((json) => {
                 // console.log(json)
+                console.log(process.env.REACT_APP_BACKEND_URL)
                 console.log(json?.Result)
                 if (json?.Result) {
                     temp = json?.Result
@@ -32,7 +27,10 @@ const CateringMenu = () => {
                 setproducts(temp)
 
             })
-            .catch((error) => console.error(error))
+            .catch((error) => console.error(error,
+                process.env.REACT_APP_BACKEND_URL
+
+            ))
 
     }
 
@@ -59,7 +57,7 @@ const CateringMenu = () => {
     }
 
 
-    const addtocart = (productdata,count) => {
+    const addtocart = (productdata, count) => {
         // add to local storage
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
@@ -408,16 +406,16 @@ const CateringMenu = () => {
                                             <div className='product'
                                                 key={product.ProductId}
 
-                                                // onClick={() => {
-                                                //     navigate(`/product/${product.ProductId}`)
-                                                // }}
+                                            // onClick={() => {
+                                            //     navigate(`/product/${product.ProductId}`)
+                                            // }}
                                             >
                                                 <div className='productimage'>
                                                     <img src={
-                                                        product.ProductImageURL?
-                                                        product.ProductImageURL
-                                                        :
-                                                        logo
+                                                        product.ProductImageURL ?
+                                                            product.ProductImageURL
+                                                            :
+                                                            logo
 
                                                     } alt='product' />
                                                 </div>
@@ -443,9 +441,9 @@ const CateringMenu = () => {
                                                                 }
                                                             }}
                                                         >-</button>
-                                                        <p className='count'>{
+                                                        <span className='count'>{
                                                             quantity
-                                                        }</p>
+                                                        }</span>
                                                         <button className='incr'
                                                             onClick={() => {
                                                                 setquantity(quantity + 1)
@@ -458,7 +456,7 @@ const CateringMenu = () => {
                                                         <button
                                                             onClick={() => {
                                                                 addtocart(product, quantity)
-                                                             }}
+                                                            }}
                                                         >Add to cart</button>
                                                         :
                                                         <button

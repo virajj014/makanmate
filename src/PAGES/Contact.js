@@ -38,7 +38,7 @@ const Contact = () => {
         // console.log(formData);
         // Add your own code here to submit the form data to your backend or server
 
-        fetch('http://154.26.130.251:134/B2CContactEnquiry/Create',
+        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CContactEnquiry/Create',
             {
                 method: 'POST',
                 headers: {

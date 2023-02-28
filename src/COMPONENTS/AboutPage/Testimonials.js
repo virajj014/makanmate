@@ -15,7 +15,7 @@ const Testimonials = () => {
     const [testimonials1, setTestimonials1] = useState([])
 
     const gettestimonials = async () => {
-        fetch('http://154.26.130.251:134/B2CCustomerTestimonial/GetAll?OrganizationId=1')
+        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerTestimonial/GetAll?OrganizationId=1')
             .then(response => response.json())
             .then(data => {
                 console.log(data.Data)

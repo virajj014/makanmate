@@ -17,7 +17,7 @@ const ProductPage = () => {
 
 
     const getproductdatabyid = async () => {
-        fetch(`http://154.26.130.251:134/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
+        fetch(process.env.REACT_APP_BACKEND_URL+`/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
             .then(res => res.json())
             .then(res => {
                 if (res.Code == 200) {

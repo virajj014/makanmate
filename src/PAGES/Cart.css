@@ -316,7 +316,7 @@
 /* PAYMENT CONTAINER */
 .paymentcont {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     font-family: Arial, sans-serif;
     width: 50%;
@@ -328,114 +328,58 @@
     padding: 20px;
 }
 
-.paymentcont .left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 50%;
-    padding: 10px 20px;
-
-}
-
-.paymentcont .left h2 {
-    font-size: 20px;
-    font-weight: 700;
+.paymentcont h2 {
+    font-size: 30px;
+    font-weight: 300;
     color: var(--col2);
     margin-bottom: 10px;
 }
 
-.paymentcont .left img {
-    width: 80%;
-    margin-left: 10px;
-}
-
-.paymentcont .paymenttypes {
+.paymenttypes {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     width: 100%;
 }
 
 .paymenttypes .c1 {
+    width: 30%;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    width: 60%;
-    margin-bottom: 10px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.paymentagreement {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.paymentagreement input {
-    margin-right: 10px;
-}
-
-.paymentagreement label a {
-    color: var(--col2);
-}
-
-.paymentcont .right {
-    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.383);
+    margin: 10px;
+    padding: 20px;
     flex-direction: column;
-    align-items: flex-start;
-    width: 50%;
-    padding: 10px 20px;
 }
-
-.paymentcont .right table {
-    width: 100%;
-    border-collapse: collapse;
+.paymenttypes .c1 img{
+    width: 100px;
+    height: 100px;
     margin-bottom: 10px;
+    object-fit: contain;
 }
-
-.paymentcont .right table tr {
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.paymentcont .right table tr td {
-    padding: 10px 0;
-}
-
-.paymentcont .right table tr {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--col3);
-}
-
-.paymentcont .right table tr:first-child {
-    font-weight: 700;
-    color: var(--col2);
-}
-
-.paymentcont .right table tr td:last-child {
-    text-align: right;
-    width: 20%;
-}
-
-.paymentcont .right .c1 {
+.paymentagreement{
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 10px;
-    font-weight: 700;
+    gap: 10px;
+    margin: 10px;
 }
 
-
+.paymentcont .c2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 40%;
+    margin: 10px;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--col3);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.383);
+    height: 100px;
+}
 /* //////////////////////////////////////////////////////////////////// */
 
 .confirmationcont {
@@ -575,12 +519,12 @@
 }
 
 
-.totaltableleft{
+.totaltableleft {
     font-size: 18px;
     font-weight: 400;
 }
 
-.totaltableright{
+.totaltableright {
     font-size: 21px;
     font-weight: 600;
     min-width: 100px;
