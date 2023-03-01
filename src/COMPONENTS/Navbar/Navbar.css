@@ -250,7 +250,7 @@
     color: var(--col1) !important;
 }
 
-#dropdown-basic{
+.nav #dropdown-basic{
     background-color: transparent;
     border: none;
     outline: none;

@@ -6,13 +6,18 @@ import Navbar from '../COMPONENTS/Navbar/Navbar'
 import './CateringMenu.css'
 import logo from '../ASSETS/logo.png'
 import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
+import Dropdown from 'react-bootstrap/Dropdown';
+import LoadingSpinner from '../LOADER/LoadingSpinner'
 
 const CateringMenu = () => {
 
     const { mycategoryid } = useParams();
     const [products, setproducts] = React.useState([])
     const [selectedCategory, setselectedCategory] = React.useState(mycategoryid)
+    const [loading, setloading] = React.useState(false)
     const getproducts = async (categoryname) => {
+        setsearch('')
+        setloading(true)
         let temp = [];
 
         fetch(process.env.REACT_APP_BACKEND_URL + '/ProductRest/GetAllSearch?OrganizationId=1&Category=' + categoryname)
@@ -25,18 +30,23 @@ const CateringMenu = () => {
                     temp = json?.Result
                 }
                 setproducts(temp)
-
+                setloading(false)
             })
-            .catch((error) => console.error(error,
-                process.env.REACT_APP_BACKEND_URL
-
-            ))
+            .catch((error) => {
+                console.error(error)
+                setloading(false)
+            })
 
     }
 
     React.useEffect(() => {
         console.log(mycategoryid)
-        getproducts(mycategoryid)
+        if (mycategoryid == 'All') {
+            getproducts('')
+        }
+        else {
+            getproducts(mycategoryid)
+        }
         window.scrollTo(0, 0)
     }, [])
 
@@ -93,6 +103,9 @@ const CateringMenu = () => {
         toast.success('Item added to cart')
     }
 
+
+    const [search, setsearch] = React.useState('');
+
     return (
         <div className='categorymenu'>
             <Navbar />
@@ -102,6 +115,15 @@ const CateringMenu = () => {
                 <div className='c2col1'>
                     <h2 className='head3'>Menu Categories</h2>
                     <div className='c12'>
+                        {
+                            selectedCategory == 'All' ?
+                                <p className='active'>All</p>
+                                :
+                                <p onClick={() => {
+                                    setselectedCategory('All')
+                                    getproducts('')
+                                }}>All</p>
+                        }
                         {
                             selectedCategory == 'Bento Set' ?
                                 <p className='active'>Bento Set</p>
@@ -381,20 +403,39 @@ const CateringMenu = () => {
                         {/* <h2 className='head2'>Products by category</h2> */}
                         <div className='c11'>
                             <div className='searchbar'>
-                                <input type='text' placeholder='Search' />
+                                <input type='text' placeholder='Search'
+                                    onChange={(e) => {
+                                        setsearch(e.target.value)
+                                    }}
+                                />
                                 {/* search icon */}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                 </svg>
                             </div>
                             <div className='selecttagout'>
-                                <select name="category" id="category">
+                                {/* <select name="category" id="category">
                                     <option value="popularity">Sort by popularity</option>
                                     <option value="rating">Sort by average rating</option>
                                     <option value="latest">Sort by latest</option>
                                     <option value="price">Sort by price: low to high</option>
                                     <option value="price-desc">Sort by price: high to low</option>
-                                </select>
+                                </select> */}
+
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                        Sort by popularity
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item href="#/action-1">Sort by popularity</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-2">Sort by average rating</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-3">Sort by latest</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-3">Sort by price: low to high</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-3">Sort by price: high to low</Dropdown.Item>
+                                    </Dropdown.Menu>
+
+                                </Dropdown>
                             </div>
                         </div>
                     </div>
@@ -402,90 +443,106 @@ const CateringMenu = () => {
                         products.length > 0 ?
                             <div className='products'>
                                 {
-                                    products.map((product) => {
-                                        console.log(product.ProductImageURL)
-                                        return (
-                                            <div className='product'
-                                                key={product.ProductId}
+                                    products
+                                        .filter((product) => {
+                                            if (search == '') {
+                                                return product
+                                            } else if (product.ProductName.toLowerCase().includes(search.toLowerCase())) {
+                                                return product
+                                            }
+                                        })
+                                        // if products are more than 0 then map through products else show no products found
 
-                                            // onClick={() => {
-                                            //     navigate(`/product/${product.ProductId}`)
-                                            // }}
-                                            >
-                                                <div className='productimage'>
-                                                    <img src={
-                                                        product.ProductImageURL ?
-                                                            product.ProductImageURL
-                                                            :
-                                                            logo
+                                        .map((product) => {
+                                            return (
+                                                <div className='product'
+                                                    key={product.ProductId}
 
-                                                    } alt='product' />
-                                                </div>
-                                                <div className='productinfo'>
-                                                    <h3>{product.ProductName}</h3>
-                                                    {/* <p>{product.description}</p> */}
-                                                    {
-                                                        product.SalesPrice > 0 ?
-                                                            <p>$ {
-                                                                //  add .00 if price is integer
-                                                                product.SalesPrice % 1 == 0 ?
-                                                                    product.SalesPrice + '.00'
-                                                                    :
-                                                                    product.SalesPrice
-                                                            }
-                                                                <span>${product.SalesPrice + (product.SalesPrice) * (0.2)}</span>
-                                                            </p>
-                                                            :
-                                                            <p>$ 0.00</p>
-                                                    }
-                                                </div>
+                                                // onClick={() => {
+                                                //     navigate(`/product/${product.ProductId}`)
+                                                // }}
+                                                >
+                                                    <div className='productimage'>
+                                                        <img src={
+                                                            product.ProductImageURL ?
+                                                                product.ProductImageURL
+                                                                :
+                                                                logo
 
-                                                {/* <Link to={`/product/${product.ProductId
+                                                        } alt='product' />
+                                                    </div>
+                                                    <div className='productinfo'>
+                                                        <h3>{product.ProductName}</h3>
+                                                        {/* <p>{product.description}</p> */}
+                                                        {
+                                                            product.SalesPrice > 0 ?
+                                                                <p>$ {
+                                                                    //  add .00 if price is integer
+                                                                    product.SalesPrice % 1 == 0 ?
+                                                                        product.SalesPrice + '.00'
+                                                                        :
+                                                                        product.SalesPrice
+                                                                }
+                                                                    <span>${product.SalesPrice + (product.SalesPrice) * (0.2)}</span>
+                                                                </p>
+                                                                :
+                                                                <p>$ 0.00</p>
+                                                        }
+                                                    </div>
+
+                                                    {/* <Link to={`/product/${product.ProductId
                                             }`}
                                             style={{ textDecoration: 'none', width: '100%', display: 'flex', justifyContent: 'center' }}
                                         > */}
-                                                {
-                                                    selecetedproduct == product.ProductId &&
-                                                    <div className='incrdecr'>
-                                                        <button className='decr'
-                                                            onClick={() => {
-                                                                if (quantity > 1) {
-                                                                    setquantity(quantity - 1)
-                                                                }
-                                                            }}
-                                                        >-</button>
-                                                        <span className='count'>{
-                                                            quantity
-                                                        }</span>
-                                                        <button className='incr'
-                                                            onClick={() => {
-                                                                setquantity(quantity + 1)
-                                                            }}
-                                                        >+</button>
-                                                    </div>
-                                                }
-                                                {
-                                                    selecetedproduct == product.ProductId ?
-                                                        <button
-                                                            onClick={() => {
-                                                                addtocart(product, quantity)
-                                                            }}
-                                                        >Add to cart</button>
-                                                        :
-                                                        <button
-                                                            onClick={() => {
-                                                                checkaddon(product)
-                                                            }}
-                                                        >Buy</button>
-                                                }
-                                            </div>
-                                        )
-                                    })
+                                                    {
+                                                        selecetedproduct == product.ProductId &&
+                                                        <div className='incrdecr'>
+                                                            <button className='decr'
+                                                                onClick={() => {
+                                                                    if (quantity > 1) {
+                                                                        setquantity(quantity - 1)
+                                                                    }
+                                                                }}
+                                                            >-</button>
+                                                            <span className='count'>{
+                                                                quantity
+                                                            }</span>
+                                                            <button className='incr'
+                                                                onClick={() => {
+                                                                    setquantity(quantity + 1)
+                                                                }}
+                                                            >+</button>
+                                                        </div>
+                                                    }
+                                                    {
+                                                        selecetedproduct == product.ProductId ?
+                                                            <button
+                                                                onClick={() => {
+                                                                    addtocart(product, quantity)
+                                                                }}
+                                                            >Add to cart</button>
+                                                            :
+                                                            <button
+                                                                onClick={() => {
+                                                                    checkaddon(product)
+                                                                }}
+                                                            >Buy</button>
+                                                    }
+                                                </div>
+                                            )
+                                        })
+
                                 }
                             </div>
                             :
                             <div className='products'>
-                                <h2>No products found</h2>
+                                {/* <h2>No products found</h2> */}
+                                {
+                                    loading ?
+                                        <LoadingSpinner />
+                                        :
+                                        <h2>No products found</h2>
+                                }
                             </div>
                     }
 
