@@ -86,7 +86,7 @@ const Cart = () => {
                         mainaddress
                     ]
                     setsavedaddresses(alladdress)
-                    console.log(alladdress)
+                    // console.log(alladdress)
 
                 }
                 else {
@@ -94,7 +94,7 @@ const Cart = () => {
                         mainaddress
                     ]
                     setsavedaddresses(alladdress)
-                    console.log(alladdress)
+                    // console.log(alladdress)
 
                 }
             })
@@ -120,7 +120,7 @@ const Cart = () => {
         checklogin()
     }, [])
     useEffect(() => {
-        window.scrollTo(0, 0)
+        // window.scrollTo('150vh', 50)
     }, [active])
 
 
@@ -174,6 +174,39 @@ const Cart = () => {
         // console.log(temp)
 
     }
+
+
+    const [deliverydate , setdeliverydate] = React.useState(
+        // 2 days from today
+        new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    )
+
+    const checkdeliverydate = () => {
+        // convert delivery date to date object
+        let deliverydateobj = new Date(deliverydate)
+
+        if(deliverydate === '' || deliverydateobj === 'Invalid Date'){
+            toast.error('Please Select Delivery Date')
+            return false
+        }
+        // get current date
+        let currentdate = new Date()
+        // get difference in days
+        let diff = deliverydateobj - currentdate
+        let days = diff / (1000 * 60 * 60 * 24)
+        // console.log(days)
+        if (days < 2) {
+            toast.error('Delivery Date Should be atleast 2 days from today')
+            return false
+        }
+        else {
+            return true
+        }
+    }
+
+
+
+    const placeorder = () => {}
     return (
         <div className='cart'>
             <Navbar pagename={'cart'} />
@@ -367,7 +400,7 @@ const Cart = () => {
                                         <td></td>
                                         <td></td>
                                         <td className='totaltableleft'>
-                                            Subtotal
+                                            Total
                                         </td>
                                         <td className='totaltableright'>
                                             $ {subtotal.toFixed(2)}
@@ -417,30 +450,35 @@ const Cart = () => {
             {
                 active == 2 &&
                 <div className='shippingcont'>
-                    <div className='previous'>
-                        <h2>Previous Address</h2>
-                        {/* <div className='radio'>
-                            <input type='radio' name='address' id='address1' />
-                            <p>My address 1</p>
-                        </div>
+                    <div className='selectdate'>
+                        <h2 className='mainhead1'>Select Delivery Date</h2>
+                        <input type='date' 
+                        //  min is 2 days from today
+                        min={new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 
-                        <div className='radio'>
-                            <input type='radio' name='address' id='address2' />
-                            <p>My address 2</p>
-                        </div> */}
+                        value={deliverydate}
+                        onChange={(e) => {
+                            console.log(e.target.value)
+                            setdeliverydate(e.target.value)
+                        }}
+                        />
+                    </div>
+                    <div className='previous'>
+                        <h2 className='mainhead1'>Previous Address</h2>
+                   
                         {
                             savedaddresses.length > 0 &&
                             savedaddresses.map((item, index) => {
                                 return (
                                     <div className='radio' key={index}>
                                         <input type='radio' name='address' id={'address' + index} />
-                                        <p>{item.AddressLine1 + ' ' + ' ' + item.AddressLine2 + ' ' + item.AddressLine3}</p>
+                                        <span>{item.AddressLine1 + ' ' + ' ' + item.AddressLine2 + ' ' + item.AddressLine3}</span>
                                     </div>
                                 )
                             })
                         }
                     </div>
-                    <h2>OR</h2>
+                    <h3>OR</h3>
                     <div className='shippingadd'>
                         <div className='postalcode'>
                             <input type='text' placeholder='Enter Postal Code'
@@ -533,20 +571,22 @@ const Cart = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
                 </svg>
-                <h2>Confirm Your Order</h2>
+                <h2>Your Order has been placed successfully</h2>
             </div>
 
 
             <div className='c2'>
                 <h2>Order Summary</h2>
-                <div>
+                {/* <div>
                     <p>Order Number</p>
                     <p>123456789</p>
-                </div>
+                </div> */}
 
                 <div>
                     <p>Order Date</p>
-                    <p>12/12/2020</p>
+                    <p>{
+                        new Date().toLocaleDateString()
+                        }</p>
                 </div>
 
                 <div>
@@ -699,9 +739,10 @@ const Cart = () => {
             <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
             <button className='nextbtn' onClick={() => {
                 let temp = checklogin()
-                if (temp) {
+                if (checkdeliverydate() && temp) {
                     setActive(active + 1)
                 }
+                
             }}>Next</button>
         </div>
 }

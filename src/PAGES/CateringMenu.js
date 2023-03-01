@@ -378,7 +378,7 @@ const CateringMenu = () => {
 
                 <div className='c2col2'>
                     <div className='c1'>
-                        <h2 className='head2'>Products by category</h2>
+                        {/* <h2 className='head2'>Products by category</h2> */}
                         <div className='c11'>
                             <div className='searchbar'>
                                 <input type='text' placeholder='Search' />
@@ -387,13 +387,15 @@ const CateringMenu = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                 </svg>
                             </div>
-                            <select name="category" id="category">
-                                <option value="popularity">Sort by popularity</option>
-                                <option value="rating">Sort by average rating</option>
-                                <option value="latest">Sort by latest</option>
-                                <option value="price">Sort by price: low to high</option>
-                                <option value="price-desc">Sort by price: high to low</option>
-                            </select>
+                            <div className='selecttagout'>
+                                <select name="category" id="category">
+                                    <option value="popularity">Sort by popularity</option>
+                                    <option value="rating">Sort by average rating</option>
+                                    <option value="latest">Sort by latest</option>
+                                    <option value="price">Sort by price: low to high</option>
+                                    <option value="price-desc">Sort by price: high to low</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     {
@@ -422,9 +424,20 @@ const CateringMenu = () => {
                                                 <div className='productinfo'>
                                                     <h3>{product.ProductName}</h3>
                                                     {/* <p>{product.description}</p> */}
-                                                    <p>$ {product.SalesPrice}
-                                                        <span>${product.SalesPrice + (product.SalesPrice) * (0.2)}</span>
-                                                    </p>
+                                                    {
+                                                        product.SalesPrice > 0 ?
+                                                            <p>$ {
+                                                                //  add .00 if price is integer
+                                                                product.SalesPrice % 1 == 0 ?
+                                                                    product.SalesPrice + '.00'
+                                                                    :
+                                                                    product.SalesPrice
+                                                            }
+                                                                <span>${product.SalesPrice + (product.SalesPrice) * (0.2)}</span>
+                                                            </p>
+                                                            :
+                                                            <p>$ 0.00</p>
+                                                    }
                                                 </div>
 
                                                 {/* <Link to={`/product/${product.ProductId

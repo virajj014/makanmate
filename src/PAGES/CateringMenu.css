@@ -47,18 +47,24 @@
   outline: none;
   font-weight: 700;
 }
-
-.categorymenu .c2 select {
-  width: 250px;
-  font-size: 1em;
-  padding: 0.5em;
+.categorymenu .selecttagout{
+  padding: 10px;
   border: 1px solid lightgray;
-  border-radius: 25px;
   background-color: white;
+  border-radius: 25px;
+
+}
+.categorymenu .c2 select {
+  font-size: 1em;
   outline: none;
+  border: none;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-
+/* change option hover color to orange background and text white */
+.categorymenu .c2 select option::selection {
+  background-color: var(--col2);
+  color: white;
+}
 
 
 .categorymenu .c2 .header {
