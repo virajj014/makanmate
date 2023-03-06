@@ -2,6 +2,7 @@
   "name": "makanmate",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://agitated-elbakyan.154-26-130-251.plesk.page/",
   "dependencies": {
     "@mui/material": "^5.11.8",
     "@mui/styled-engine-sc": "^5.11.0",

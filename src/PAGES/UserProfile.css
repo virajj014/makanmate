@@ -1,0 +1,19 @@
+.userprofile {
+    display: flex;
+    flex-direction: column;
+}
+
+.userprofilein {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20vh;
+
+}
+
+.userprofile .left {
+    width: 25%;
+    border: 2px solid gray;
+    margin: 20px;
+    border-radius: 20px;
+}

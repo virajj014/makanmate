@@ -122,7 +122,7 @@ const Navbar = ({ pagename }) => {
         }
 
         console.log(tempdata)
-        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerRegister/GetbyEmail?OrganizationId=1&EmailId=' + signupdata.EmailId)
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerRegister/GetbyEmail?OrganizationId=1&EmailId=' + signupdata.EmailId)
             .then((response) => response.json())
             .then((data) => {
                 // console.log(data.Data[0])
@@ -134,7 +134,7 @@ const Navbar = ({ pagename }) => {
                     // console.log("email does not exists")
 
 
-                    fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerRegister/Create',
+                    fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerRegister/Create',
                         {
                             method: 'POST',
                             headers: {
@@ -181,7 +181,7 @@ const Navbar = ({ pagename }) => {
     const [logindata, setlogindata] = React.useState({})
 
     const handleLogin = async () => {
-        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerRegister/CustomerLogin',
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerRegister/CustomerLogin',
             {
                 method: 'POST',
                 headers: {
@@ -285,7 +285,7 @@ const Navbar = ({ pagename }) => {
                     }>
                         <li>
                             <button
-                            className='orderbtn'
+                                className='orderbtn'
                             >
                                 ORDER NOW
                             </button>
@@ -325,13 +325,35 @@ const Navbar = ({ pagename }) => {
                     <li>
                         {
                             isloggedin ?
-                                <svg
-                                    onClick={() =>
-                                        handleLogout()
-                                    }
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
+                                // <svg
+                                //     onClick={() =>
+                                //         handleLogout()
+                                //     }
+                                //     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                //     <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                // </svg>
+                                <Dropdown >
+                                    <Dropdown.Toggle variant="" id="dropdown-basic"
+                                    // drop icon color
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        {/* fresh vegetables */}
+                                        <Dropdown.Item href="/user">Profile</Dropdown.Item>
+                                        <Dropdown.Item 
+                                        onClick={() =>
+                                            handleLogout()
+                                        }
+                                        >
+                                           Logout
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
                                 :
                                 <svg
                                     onClick={() => setshowlogin(true)}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import logo from '../../ASSETS/logo.png'
+import logo from '../../ASSETS/logo1.png'
 import './MakanMart.css'
 
 const MakanMart = () => {

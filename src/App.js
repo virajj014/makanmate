@@ -8,12 +8,15 @@ import ProductPage from './PAGES/ProductPage';
 import Cart from './PAGES/Cart';
 import Contact from './PAGES/Contact';
 import Event from './PAGES/Event';
+import UserProfile from './PAGES/UserProfile';
 // import Login from './PAGES/Auth/Login';
 // import Signup from './PAGES/Auth/Signup';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+     basename='/'
+    >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About/>} />
@@ -24,6 +27,7 @@ function App() {
         <Route path="/event" element={
           <Event/>
         } />
+        <Route path="/user" element={<UserProfile/>} />
         {/* <Route path="/login" element={<Login/>} /> */}
         {/* <Route path="/signup" element={<Signup/>} /> */}
         <Route path="*" element={<div>404</div>} />

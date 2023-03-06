@@ -106,6 +106,27 @@ const CateringMenu = () => {
 
     const [search, setsearch] = React.useState('');
 
+
+    const [sortproductsby , setsortproductsby] = React.useState('Latest')
+    // const sortproducts = () => {
+    //     if(sortproductsby == 'Price: Low to High'){
+    //         setproducts(products.sort((a, b) => (a.Price > b.Price) ? 1 : -1))
+    //     }
+    //     else if(sortproductsby == 'Price: High to Low'){
+    //         setproducts(products.sort((a, b) => (a.Price < b.Price) ? 1 : -1))
+    //     }
+    //     else if(sortproductsby == 'Latest'){
+    //         setproducts(products.sort((a, b) => (a.ChangedOn < b.ChangedOn) ? 1 : -1))
+    //     }
+    //     else if(sortproductsby == 'Name: Z to A'){
+    //         setproducts(products.sort((a, b) => (a.Name < b.Name) ? 1 : -1))
+    //     }
+    // }
+
+    // React.useEffect(() => {
+    //     sortproducts()
+    // }, [sortproductsby])
+
     return (
         <div className='categorymenu'>
             <Navbar />
@@ -424,15 +445,31 @@ const CateringMenu = () => {
 
                                 <Dropdown>
                                     <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                        Sort by popularity
+                                        Sort by {sortproductsby}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">Sort by popularity</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">Sort by average rating</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Sort by latest</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Sort by price: low to high</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Sort by price: high to low</Dropdown.Item>
+                                        {/* <Dropdown.Item 
+                                            onClick={() => {
+                                                console.log(products)
+                                            }}
+                                        >Sort by popularity</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-2">Sort by average rating</Dropdown.Item> */}
+                                        <Dropdown.Item href="#/action-3"
+                                            onClick={() => {
+                                                setsortproductsby('Latest')
+                                            }}
+                                        >Sort by latest</Dropdown.Item>
+                                        <Dropdown.Item 
+                                            onClick={() => {
+                                                setsortproductsby('Price Low to High')
+                                            }}
+                                        >Sort by price: low to high</Dropdown.Item>
+                                        <Dropdown.Item 
+                                            onClick={() => {
+                                                setsortproductsby('Price High to Low')
+                                            }}
+                                        >Sort by price: high to low</Dropdown.Item>
                                     </Dropdown.Menu>
 
                                 </Dropdown>
@@ -449,6 +486,18 @@ const CateringMenu = () => {
                                                 return product
                                             } else if (product.ProductName.toLowerCase().includes(search.toLowerCase())) {
                                                 return product
+                                            }
+                                        })
+                                        .sort((a, b) => {
+                                            if (sortproductsby == 'Latest') {
+                                                return new Date(b.ChangedOn) - new Date(a.ChangedOn)
+                                            }
+
+                                            else if (sortproductsby == 'Price Low to High') {
+                                                return a.SalesPrice - b.SalesPrice
+                                            }
+                                            else if (sortproductsby == 'Price High to Low') {
+                                                return b.SalesPrice - a.SalesPrice
                                             }
                                         })
                                         // if products are more than 0 then map through products else show no products found

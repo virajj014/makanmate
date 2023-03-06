@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
@@ -11,6 +11,15 @@ const Cart = () => {
     const [subtotal, setsubtotal] = React.useState(0)
     const [shipping, setshipping] = React.useState(0)
     const [tax, settax] = React.useState(0)
+    const [paymentmethod, setpaymentmethod] = React.useState(null)
+    const [selectedaddress, setselectedaddress] = React.useState(null)
+    const [tncagreed, settncagreed] = React.useState(false)
+    const [ordersuccessful, setordersuccessful] = React.useState(null)
+
+    const [deliverydate, setdeliverydate] = React.useState(
+        // 2 days from today
+        new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    )
     const getcartitemsfromlocalstorage = () => {
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
@@ -76,7 +85,7 @@ const Cart = () => {
             EmailId: userdata.EmailId,
         }
         let otheraddress = [];
-        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerDeliveryAddress/GetAll?OrganizationId=1&CustomerId=' + userdata.B2CCustomerId)
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerDeliveryAddress/GetAll?OrganizationId=1&CustomerId=' + userdata.B2CCustomerId)
             .then(res => res.json())
             .then(data => {
                 if (data.Data !== null) {
@@ -141,7 +150,7 @@ const Cart = () => {
             "AddressLine2": newaddress.AddressLine2,
             "AddressLine3": newaddress.AddressLine3,
             "CountryId": "string",
-            "PostalCode": "string",
+            "PostalCode": postalcode,
             "Mobile": user.MobileNo,
             "Phone": "string",
             "Fax": "string",
@@ -153,7 +162,7 @@ const Cart = () => {
             "ChangedOn": new Date(),
         }
 
-        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerDeliveryAddress/Create', {
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerDeliveryAddress/Create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -174,29 +183,50 @@ const Cart = () => {
         // console.log(temp)
 
     }
-
-
-    const [deliverydate , setdeliverydate] = React.useState(
-        // 2 days from today
-        new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-    )
-
+    const checkaddress = () => {
+        // selectedaddress
+        console.log(selectedaddress)
+        if (selectedaddress === null) {
+            toast.error('Please Select Address')
+            return false
+        }
+        else {
+            return true
+        }
+    }
     const checkdeliverydate = () => {
         // convert delivery date to date object
         let deliverydateobj = new Date(deliverydate)
 
-        if(deliverydate === '' || deliverydateobj === 'Invalid Date'){
+        if (deliverydate === '' || deliverydateobj === 'Invalid Date') {
             toast.error('Please Select Delivery Date')
             return false
         }
         // get current date
         let currentdate = new Date()
         // get difference in days
-        let diff = deliverydateobj - currentdate
-        let days = diff / (1000 * 60 * 60 * 24)
-        // console.log(days)
-        if (days < 2) {
+        let diff = deliverydateobj.getDate() - currentdate.getDate()
+
+        if (diff < 2) {
             toast.error('Delivery Date Should be atleast 2 days from today')
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    const checkpaymentmethod = () => {
+        if (paymentmethod == null) {
+            toast.error('Please Select Payment Method')
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    const checktnc = () => {
+        if (tncagreed == false || tncagreed == null) {
+            toast.error('Please Accept Terms and Conditions')
             return false
         }
         else {
@@ -205,8 +235,149 @@ const Cart = () => {
     }
 
 
+    const converttofloat = (value) => { 
+        // console.log(parseFloat(value) + 0.001)
+        value = value.toFixed(2)
+        // console.log(value , parseFloat(value) + 0.001)
+        // check if value has decimal
+        if (!value.includes('.00')) {
+            console.log(value , parseFloat(value))
+            return parseFloat(value)
+        }
+        else {
+            console.log(value , parseFloat(value) + 0.001)
+            return parseFloat(value) + 0.001
+        }
+    }
 
-    const placeorder = () => {}
+
+    const placeorder = async () => {
+        let orderdetail = [];
+        await cartdata.map((item, index) => {
+            let temp = {
+                "OrgId": 1,
+                "OrderNo": "",
+                "SlNo": index + 1,
+                "ProductId": item.productdata.ProductId,
+                "ProductCode": item.productdata.ProductId,
+                "ProductName": item.productdata.ProductName,
+                "Qty": item.quantity,
+                "Price": converttofloat(item.productdata.SalesPrice),
+                "Foc": 0,
+                "Total": converttofloat(item.productdata.SalesPrice) * item.quantity,
+                "ItemDiscount": 0,
+                "ItemDiscountPerc": 0,
+                "SubTotal": converttofloat(item.productdata.SalesPrice) * item.quantity,
+                "Tax": converttofloat((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity)),
+                "NetTotal": converttofloat(
+                    ((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity)) 
+                    +(item.productdata.SalesPrice) * item.quantity),
+                "TaxCode": 1,
+                "TaxType": "e",
+                "TaxPerc": item.productdata.TaxPerc,
+                "Remarks": "",
+                "CreatedBy": "admin",
+                "ChangedBy": "admin",
+                "Weight": 0
+            }
+            orderdetail.push(temp)
+        })
+
+        let orderobj = {
+            "OrgId": 1,
+            "BrachCode": cartdata[0].productdata.BranchCode ? cartdata[0].productdata.BranchCode : 'MT',
+            "OrderNo": "",
+            "OrderDate": "2023-03-12",
+            "CustomerId": user.B2CCustomerId,
+            "CustomerName": user.B2CCustomerName,
+            "CustomerAddress": `${selectedaddress.AddressLine1} ${selectedaddress.AddressLine2} ${selectedaddress.AddressLine3}`,
+            "PostalCode": selectedaddress.PostalCode,
+            "TaxCode": 1,
+            "TaxType": "e",
+            "TaxPerc": 0,
+            "CurrencyCode": "GD",
+            "CurrencyRate": 1,
+            "Total": subtotal * 1.00,
+            "BillDiscount": 0,
+            "BillDiscountPerc": 0,
+            "SubTotal": subtotal * 1.00,
+            "Tax": tax,
+            "NetTotal": parseFloat((subtotal + tax + shipping).toFixed(2)) * 1.00,
+            "PaymentType": paymentmethod,
+            "PaidAmount": 0,
+            "Remarks": "string",
+            "IsActive": true,
+            "CreatedBy": "admin",
+            "ChangedBy": "admin",
+            "Status": 0,
+            "CustomerShipToId": user.B2CCustomerId,
+            "CustomerShipToAddress": `${selectedaddress.AddressLine1} ${selectedaddress.AddressLine2} ${selectedaddress.AddressLine3}`,
+            "Latitude": 0,
+            "Longitude": 0,
+            "Signatureimage": "",
+            "Cameraimage": "",
+            "OrderDateString": "",
+            "CreatedFrom": "W",
+            "RatingValue": 0,
+            "CustomerFeedback": "",
+            "OrderDetail": orderdetail
+        }
+
+        // console.log(orderobj)
+
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderobj)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('orderobj ', orderobj)
+                console.log(data)
+                if (data.Status === true && data.Data) {
+                    //  setordersuccessful({})
+                    toast.success('Order Placed Successfully')
+                    getsuccessfulorder(data.Data)
+                }
+                else {
+                    toast.error('Error in Placing Order')
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            })
+
+
+        // console.log(orderdetail)
+    }
+
+const [ordersuccessitems, setordersuccessitems] = useState([])
+    const getsuccessfulorder = (ordrid) => {
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Getbycode?OrganizationId=1&OrderNo=' + ordrid, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.Status === true && data.Data) {
+                    setordersuccessful(data.Data[0])
+                    // console.log(data.Data[0].OrderDetail)
+                    setordersuccessitems(data.Data[0].OrderDetail)
+                    setActive(4)
+                }
+                else {
+                    toast.error('Error in getting order details')
+                }
+            })
+            .catch((error) => {
+                toast.error('Error in getting order details')
+            })
+    }
     return (
         <div className='cart'>
             <Navbar pagename={'cart'} />
@@ -269,7 +440,14 @@ const Cart = () => {
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => checklogin() && setActive(3)}
+                            onClick={() => {
+
+                                let temp = checklogin()
+                                if (checkdeliverydate() && temp && checkaddress()) {
+                                    setActive(3)
+                                }
+                            }
+                            }
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
@@ -291,7 +469,11 @@ const Cart = () => {
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => checklogin() && setActive(4)}
+                            onClick={() => {
+                                if (checklogin() && checkpaymentmethod() && checktnc()) {
+                                    setActive(4)
+                                }
+                            }}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
@@ -416,7 +598,16 @@ const Cart = () => {
                                             $ {shipping.toFixed(2)}
                                         </td>
                                     </tr>
-
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td className='totaltableleft'>
+                                            Subtotal
+                                        </td>
+                                        <td className='totaltableright'>
+                                            $ {(shipping + subtotal).toFixed(2)}
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td></td>
                                         <td></td>
@@ -452,26 +643,30 @@ const Cart = () => {
                 <div className='shippingcont'>
                     <div className='selectdate'>
                         <h2 className='mainhead1'>Select Delivery Date</h2>
-                        <input type='date' 
-                        //  min is 2 days from today
-                        min={new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                        <input type='date'
+                            //  min is 2 days from today
+                            min={new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
 
-                        value={deliverydate}
-                        onChange={(e) => {
-                            console.log(e.target.value)
-                            setdeliverydate(e.target.value)
-                        }}
+                            value={deliverydate}
+                            onChange={(e) => {
+                                console.log(e.target.value)
+                                setdeliverydate(e.target.value)
+                            }}
                         />
                     </div>
                     <div className='previous'>
                         <h2 className='mainhead1'>Previous Address</h2>
-                   
+
                         {
                             savedaddresses.length > 0 &&
                             savedaddresses.map((item, index) => {
                                 return (
                                     <div className='radio' key={index}>
-                                        <input type='radio' name='address' id={'address' + index} />
+                                        <input type='radio' name='address' id={'address' + index}
+                                            onChange={() => {
+                                                setselectedaddress(item)
+                                            }}
+                                        />
                                         <span>{item.AddressLine1 + ' ' + ' ' + item.AddressLine2 + ' ' + item.AddressLine3}</span>
                                     </div>
                                 )
@@ -538,20 +733,41 @@ const Cart = () => {
 
                     <div className='paymenttypes'>
                         <div className='c1'>
-                            <input type='radio' name='payment' id='payment1' />
+                            <input type='radio' name='payment' id='payment1'
+                                onChange={() => {
+                                    setpaymentmethod('paypal')
+                                }}
+                            />
                             <img src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' alt='paypal' />
                         </div>
 
                         <div className='c1'>
-                            <input type='radio' name='payment' id='payment2' />
+                            <input type='radio' name='payment' id='payment2'
+                                onChange={() => {
+                                    setpaymentmethod('razorpay')
+                                }}
+                            />
 
                             {/* razor pay */}
                             <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY0AAAB/CAMAAAAkVG5FAAAAw1BMVEX///8HJlQzlf8AIFEAAEI+Tm8ADUkAIlIAAEUAAEYAJFMAAEMAGE0AHU8AAEAAHlAACUghOGAAFkwAE0vs7vHW2d67wMoAF0wACEj4+frk5up2f5SwtcEpkv99hJhYZH/Dx9BPXHlGVXQSjP+KkqOjqbZibYY5mP8PK1iYn64yRGifpbPMz9dZpf+ZxP90sf/R5P/H3v8AADkqPWNtd47q8//b6v9Inv+00/+u0P+CuP+hyf9hqP8cMlzo8v+Nvv8AAC8CAnkoAAAOZUlEQVR4nO1caXuiyBaGgOzgAtqCu6Ktxp5etCe9OT3//1ddljqnFiBzk/CM9yb1fhOLoqizv6dUUSQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQk3iQ+33oBEoivD3/cegkSgJ+bzZ+3XoNEiT8fZnezWy9CosTvTSaMj7dehUSOT+9nd3d3s2+3XodEhh+buxybv269EAnl892sEMbd+1uvRCL+WBpG5qh+3Hotbx7fZsQwMmnI2u+2+PoLDCMPG/Gtl/O28X0zo8K4e7j1ct40/vrAGEbmqCQtckP85Awjc1Sfbr2it4ucCOHB0CKR1q/ifFxM7k+3W/Erxu/NnSiMX/TbkW3WwfdCy7okt1v160RJhAjS+E6/v3hqI7xgfruFv0b8qBhGHjYYNt13mqWhquPF7Zb+6vCZ1nt3jIkwYSNxHxOGqtrp7Vb/yvCdGsZs85MW4gybvjUel4YTyDqxJfxCAWx+xZ+oNBg2feGTbdc8BOe8jO3t1v+6gBxhvv+/qWi+0iFgGtpqDpgs9vqARvLL7db/qvCJSGPzMfc279FrMbTIySKbbg3ZO6MUrqva+l9e9WvFH7PSMAq+9ivGkNlvOuQQgkMS7p2COLTOv7ji14yHwjBIJ+NbLZve0co993fizVen6RuJ5yC3htn7nJEaZmnqRxo2aJYUB42xetEtvxnIFLcVfJvNNoVTSv8eKQo1jQ90yHJMpKFXOJA1sZreiL0aj9LdurOYj8ThT0W0PEwW6876ko6ifxg63E4Wi8m0LtNe5qtZzadNU0TT+aLT2aX/A5Tbj81DXnOf9oYbK3/SsPGTDpmT3MlRK3dDVRgwb3pa6OOBr2n+wLIO2ef4i1HiS5kDnOBzBWMuLsX3R90KvWymbKqe3hFku7DKm/Q8nZv2dcPzfe/vXF/SgHyTu89kYtuhp2ldLxtZJ4/pUTey5Xaz5e7zRyzJ8noB88HQReOPyON7X9qk6TbFtl8CMw/EtPZjaZGrSdLYiXgzWI12xEtJR4fiJE/CsklHZJBJ9hpzggrYB0QT3dDYLzWrw22mQULWeKQM+1a5RPOcf3Mk99nZ5s4DhmHz7Ir6L/cWfYqTM26ge35O90Q63CoGxg55S336xA1/DF/zXR952QrCA1sIsmw6rKhX8TwQ3nu4pDTgtlANV8qE7Id/4W+qgnnAQfcq1JhvMwn2ENI5XZkGRF3K8BWDwdpKovKSdwIuRVeUnW5yAzJj7pMrZZC0yRfmkb8x7ZEntp2+xAs9f3HrRAtBjhaZQu2ni4Z+IFrveHBlZakC3GWfbKtRigxzgirQ30XHXh1NaY7pCsDCtNU0wLHWUqEG618S1xRn6LLrj/bvhO8dF6XsFh4IVIe+YoEheQmHm68FTO1Cdx2LFoICm05sUlQPJQWjsYhpxGfx7bK7QNdAmJgTVIee4V3tbv0If4UPx23qMOqv59/MiS16h4EojEwlDnT9ybhqpQ4s19GKMWDYqsXlBw4ZFbQb+aM10YXcTf5BwwZzyDAkqjc4cDdOz2AzHhTiR+qjtYFhDIqXhR0xr+WgeWOrJCSRcqijsufTGEwc0sHTUAtjjKhbCAvCnONkXzl+aITMBIyORyEKqxhVuka4RmIY8qUcDbEjscVoN7G/x5Cbu8kHSqfTIWi62mI+IbisHBpjTY+ozQ611NPX6Xabnlm/5ZGelBHoLOhOaXaZnSQoDF/vpNPR9mKjDmOc5y3M9IrdDLfF7VROjhFe7rfby5g+he7qFWZ1Qntx2G7nGhtkSAxDUmi8pFsyJZFJOystIjmOUbMyN8nQIswhw3tcIyVw/S71AaZFUrwtLNxxIZWcMuIYkxAds6B+UPX35KY9zG2vyMzRETwXJtlzyliqnnue32/vJ2qR304p+69BuRqv0CCxggX9Vh09Jeo0Z0RM/CqmMEzlG1lwY5vJLZv/5OHocy0tsmrw4bCJA9gyVGmdpkb3dGvqWyArkHXYAQuDXdKpZ4wNcZY+VQcdG/PL4n60A/9MH3nFtIuY6Ai22ezSPd2h0DCGDchbvaNOCTJoq8U2wvDKtpBySvxHLZtuP9aEdSzYRGUFu6AvmafgM2p5xagPW29DprjE1IANUxhsiCFG1B3ZS35OzIy1PnMVLQa4f5+IxxwwmWKCtoxUT5WjS8lUXov950nAJRx5+lnPpttqI0yD2u8J9mfMBXvU1JC7TF7eA7ujpS4osc+966gH0ijdPm6uowsVBIY51WITcuwlk6rngGk7dz+KssiVc4AeYEZ5guTWaK3fudSEgjhzk3/VsunpQG2Ccb2n44Cx0vg8mCp1NRdcQunlBFg9jojwHW4vqU4Q28BoY4mlMIY54567DjkYyQMgYA748y40HYcrmFTZ5ecYep6cC3gJ4p0uuB8zs+rv1FExhwyPmKFqJdCkfFbbh2AaLr/rKI1xZRVb2CCTkdTZrN0lSlyWQsJmZMX/QZgzNf46PKy0UZq48goOlSrtnqEekCcvyAuFFZromZiOKyl//vIMm07HooM2z+sCHdXFpPhI9Rd2XTAN7Kj7FSc7h5l9k4ZRFKqQrsDuOWE5DNyRGDQUBSYQPCPNjQpjahC6MqjcjTeWPhISR6ieXopoZVXjcu4maUbFHjIcc4vJkWBd4dElQYkotkDMhuvKAiJBeGTUE/yiKFQQdlnfoTsiwmGAqhxE9dcLV4c1ictHnQiiC1PrwY1FwZG45H1Ewuu5CJjKFNHIpiMzYDNTQIygOR4WSQKXhZrl8roeH0EL+ZNxEMPFmN/nr4M7qh6OAHGaQmGG4cRmPzl7fhQkC6yU4WXDPA71IbmtyUmeg1OF11NL91vPpu+h1cpuGmY06F6BwzPZrJIZ6fBePHEwHeZcheAWmq7HNk9EMoAwJzYjUX477pPgqJBuZphZMMvcqc3J6/htHcqozZFylftQx6YnNaUom0VCbMbXE2IbhA1eiU8WpAIB78CoX+SDK4YNp7xfiKwUTex/bNFuSAarQZphzXV4dqaPS0hux//UifxvcazymoXKxY+z6ZynQfeK2wFpX8inlULshEmBAjcxqydAExO6jGfwFqXGN7mjal0CoHlqLmYsPoTu0wj9LfO2IPrsYdDg0l/cYiagRSyLMUeLMIcMoXgT6H2chLx0XLvrDJvEKjES8b4v8jwTsdQqsYRdIqEZhPOuQqFOhJodAMlEabs4nzAKKA+u5Yw7tgdDH7R2lG9U113Ig8LvR9l0IVxCNAGHgIwCnzqhn2PDyQ7czLtzpZjd1bdSIB8lq6BRZClOYILl8/uMlXdQXJ7W0uSU4+T9LaVayOKqxwOei0ldd4Fn05mf7GOAEHQekyrimXAcHxZB1xgljrE5ZKyUCiiPwl4FYsghFobuSBfFSdl0Lm5gXkqiM/otgx0VjZ26m5W1QJu2ldwqjFaz4Nn0ukOGQrjEH9eQ3Ufb4DzaAtkXVOJoD/vt1tWyNJ9mHPpUZMDg6dXjpvQsPZsDRsAQgjjRNrqMRsTY71Bd7m2F9liLHaakLmzkbHr9IUOwATFxxcSMvDTGDXWAmxytKRXmEiUeYu/T4sM9AVYFTHzGMNMF9+U0FCUsm666qN8nbMiCOJeUWUSbH6poAoKf5H8uIdalL8G07ocYuZv8UXvIEDZCzN5xGhCTg5masSoMeZi61MBBiUd4nsBLkyGPcktwm/zrKF9HNEXe3+kRjU0aipIMLBWqp3mMiJcr2koEUotJZfR5Meq0o0cdxLflWWyrreRW4ZSHIg8KtAfLsOnLujZk8QXkAg4p0S90Xt/qXa+G9Y5xiUSJh1/oNc/ioJOi2EepmmNrf+26Blyg1Dn1+uLbDbnK9p3rX1WLNmHNAeoZ00z3XO+6t23WGwl5L5eGVjjjl6D2N0qZN2VoEeYn++iQxL4dfW3iYpfcPjjly+I+ECVuPtaG6nhgF2g6dNNM2odAIrJylAkf0IV1MCph2jTNStmVOKVhO9gm14VpmXdrs8MkKA9B3muvZ9Mhr6/w1niADL1Fv1pU2mgwpGJ/pKeL6rivP/rmMe3ShjxPoWGuu6vOoo0Zv1ZTdWl7uKkrJnuYQdIDGa2gVjtzvXz8kGE1XOI84MOGgZCsafop5VmfuIY7JnBseMvEqhGHqS/oLpzqCubyAViDjlLRCRhnzt9vRXF4ZtSB5EBMMGhS1e7xqXWd5jWz6Q00g8KYApZ7U04czvic4I87yJhHerqMOiaquJGafV0yj04b+Fe+ZD9zdJwXiGnpnBNHLu64gWVncpaw1R/Gx4FWgywofNrMAOwhw7Ac0K327RYDcrOBCzxpPa3cfse3vEwACTytLICzIq7u6QXGrDqmroG/8HR8IxAOpx+98p5q8y0lJx2LRG+BnQMtDHbVozZbN8RDne55mZNU5G09cSgyBP3KLC/B6dypQeZHvn8APDC0CI6oFmrpkXx1ZNRl2rEs27Z0b1fs3wjGkPx2VffwEmdOHePpwtOzmbKptMW9sJFxH568FBd15tj0087IJrHc8fq+NimND2e9WO5+fmJf6SgaAJ4TC/7P/sIjTk6nYSsJeTTMZho+KWZW6atkeBo+toNx/pB/egYlfGsLVol6YGfLajPxwXZfax2mtwGgr7qt/j53DkmD3WIR/gYAzHfdObpnA9p97XWY3gaSmvMeL0YM7b72OkxvA8301QuwhuS2UtxIPIpm+ur5OODprBbt7U0ANq7FvwOCX/epPfnnBE8D0lduezUa/K6n3SztLQDoK9NpbcoLcF2uTG6fCDgRUf2LgecC+/Fumx2mNwHsuFT/YuCZiPAcjPwPzadi9KVX4ktbXqXvlhPaofzPxqdiOAK0NGEyhQn/z5hbCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCYln4T/KHg6z4t0jQwAAAABJRU5ErkJggg==' alt='razorpay' />
                         </div>
+
+                        <div className='c1'>
+                            <input type='radio' name='payment' id='payment2'
+                                onClick={() => setpaymentmethod('paypal')}
+                            />
+
+                            {/* razor pay */}
+                            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTNWCF8wJc5uTF53dvaZ1m5vi89PoixSBPAA&usqp=CAU' alt='razorpay' />
+                        </div>
                     </div>
 
                     <div className='paymentagreement'>
-                        <input type='checkbox' name='agreement' id='agreement' />
+                        <input type='checkbox' name='agreement' id='agreement'
+                            onChange={() => {
+                                settncagreed(!tncagreed)
+                            }}
+                        />
                         <label htmlFor='agreement'>I agree to the <a>terms and conditions</a></label>
                     </div>
 
@@ -563,216 +779,216 @@ const Cart = () => {
 
                 </div>
             }
-{
-    active == 4 &&
-        <div className='confirmationcont'>
-            <div className='c1'>
-                {/* tick */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                </svg>
-                <h2>Your Order has been placed successfully</h2>
-            </div>
+            {
+                active == 4 &&
+                <div className='confirmationcont'>
+                    <div className='c1'>
+                        {/* tick */}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                        </svg>
+                        <h2>Your Order has been placed successfully</h2>
+                    </div>
 
 
-            <div className='c2'>
-                <h2>Order Summary</h2>
-                {/* <div>
-                    <p>Order Number</p>
-                    <p>123456789</p>
-                </div> */}
+                    <div className='c2'>
+                        <h2>Order Summary</h2>
+                        <div>
+                            <p>Order Number</p>
+                            <p>{ordersuccessful.OrderNo}</p>
+                        </div>
 
-                <div>
-                    <p>Order Date</p>
-                    <p>{
-                        new Date().toLocaleDateString()
-                        }</p>
-                </div>
+                        <div>
+                            <p>Order Date</p>
+                            <p>{
+                                new Date().toLocaleDateString()
+                            }</p>
+                        </div>
 
-                <div>
-                    <p>Name</p>
-                    <p>John Doe</p>
-                </div>
+                        <div>
+                            <p>Name</p>
+                            <p>{ordersuccessful.CustomerName
+                            }</p>
+                        </div>
 
-                <div>
-                    <p>Email</p>
-                    <p>xyz@gmail.com</p>
-                </div>
+                        <div>
+                            <p>Email</p>
+                            <p>
+                                {
+                                    user.EmailId
+                                }
+                            </p>
+                        </div>
 
-                <div>
-                    <p>Order Subtotal</p>
-                    <p>$ 50.00</p>
-                </div>
+                        <div>
+                            <p>Order Subtotal</p>
+                            <p>$ {ordersuccessful.SubTotal}</p>
+                        </div>
 
-                <div>
-                    <p>Payment Method</p>
-                    <p>Credit Card</p>
-                </div>
+                        <div>
+                            <p>Payment Method</p>
+                            <p>{ordersuccessful.PaymentType}</p>
+                        </div>
 
-                <div>
-                    <p>Shipping Address</p>
-                    <p>1234 Main Street, New York, NY 10001</p>
-                </div>
+                        <div>
+                            <p>Shipping Address</p>
+                            <p>{ordersuccessful.CustomerShipToAddress
+                            }</p>
+                        </div>
 
-                <div>
-                    <p>Shipping Charges</p>
-                    <p>$ 0.00</p>
-                </div>
+                        <div>
+                            <p>Shipping Charges</p>
+                            <p>$ 80.00</p>
+                        </div>
 
-                <div>
-                    <p>Tax</p>
-                    <p>$ 0.00</p>
-                </div>
+                        <div>
+                            <p>Tax</p>
+                            <p>$ {ordersuccessful.Tax}</p>
+                        </div>
 
-                <div>
-                    <p>Total</p>
-                    <p>$ 50.00</p>
-                </div>
+                        <div>
+                            <p>Total</p>
+                            <p>$ {ordersuccessful.Total}</p>
+                        </div>
 
-            </div>
+                    </div>
 
-            <div className='c3'>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Sno.</th>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total Price</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {/* <tr>
-                                    <td>1</td>
-                                    <td>Marinated Chicken Satay with Peanut Sauce 25pcs</td>
-                                    <td>1</td>
-                                    <td>$ 25.00</td>
-                                </tr>
-
+                    <div className='c3'>
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td>2</td>
-                                    <td>Marinated Chicken Satay with Peanut Sauce 25pcs</td>
-                                    <td>1</td>
-                                    <td>$ 25.00</td>
-                                </tr> */}
+                                    <th>Sno.</th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
 
-                        {
-                            cartdata.map((item, index) => {
-                                return (
-                                    <tr>
-                                        <td>
-                                            <p>{index + 1}</p>
-                                        </td>
-                                        <td>
-                                            <p>{item.productdata.ProductName}</p>
-                                        </td>
-                                        <td>
-                                            <p>{item.quantity}</p>
-                                        </td>
-                                        <td>
-                                            <p>$ {item.productdata.SalesPrice ? item.productdata.SalesPrice.toFixed(2) : 0.00}</p>
-                                        </td>
+                            <tbody>
 
-                                        <td>
-                                            <p>$ {
-                                                ((
-                                                    item.productdata.SalesPrice
-                                                )
-                                                    *
-                                                    item.quantity).toFixed(2)
-                                            }</p>
-                                        </td>
+                                {
+                                    
+                                    ordersuccessitems.map((item, index) => {
 
-                                    </tr>
-                                )
-                            })
-                        }
-                    </tbody>
-                </table>
+                                        return (
+                                            <tr key={index}>
+                                                <td>
+                                                    <p>{index + 1}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{item.ProductName}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{item.Qty}</p>
+                                                </td>
+                                                <td>
+                                                    <p>$ {item.Price ? item.Price.toFixed(2) : 0.00}</p>
+                                                </td>
+                                                <td>
+                                                    <p>$ {
+                                                        ((
+                                                            item.Price
+                                                        )
+                                                            *
+                                                            item.Qty).toFixed(2)
+                                                    }</p>
+                                                </td>
+                                            </tr>
+                                            // <tr key={index}>
+                                            //     <p>
+                                            //         {/* {JSON.stringify(item)} */}
+                                            //         {item.ProductName}
+                                            //     </p>
+                                            // </tr>
+                                        )
+                                    })
+                                }
+                            </tbody>
+                        </table>
 
-                <div className='right'>
-                    <div>
-                        <p>Subtotal</p>
-                        <p>$ {subtotal}</p>
-                    </div>
+                        <div className='right'>
+                            <div>
+                                <p>Subtotal</p>
+                                <p>$ {subtotal}</p>
+                            </div>
 
-                    <div>
-                        <p>Shipping</p>
-                        <p>$ {shipping}</p>
-                    </div>
+                            <div>
+                                <p>Shipping</p>
+                                <p>$ {shipping}</p>
+                            </div>
 
-                    <div>
-                        <p>Tax</p>
-                        <p>$ {tax}</p>
-                    </div>
+                            <div>
+                                <p>Tax</p>
+                                <p>$ {tax.toFixed(2)}</p>
+                            </div>
 
-                    <div>
-                        <p>Total</p>
-                        <p>$ {subtotal + shipping + tax}</p>
+                            <div>
+                                <p>Total</p>
+                                <p>$ {(subtotal + shipping + tax).toFixed(2)}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-}
+            }
 
 
-{
-    active == 1 && cartdata.length > 0 &&
-        <div className='btns'>
-            <div></div>
-            <button className='nextbtn' onClick={() => {
-                let temp = checklogin()
-                if (temp) {
-                    setActive(active + 1)
-                }
+            {
+                active == 1 && cartdata.length > 0 &&
+                <div className='btns'>
+                    <div></div>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (temp) {
+                            setActive(active + 1)
+                        }
 
 
-            }}>Next</button>
-        </div>
-}
+                    }}>Next</button>
+                </div>
+            }
 
-{
-    active == 2 &&
-        <div className='btns'>
-            <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
-            <button className='nextbtn' onClick={() => {
-                let temp = checklogin()
-                if (checkdeliverydate() && temp) {
-                    setActive(active + 1)
-                }
-                
-            }}>Next</button>
-        </div>
-}
-{
-    active == 3 &&
-        <div className='btns'>
-            <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
-            <button className='nextbtn' onClick={() => {
-                let temp = checklogin()
-                if (temp) {
-                    setActive(active + 1)
-                }
-            }}>Next</button>
-        </div>
-}
+            {
+                active == 2 &&
+                <div className='btns'>
+                    <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (checkdeliverydate() && temp && checkaddress()) {
+                            setActive(active + 1)
+                        }
 
-{
-    active == 4 &&
-        <div className='btns'>
-            <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
-            <button className='nextbtn' onClick={() => {
-                let temp = checklogin()
-                if (temp) {
-                    alert('Order Placed')
-                }
-            }}>Place Order</button>
-        </div>
-}
+                    }}>Next</button>
+                </div>
+            }
+            {
+                active == 3 &&
+                <div className='btns'>
+                    <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (temp && checkpaymentmethod() && checktnc()) {
+                            // setActive(active + 1)
+                            placeorder()
+                        }
+                    }}>Next</button>
+                </div>
+            }
 
-<Footer />
+            {
+                active == 4 &&
+                <div className='btns'>
+                    <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
+                    <button className='nextbtn' onClick={() => {
+                        let temp = checklogin()
+                        if (temp) {
+                            alert('Order Placed')
+                        }
+                    }}>Place Order</button>
+                </div>
+            }
+
+            <Footer />
         </div >
     )
 }
