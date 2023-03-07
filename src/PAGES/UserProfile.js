@@ -8,6 +8,7 @@ import LegalNotice from '../COMPONENTS/UserProfile/LegalNotice'
 import UserAddress from '../COMPONENTS/UserProfile/UserAddress'
 import UserSidebar from '../COMPONENTS/UserProfile/UserSidebar'
 import YourOrders from '../COMPONENTS/UserProfile/YourOrders'
+import Footer from '../COMPONENTS/Footer/Footer'
 import './UserProfile.css'
 const UserProfile = () => {
   const {activepage} = useParams()
@@ -28,6 +29,7 @@ const UserProfile = () => {
           {activepage === 'changepassword' && <ChangePassword/>}
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }
