@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/makanmate/static/css/main.1b826d9d.css",
+    "main.js": "/makanmate/static/js/main.5efa91cd.js",
+    "static/js/787.b1434bd9.chunk.js": "/makanmate/static/js/787.b1434bd9.chunk.js",
+    "static/media/3.png": "/makanmate/static/media/3.1468c5a66768bc6533b5.png",
+    "static/media/logo.png": "/makanmate/static/media/logo.e3f2beb69e8881829edc.png",
+    "static/media/slide-1.jpg": "/makanmate/static/media/slide-1.8e975343c2604bb98f7d.jpg",
+    "static/media/slide-2.jpg": "/makanmate/static/media/slide-2.271fa69cc142d145b744.jpg",
+    "static/media/lobster.png": "/makanmate/static/media/lobster.3635338996a5b8ad90aa.png",
+    "static/media/logo1.png": "/makanmate/static/media/logo1.549fef36506cf35a063a.png",
+    "static/media/revicons.eot": "/makanmate/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "/makanmate/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/makanmate/static/media/revicons.e8746a624ed098489406.woff",
+    "static/media/logo.svg": "/makanmate/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/makanmate/index.html",
+    "main.1b826d9d.css.map": "/makanmate/static/css/main.1b826d9d.css.map",
+    "main.5efa91cd.js.map": "/makanmate/static/js/main.5efa91cd.js.map",
+    "787.b1434bd9.chunk.js.map": "/makanmate/static/js/787.b1434bd9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1b826d9d.css",
+    "static/js/main.5efa91cd.js"
+  ]
+}
