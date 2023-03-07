@@ -344,7 +344,7 @@ const Navbar = ({ pagename }) => {
 
                                     <Dropdown.Menu>
                                         {/* fresh vegetables */}
-                                        <Dropdown.Item href="/user">Profile</Dropdown.Item>
+                                        <Dropdown.Item href="/user/accountsettings">Profile</Dropdown.Item>
                                         <Dropdown.Item 
                                         onClick={() =>
                                             handleLogout()

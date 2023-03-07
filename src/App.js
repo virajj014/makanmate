@@ -27,7 +27,7 @@ function App() {
         <Route path="/event" element={
           <Event/>
         } />
-        <Route path="/user" element={<UserProfile/>} />
+        <Route path="/user/:activepage" element={<UserProfile/>} />
         {/* <Route path="/login" element={<Login/>} /> */}
         {/* <Route path="/signup" element={<Signup/>} /> */}
         <Route path="*" element={<div>404</div>} />

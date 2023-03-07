@@ -6,14 +6,23 @@
 .userprofilein {
     display: flex;
     width: 100%;
-    justify-content: space-between;
-    margin-top: 20vh;
+    justify-content: center;
+    margin-top: 10vh;
 
 }
 
 .userprofile .left {
-    width: 25%;
-    border: 2px solid gray;
+    width: 20%;
+    border: 1px solid rgb(207, 207, 207);
     margin: 20px;
-    border-radius: 20px;
+    border-radius:5px;
+    min-height: 50vh;
+}
+
+.userprofile .right {
+    width: 60%;
+    border: 1px solid rgb(207, 207, 207);
+    margin: 20px;
+    border-radius:5px;
+    min-height: 50vh;
 }
