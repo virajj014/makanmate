@@ -37,3 +37,12 @@
     border-radius: 5px;
     outline: none;
 }
+
+.form button{
+    background-color: var(--col2);
+    color: var(--col1);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px 0px;
+}

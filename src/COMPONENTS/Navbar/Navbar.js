@@ -24,6 +24,7 @@ const Navbar = ({ pagename }) => {
 
     const handleLogout = () => {
         localStorage.removeItem("token")
+        localStorage.removeItem("password")
         setisloggedin(false)
         toast.success("Logout Successful")
     }
@@ -64,26 +65,12 @@ const Navbar = ({ pagename }) => {
 
     const getdatafrompostalcode = async () => {
         console.log(signupdata.PostalCode)
-        // let url = `http://developers.onemap.sg/commonapi/search?searchVal=${signupdata.PostalCode}&returnGeom=N&getAddrDetails=Y&pageNum=1`
-        // fetch(url
-        //     , {
-        //         method: 'GET',
-
-        //     }
-        //     )
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         console.log(data)
-        //         setpostalcodearray(data.results)
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
+      
 
         let url = `https://developers.onemap.sg/commonapi/search?searchVal=${signupdata.PostalCode}&returnGeom=N&getAddrDetails=Y&pageNum=1`
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data.results[0])
+        // console.log(data.results[0])
 
         setsignupdata({
             ...signupdata,
@@ -210,6 +197,8 @@ const Navbar = ({ pagename }) => {
                         }
                     )
                     localStorage.setItem('token', JSON.stringify(data.Data))
+                    // save password in local storage
+                    localStorage.setItem('password', JSON.stringify(logindata.Password))
                     setisloggedin(true)
                     setshowlogin(false)
                     setshowsignup(false)
