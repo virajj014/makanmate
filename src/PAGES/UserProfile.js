@@ -53,8 +53,10 @@ const UserProfile = () => {
         </div>
         <div className='right'>
           {activepage === 'accountsettings' && <AccountSettings user={user} />}
-          {activepage === 'yourorders' && <YourOrders/>}
-          {activepage === 'address' && <UserAddress/>}
+          {activepage === 'yourorders' && <YourOrders userid={user[0]?.B2CCustomerId} EmailId={
+            user[0]?.EmailId
+          }/>}
+          {activepage === 'address' && <UserAddress />}
           {activepage === 'legalnotice' && <LegalNotice/>}
           {activepage === 'changepassword' && <ChangePassword userid={user[0]?.B2CCustomerId}/>}
         </div>

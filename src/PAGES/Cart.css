@@ -524,6 +524,7 @@
     align-items: flex-end;
     flex-wrap: wrap;
     width: 100%;
+    padding: 0px 20px;
 }
 
 .confirmationcont .c3 .right div {

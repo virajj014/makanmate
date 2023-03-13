@@ -287,7 +287,7 @@ const Cart = () => {
             "OrgId": 1,
             "BrachCode": cartdata[0].productdata.BranchCode ? cartdata[0].productdata.BranchCode : 'MT',
             "OrderNo": "",
-            "OrderDate": "2023-03-12",
+            "OrderDate": `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
             "CustomerId": user.B2CCustomerId,
             "CustomerName": user.B2CCustomerName,
             "CustomerAddress": `${selectedaddress.AddressLine1} ${selectedaddress.AddressLine2} ${selectedaddress.AddressLine3}`,
