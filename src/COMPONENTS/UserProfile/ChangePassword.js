@@ -23,28 +23,28 @@ const ChangePassword = ({ userid, oldpass }) => {
     }
     if (data.CurrentPassword === oldpassformls) {
       // console.log(data)
-      fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerRegister/EditProfilePassword', 
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
+      fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerRegister/EditProfilePassword',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
       )
-      .then(res => res.json())
-      .then(data => {
-        if(data.Code === 200) {
-          toast.success('Password Updated Successfully')
-        }
-        else {
+        .then(res => res.json())
+        .then(data => {
+          if (data.Code === 200) {
+            toast.success('Password Updated Successfully')
+          }
+          else {
+            toast.error('Something Went Wrong')
+          }
+        })
+        .catch(err => {
+          console.log(err)
           toast.error('Something Went Wrong')
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        toast.error('Something Went Wrong')
-      })
+        })
     }
     else {
       toast.error('Old Password is incorrect')
@@ -74,7 +74,8 @@ const ChangePassword = ({ userid, oldpass }) => {
           />
 
         </div>
-
+      </div>
+      <div className='form'>
         <div className='form-group'>
           <label htmlFor='email'>Confirm New Password <span>*</span></label>
           <input type="password"
