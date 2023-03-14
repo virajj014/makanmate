@@ -95,6 +95,8 @@
 
 .productpage .pc1 .c12 .count {
     font-size: 25px;
+    padding: 0px;
+    margin: 0px;
 }
 
 .productpage .btncont {
@@ -150,6 +152,7 @@
     cursor: pointer;
     border-bottom: 2px solid var(--col2);
     margin: 0px 10px;
+    background-color: white;
 }
 .productpage .pc2 .tabs .inactive{
     border: none;
@@ -159,6 +162,7 @@
     cursor: pointer;
     border-bottom: 2px solid transparent;
     margin: 0px 10px;
+    background-color: white;
 }
 
 

@@ -532,7 +532,9 @@ const CateringMenu = () => {
                                                                         :
                                                                         product.SalesPrice
                                                                 }
-                                                                    <span>${product.SalesPrice + (product.SalesPrice) * (0.2)}</span>
+                                                                    <span>${
+                                                                         (product.SalesPrice + (product.SalesPrice) * (0.2)).toFixed(2)
+                                                                        }</span>
                                                                 </p>
                                                                 :
                                                                 <p>$ 0.00</p>

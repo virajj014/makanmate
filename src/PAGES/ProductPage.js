@@ -17,11 +17,11 @@ const ProductPage = () => {
 
 
     const getproductdatabyid = async () => {
-        fetch(process.env.REACT_APP_BACKEND_URL+`/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
+        fetch(process.env.REACT_APP_BACKEND_URL + `/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
             .then(res => res.json())
             .then(res => {
                 if (res.Code == 200) {
-                    // console.log(res.Data[0])
+                    console.log(res)
                     setproductdata(res?.Data[0])
                     setimageset([
                         {
@@ -135,7 +135,7 @@ const ProductPage = () => {
                         <p className='price'>
                             ${productdata.SalesPrice * count}
 
-                            <span>${(productdata.SalesPrice + (productdata.SalesPrice) * (0.2)) * count}</span>
+                            <span>${((productdata.SalesPrice + (productdata.SalesPrice) * (0.2)) * count).toFixed(2)}</span>
                         </p>
 
                         <div className='incrdecr'>
@@ -161,9 +161,9 @@ const ProductPage = () => {
                         {
                             itemincart ?
                                 <button
-                                onClick={() => {
-                                    window.location.href = '/cart'
-                                }}
+                                    onClick={() => {
+                                        window.location.href = '/cart'
+                                    }}
                                 >Go To Cart</button>
                                 :
                                 <button
@@ -173,6 +173,27 @@ const ProductPage = () => {
                                 >Add to cart</button>
                         }
                         <button >Buy now</button>
+                    </div>
+
+                    <div className='addons1'>
+                        <h1>Some Addon name</h1>
+                        <p>Min 2 - Limit 4</p>
+                        {/* checkbox */}
+                        <div className='checkbox'>
+                            <input type='checkbox' id='check1' />
+                            <label htmlFor='check1'>Some Item</label>
+                        </div>
+
+
+                        <div className='checkbox'>
+                            <input type='checkbox' id='check2' />
+                            <label htmlFor='check2'>Some Item</label>
+                        </div>
+
+                        <div className='checkbox'>
+                            <input type='checkbox' id='check3' />
+                            <label htmlFor='check3'>Some Item</label>
+                        </div>
                     </div>
                 </div>
             </div>

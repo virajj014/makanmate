@@ -106,6 +106,56 @@ p{
   transform: scale(1.1);
   transition: all 0.6s ease-in-out;
 }
+
+.addons1 h1{
+  color: gray;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 5px 20px;
+  padding: 0px;
+  background-color: white;
+  position: absolute;
+  top: 0px;
+  transform: translateY(-50%);
+}
+
+.addons1{
+  border: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  width: max-content;
+  padding: 20px;
+  margin: 40px 0px;
+  position: relative;
+}
+
+.addons1 .checkbox{
+  display: flex;
+  gap: 10px;
+  margin: 5px 5px;
+
+}
+
+/* change check color in input */
+input[type="checkbox"] {
+  /* -webkit-appearance: none; */
+  -moz-appearance: none;
+  /* appearance: none; */
+  border: 1px solid #000;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="checkbox"]:checked {
+  background: var(--col2);
+  color: white;
+}
+
 @keyframes showup {
   0% {
     bottom: -100px;
