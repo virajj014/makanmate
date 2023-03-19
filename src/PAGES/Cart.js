@@ -23,7 +23,7 @@ const Cart = () => {
     const getcartitemsfromlocalstorage = () => {
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
-            // console.log(cart)
+            console.log(cart)
             setcartdata(cart)
 
             let total = 0
@@ -33,6 +33,13 @@ const Cart = () => {
                 )
                     *
                     item.quantity
+
+                let customaddontotal = 0
+                item.customaddons.forEach(addon => {
+                    customaddontotal += addon.Price *
+                        item.quantity
+                })
+                total += customaddontotal
             })
             setsubtotal(total)
             setshipping(80)
@@ -235,17 +242,17 @@ const Cart = () => {
     }
 
 
-    const converttofloat = (value) => { 
+    const converttofloat = (value) => {
         // console.log(parseFloat(value) + 0.001)
         value = value.toFixed(2)
         // console.log(value , parseFloat(value) + 0.001)
         // check if value has decimal
         if (!value.includes('.00')) {
-            console.log(value , parseFloat(value))
+            console.log(value, parseFloat(value))
             return parseFloat(value)
         }
         else {
-            console.log(value , parseFloat(value) + 0.001)
+            console.log(value, parseFloat(value) + 0.001)
             return parseFloat(value) + 0.001
         }
     }
@@ -253,7 +260,22 @@ const Cart = () => {
 
     const placeorder = async () => {
         let orderdetail = [];
-        await cartdata.map((item, index) => {
+
+        await cartdata.map(async (item, index) => {
+            let orderaddons = [];
+            // await item.addons.map((addon, index) => {
+            //     orderaddons.push(
+            //          {
+            //             "OrgId": 1,
+            //             "OrderNo": "",
+            //             "ProductCode": item.productdata.ProductId,
+            //             "CustomAddOnCode": addon.CustomAddOnCode,
+            //             "Price": converttofloat(addon.Price),
+            //             "CreatedBy": "admin",
+            //             "CreatedOn": new Date(),
+            //         }
+            //     )
+            // })
             let temp = {
                 "OrgId": 1,
                 "OrderNo": "",
@@ -270,15 +292,16 @@ const Cart = () => {
                 "SubTotal": converttofloat(item.productdata.SalesPrice) * item.quantity,
                 "Tax": converttofloat((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity)),
                 "NetTotal": converttofloat(
-                    ((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity)) 
-                    +(item.productdata.SalesPrice) * item.quantity),
+                    ((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity))
+                    + (item.productdata.SalesPrice) * item.quantity),
                 "TaxCode": 1,
                 "TaxType": "e",
                 "TaxPerc": item.productdata.TaxPerc,
                 "Remarks": "",
                 "CreatedBy": "admin",
                 "ChangedBy": "admin",
-                "Weight": 0
+                "Weight": 0,
+                "ProductAddOn": orderaddons
             }
             orderdetail.push(temp)
         })
@@ -323,37 +346,37 @@ const Cart = () => {
             "OrderDetail": orderdetail
         }
 
-        // console.log(orderobj)
+        console.log(orderobj)
 
-        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderobj)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('orderobj ', orderobj)
-                console.log(data)
-                if (data.Status === true && data.Data) {
-                    //  setordersuccessful({})
-                    toast.success('Order Placed Successfully')
-                    getsuccessfulorder(data.Data)
-                }
-                else {
-                    toast.error('Error in Placing Order')
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            })
+        // fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Create', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(orderobj)
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log('orderobj ', orderobj)
+        //         // console.log(data)
+        //         if (data.Status === true && data.Data) {
+        //             //  setordersuccessful({})
+        //             toast.success('Order Placed Successfully')
+        //             getsuccessfulorder(data.Data)
+        //         }
+        //         else {
+        //             toast.error('Error in Placing Order')
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     })
 
 
         // console.log(orderdetail)
     }
 
-const [ordersuccessitems, setordersuccessitems] = useState([])
+    const [ordersuccessitems, setordersuccessitems] = useState([])
     const getsuccessfulorder = (ordrid) => {
         fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Getbycode?OrganizationId=1&OrderNo=' + ordrid, {
             method: 'GET',
@@ -516,7 +539,19 @@ const [ordersuccessitems, setordersuccessitems] = useState([])
                                                         >
                                                             <img src={item.productdata.ProductImageURL
                                                             } alt='product1' />
-                                                            <p>{item.productdata.ProductName}</p>
+                                                            <div className='productnameandaddon'>
+                                                                <p>{item.productdata.ProductName}</p>
+                                                                {
+                                                                    item.customaddons?.map((addon, index) => {
+                                                                        return (
+                                                                            <span>
+                                                                                {addon.AddOnDescription} - ${addon.Price}
+                                                                            </span>
+                                                                        )
+                                                                    })
+
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -868,7 +903,7 @@ const [ordersuccessitems, setordersuccessitems] = useState([])
                             <tbody>
 
                                 {
-                                    
+
                                     ordersuccessitems.map((item, index) => {
 
                                         return (

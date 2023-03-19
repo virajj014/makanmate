@@ -14,14 +14,17 @@ const ProductPage = () => {
 
     const [count, setcount] = React.useState(1)
     const [showreview, setshowreview] = React.useState(false)
+    const [customaddons, setcustomaddons] = React.useState([])
+    const [selectedcustomaddons, setselectedcustomaddons] = React.useState([])
 
 
     const getproductdatabyid = async () => {
+        // console.log(process.env.REACT_APP_BACKEND_URL + `/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
         fetch(process.env.REACT_APP_BACKEND_URL + `/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
             .then(res => res.json())
             .then(res => {
                 if (res.Code == 200) {
-                    console.log(res)
+                    // console.log(res)
                     setproductdata(res?.Data[0])
                     setimageset([
                         {
@@ -34,7 +37,10 @@ const ProductPage = () => {
                         image: res?.Data[0].ProductImageURL
                     })
                     checkifincart(res?.Data[0])
-
+                    if (res?.Data[0]?.CustomAddOnDetail.length > 0) {
+                        // setcustomaddons(res?.Data[0]?.CustomAddOnDetail)
+                        getcustomaddons(res?.Data[0]?.CustomAddOnDetail)
+                    }
                 }
             })
             .catch(err => {
@@ -45,35 +51,25 @@ const ProductPage = () => {
 
 
     const addtocart = () => {
+
+        // console.log(selectedcustomaddons)
         // add to local storage
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
             // check if item is already in cart
-            let itemincart = cart.find(item => item.productdata.ProductId === productdata.ProductId)
-            if (itemincart) {
-                // update quantity
-                cart = cart.map(item => {
-                    if (item.productdata.ProductId === productdata.ProductId) {
-                        return {
-                            ...item,
-                            quantity: item.quantity + count
-                        }
-                    }
-                    else {
-                        return item
-                    }
-                })
-                localStorage.setItem('cart', JSON.stringify(cart))
-            }
-            else {
-                // add new item to cart
-                cart = [...cart, { productdata, quantity: count, url: window.location.href }]
-                localStorage.setItem('cart', JSON.stringify(cart))
-            }
+            // let itemincart = cart.find(item => item.productdata.ProductId === productdata.ProductId)
+            cart = [...cart, {
+                productdata, quantity: count, url: window.location.href,
+                customaddons: selectedcustomaddons
+            }]
+            localStorage.setItem('cart', JSON.stringify(cart))
         }
         else {
             // create cart and add item object to cart
-            cart = [{ productdata, quantity: count }]
+            cart = [{
+                productdata, quantity: count, url: window.location.href,
+                customaddons: selectedcustomaddons
+            }]
             localStorage.setItem('cart', JSON.stringify(cart))
         }
         toast.success('Item added to cart')
@@ -102,6 +98,27 @@ const ProductPage = () => {
         window.scrollTo(0, 0)
         getproductdatabyid()
     }, [])
+
+    const getcustomaddons = async (addons) => {
+        let addonstemp = []
+        addons.forEach(async element => {
+            await fetch(process.env.REACT_APP_BACKEND_URL + `/MasterCustomAddon/Getbycode?OrganizationId=1&TranNo=${element.CustomAddOnCode}`)
+                .then(res => res.json())
+                .then(res => {
+                    // if (res.Code == 200) {
+                    //     addonstemp.push(res?.Data[0])
+                    // }
+                    if (res.Data.length > 0) {
+                        addonstemp = [...addonstemp, res?.Data[0]]
+                        // console.log(res?.Data[0])
+                        setcustomaddons(addonstemp)
+                        // console.log(addonstemp)
+                    }
+                })
+        })
+
+
+    }
     return (
         <div className='productpage'>
             <Navbar />
@@ -175,25 +192,42 @@ const ProductPage = () => {
                         <button >Buy now</button>
                     </div>
 
-                    <div className='addons1'>
-                        <h1>Some Addon name</h1>
-                        <p>Min 2 - Limit 4</p>
-                        {/* checkbox */}
-                        <div className='checkbox'>
-                            <input type='checkbox' id='check1' />
-                            <label htmlFor='check1'>Some Item</label>
-                        </div>
 
+                    <div className='addons1out'>
+                        {
+                            customaddons?.map((item, index) => {
+                                return (
+                                    <div className='addons1'
+                                        key={index}
+                                    >
+                                        <h1>{item.Title}</h1>
+                                        <p>Min {item.Minimum} - Limit {item.Limit}</p>
+                                        {
+                                            item.CustomAddonDetail && item.CustomAddonDetail?.map((item1, index1) => {
+                                                return (
+                                                    <div className='checkbox'>
+                                                        <input type='checkbox' id={item1.ReferenceCode}
+                                                            onChange={(e) => {
+                                                                if (e.target.checked) {
+                                                                    setselectedcustomaddons([...selectedcustomaddons, item1])
+                                                                }
+                                                                else {
+                                                                    let temp = selectedcustomaddons.filter(item => item.ReferenceCode !== item1.ReferenceCode)
+                                                                    setselectedcustomaddons(temp)
+                                                                }
+                                                            }}
+                                                        />
+                                                        <label htmlFor={item1.ReferenceCode}>{item1.AddOnDescription}</label>
+                                                    </div>
+                                                )
+                                            })
+                                        }
 
-                        <div className='checkbox'>
-                            <input type='checkbox' id='check2' />
-                            <label htmlFor='check2'>Some Item</label>
-                        </div>
-
-                        <div className='checkbox'>
-                            <input type='checkbox' id='check3' />
-                            <label htmlFor='check3'>Some Item</label>
-                        </div>
+                                        { }
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>

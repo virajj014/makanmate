@@ -114,6 +114,27 @@
     cursor: pointer;
 }
 
+.cartcont .product .productnameandaddon{
+    display: flex;
+    flex-direction: column;
+}
+
+.cartcont .product .productnameandaddon p{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--col3);
+    margin: 0px;
+    padding: 0px;
+}
+
+.cartcont .product .productnameandaddon span{
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--col3);
+    margin: 0px;
+    padding: 0px;
+}
+
 .cartcont .quantity {
     display: flex;
     flex-direction: row;
