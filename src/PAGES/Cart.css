@@ -84,6 +84,7 @@
 
 .cartcont table .cartitemrow {
     border-bottom: 1px solid #e0e0e0;
+    width: 100%;
 }
 
 .cartcont table .cartitemrow th {
@@ -99,6 +100,8 @@
     text-align: left;
     font-size: 16px;
     font-weight: 700;
+    /* background-color: #cacaca; */
+    position: relative;
 }
 
 .cartcont table tr img {
@@ -112,6 +115,7 @@
     display: flex;
     width: 300px;
     cursor: pointer;
+    margin: 10px 0px;
 }
 
 .cartcont .product .productnameandaddon{
@@ -141,6 +145,10 @@
     justify-content: center;
     align-items: center;
     width: 100px;
+    /* height: 100%; */
+    /* background-color: aqua; */
+    position: absolute;
+    top : 20px;
 }
 
 .cartcont .quantity button {

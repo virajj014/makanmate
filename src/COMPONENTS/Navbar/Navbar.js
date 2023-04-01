@@ -213,7 +213,7 @@ const Navbar = ({ pagename }) => {
     const [cartdataquantity, setcartdataquantity] = React.useState(0)
     const getcartdataquantity = async () => {
         let cart = JSON.parse(localStorage.getItem('cart'))
-        console.log(cart)
+        // console.log(cart)
         if (cart !== null) {
             setcartdataquantity(cart.length)
         }

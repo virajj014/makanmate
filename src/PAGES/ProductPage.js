@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import Footer from '../COMPONENTS/Footer/Footer'
 import Navbar from '../COMPONENTS/Navbar/Navbar'
@@ -20,11 +20,13 @@ const ProductPage = () => {
 
     const getproductdatabyid = async () => {
         // console.log(process.env.REACT_APP_BACKEND_URL + `/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
+        // console.log(prodid)
         fetch(process.env.REACT_APP_BACKEND_URL + `/ProductRest/Getbycode?OrganizationId=1&ProductId=${prodid}`)
             .then(res => res.json())
             .then(res => {
+                // console.log(res)
                 if (res.Code == 200) {
-                    // console.log(res)
+                    // console.log(res?.Data[0].CategoryId)
                     setproductdata(res?.Data[0])
                     setimageset([
                         {
@@ -36,11 +38,16 @@ const ProductPage = () => {
                         id: 1,
                         image: res?.Data[0].ProductImageURL
                     })
-                    checkifincart(res?.Data[0])
+                    getcategoryaddons(res?.Data[0].CategoryId)
                     if (res?.Data[0]?.CustomAddOnDetail.length > 0) {
                         // setcustomaddons(res?.Data[0]?.CustomAddOnDetail)
                         getcustomaddons(res?.Data[0]?.CustomAddOnDetail)
+                        // console.log(res?.Data[0])
+
                     }
+
+                    checkifincart(res?.Data[0])
+                    
                 }
             })
             .catch(err => {
@@ -50,37 +57,13 @@ const ProductPage = () => {
 
 
 
-    const addtocart = () => {
 
-        // console.log(selectedcustomaddons)
-        // add to local storage
-        let cart = JSON.parse(localStorage.getItem('cart'))
-        if (cart) {
-            // check if item is already in cart
-            // let itemincart = cart.find(item => item.productdata.ProductId === productdata.ProductId)
-            cart = [...cart, {
-                productdata, quantity: count, url: window.location.href,
-                customaddons: selectedcustomaddons
-            }]
-            localStorage.setItem('cart', JSON.stringify(cart))
-        }
-        else {
-            // create cart and add item object to cart
-            cart = [{
-                productdata, quantity: count, url: window.location.href,
-                customaddons: selectedcustomaddons
-            }]
-            localStorage.setItem('cart', JSON.stringify(cart))
-        }
-        toast.success('Item added to cart')
-        window.location.reload()
-    }
 
     const [itemincart, setitemincart] = React.useState(false)
     const checkifincart = (proddata) => {
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
-            let itemincart = cart.find(item => item.productdata.ProductId === proddata.ProductId)
+            let itemincart = cart.find(item => item?.productdata?.ProductId === proddata.ProductId)
             if (itemincart) {
                 setitemincart(true)
             }
@@ -98,6 +81,9 @@ const ProductPage = () => {
         window.scrollTo(0, 0)
         getproductdatabyid()
     }, [])
+
+
+
 
     const getcustomaddons = async (addons) => {
         let addonstemp = []
@@ -119,6 +105,132 @@ const ProductPage = () => {
 
 
     }
+
+    // -------------------------------------------------------------CATEGORY ADDONS-------------------------------------------------------------
+
+
+    const [categoryaddons, setcategoryaddons] = React.useState([])
+    const getcategoryaddons = async (categoryid) => {
+        await fetch(process.env.REACT_APP_BACKEND_URL + `/CategoryR/GetCategoryAddOnDetail?OrganizationId=1&CategoryId=${categoryid}`)
+            .then(res => res.json())
+            .then(res => {
+                // console.log(res)
+                if (res.Code == 200) {
+
+                    let categoryproducts = [];
+                    res?.Data?.forEach(async element => {
+                        fetch(process.env.REACT_APP_BACKEND_URL + `/ProductRest/Getbycode?OrganizationId=1&ProductId=${element.ProductCode}`)
+                            .then(res => res.json())
+                            .then(res => {
+                                // console.log(res.Data[0])
+                                if (res.Code == 200) {
+                                    categoryproducts = [...categoryproducts, res?.Data[0]]
+                                    setcategoryaddons(categoryproducts)
+                                    // console.log(categoryproducts)
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
+                    }
+                    )
+                }
+                // console.log(categoryaddons)
+            })
+
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    const [selectedcategoryaddon, setselectedcategoryaddon] = React.useState([])
+
+
+    const [rating, setrating] = React.useState(0)
+
+    const ProductReviews = [
+        {
+            "ReviewId": 1,
+            "Name": "Harshal Jain",
+            "Email": "",
+            "Rating": 5,
+            "Date": "2021-08-01",
+            "Review": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        },
+        {
+            "ReviewId": 2,
+            "Name": "Viraj",
+            "Email": "",
+            "Rating": 1,
+            "Date": "2021-08-01",
+            "Review": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+        },
+        {
+            "ReviewId": 3,
+            "Name": "Harshal Jain",
+            "Email": "",
+            "Rating": 4,
+            "Date": "2021-08-01",
+            "Review": "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        }
+    ]
+    const ProductDescription = `
+    <h1>About this item</h1>
+    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p><br><br>
+    
+    <ol type='1'>
+        <li>Some quick example text to build on the card title and make up the bulk of the card's content.</li>
+        <li>Some quick example text to build on the card title and make up the bulk of the card's content.</li>
+    </ol>
+
+    <h1>Product Details</h1>
+    <ul>
+        <li>Some quick example text to build on the card title and make up the bulk of the card's content.</li>
+        <li>Some quick example text to build on the card title and make up the bulk of the card's content.</li>
+        <li>Some quick example text to build on the card title and make up the bulk of the card's content.</li>
+        </ul>
+    `
+
+
+
+
+
+    // add to cart
+    const addtocart = () => {
+
+        // console.log(selectedcustomaddons)
+        // add to local storage
+        let cart = JSON.parse(localStorage.getItem('cart'))
+        if (cart) {
+            // check if item is already in cart
+            // let itemincart = cart.find(item => item.productdata.ProductId === productdata.ProductId)
+            cart = [...cart, {
+                productdata, quantity: count, url: window.location.href,
+                customaddons: selectedcustomaddons,
+                categoryaddons: selectedcategoryaddon
+            }]
+            console.log(cart)
+            localStorage.setItem('cart', JSON.stringify(cart))
+        }
+        else {
+            // create cart and add item object to cart
+            cart = [{
+                productdata, quantity: count, url: window.location.href,
+                customaddons: selectedcustomaddons,
+                categoryaddons: selectedcategoryaddon
+            }]
+            console.log(cart)
+            localStorage.setItem('cart', JSON.stringify(cart))
+        }
+        toast.success('Item added to cart')
+        // window.location.reload()
+        checkifincart()
+
+        // reload in 2 seconds
+        setTimeout(() => {
+            window.location.reload()
+        }, 2000)
+    }
+
     return (
         <div className='productpage'>
             <Navbar />
@@ -196,6 +308,7 @@ const ProductPage = () => {
                     <div className='addons1out'>
                         {
                             customaddons?.map((item, index) => {
+                                // console.log(customaddons)
                                 return (
                                     <div className='addons1'
                                         key={index}
@@ -203,24 +316,37 @@ const ProductPage = () => {
                                         <h1>{item.Title}</h1>
                                         <p>Min {item.Minimum} - Limit {item.Limit}</p>
                                         {
-                                            item.CustomAddonDetail && item.CustomAddonDetail?.map((item1, index1) => {
-                                                return (
-                                                    <div className='checkbox'>
-                                                        <input type='checkbox' id={item1.ReferenceCode}
-                                                            onChange={(e) => {
-                                                                if (e.target.checked) {
-                                                                    setselectedcustomaddons([...selectedcustomaddons, item1])
-                                                                }
-                                                                else {
-                                                                    let temp = selectedcustomaddons.filter(item => item.ReferenceCode !== item1.ReferenceCode)
-                                                                    setselectedcustomaddons(temp)
-                                                                }
-                                                            }}
-                                                        />
-                                                        <label htmlFor={item1.ReferenceCode}>{item1.AddOnDescription}</label>
-                                                    </div>
+                                            item.CustomAddonDetail && item.CustomAddonDetail?.filter(
+                                                item => item.ProductName !== null
+                                            ).length > 0 ?
+
+                                                item.CustomAddonDetail && item.CustomAddonDetail?.filter(
+                                                    item => item.ProductName !== null
                                                 )
-                                            })
+                                                    .map((item1, index1) => {
+                                                        // console.log(item1)
+
+                                                        return (
+                                                            <div className='checkbox'>
+                                                                <input type='checkbox' id={item1.ReferenceCode}
+                                                                    onChange={(e) => {
+                                                                        if (e.target.checked) {
+                                                                            setselectedcustomaddons([...selectedcustomaddons, item1])
+                                                                        }
+                                                                        else {
+                                                                            let temp = selectedcustomaddons.filter(item => item.ReferenceCode !== item1.ReferenceCode)
+                                                                            setselectedcustomaddons(temp)
+                                                                        }
+                                                                    }}
+                                                                />
+                                                                <label htmlFor={item1.ReferenceCode}>{item1.ProductName}</label>
+                                                            </div>
+                                                        )
+                                                    })
+
+                                                :
+
+                                                <p>No Addons Available</p>
                                         }
 
                                         { }
@@ -263,146 +389,302 @@ const ProductPage = () => {
                     {
                         showreview ?
                             <div className='reviewcont'>
-
                                 <form>
-                                    <div className='formgroup'>
-                                        <label htmlFor='name'>Name</label>
-                                        <input type='text' id='name' />
+                                    <div className='fromgroup'>
+                                        <label htmlFor="">Name</label>
+                                        <input type="text" />
                                     </div>
 
-                                    <div className='formgroup'>
-                                        <label htmlFor='email'>Email</label>
-                                        <input type='email' id='email' />
+                                    <div className='fromgroup'>
+                                        <label htmlFor="">Email</label>
+                                        <input type="email" />
                                     </div>
 
-                                    <div className='formgroup'>
-                                        <label htmlFor='review'>Review</label>
-                                        <textarea id='review' />
+                                    <div className='fromgroup'>
+                                        <label htmlFor="">Review</label>
+                                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                                    </div>
+
+                                    <div className='fromgroup'>
+                                        <label htmlFor="">Rating</label>
+                                        <div className='rating'>
+                                            <div className='star'
+                                                onClick={() => {
+                                                    setrating(1)
+                                                }}
+                                            >
+                                                {
+                                                    rating >= 1 ?
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+                                                        :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+
+                                                }
+                                            </div>
+
+                                            <div className='star' onClick={() => {
+                                                setrating(2)
+                                            }}>
+                                                {
+                                                    rating >= 2 ?
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+                                                        :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+
+                                                }
+                                            </div>
+                                            <div className='star' onClick={() => {
+                                                setrating(3)
+                                            }}>
+                                                {
+                                                    rating >= 3 ?
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+                                                        :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+
+                                                }
+                                            </div>
+                                            <div className='star' onClick={() => {
+                                                setrating(4)
+                                            }}>
+                                                {
+                                                    rating >= 4 ?
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+                                                        :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+
+                                                }
+                                            </div>
+                                            <div className='star' onClick={() => {
+                                                setrating(5)
+                                            }}>
+                                                {
+                                                    rating >= 5 ?
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+                                                        :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                        </svg>
+
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <button>Submit</button>
                                 </form>
 
-                                <div className='review'>
-                                    <div className='reviewhead'>
-                                        <p className='name'>John Doe</p>
-                                        <p className='date'>12/12/2020</p>
 
-                                    </div>
-                                    <p className='reviewdesc'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.
-                                    </p>
+                                <div className='allreview'>
+                                    <h1 className='head1'>Product Reviews</h1>
+                                    {ProductReviews &&
+                                        ProductReviews.map((item, index) => {
+                                            return (
+                                                <div className='review'>
+                                                    <div className='reviewhead'>
+                                                        <p className='name'>{item.Name}</p>
+                                                        <div className='rating1'>
+                                                            <div className='star'
+
+                                                            >
+                                                                {
+                                                                    item.Rating >= 1 ?
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+                                                                        :
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+
+                                                                }
+                                                            </div>
+                                                            <div className='star'
+
+                                                            >
+                                                                {
+                                                                    item.Rating >= 2 ?
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+                                                                        :
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+
+                                                                }
+                                                            </div>
+                                                            <div className='star'
+
+                                                            >
+                                                                {
+                                                                    item.Rating >= 3 ?
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+                                                                        :
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+
+                                                                }
+                                                            </div>
+                                                            <div className='star'
+
+                                                            >
+                                                                {
+                                                                    item.Rating >= 4 ?
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+                                                                        :
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+
+                                                                }
+                                                            </div>
+
+
+                                                            <div className='star'
+
+                                                            >
+                                                                {
+                                                                    item.Rating >= 5 ?
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 staractive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+                                                                        :
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 starinactive">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                                        </svg>
+
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <span className='date'>{item.Date}</span>
+                                                    </div>
+
+                                                    <div className='reviewbody'>
+                                                        {item.Review}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
-
-                                <div className='review'>
-                                    <div className='reviewhead'>
-                                        <p className='name'>John Doe</p>
-                                        <p className='date'>12/12/2020</p>
-
-                                    </div>
-                                    <p className='reviewdesc'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.
-                                    </p>
-                                </div>
-
-                                <div className='review'>
-                                    <div className='reviewhead'>
-                                        <p className='name'>John Doe</p>
-                                        <p className='date'>12/12/2020</p>
-
-                                    </div>
-                                    <p className='reviewdesc'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nisl, eget aliquam nisl nisl sit amet nisl.
-                                    </p>
-                                </div>
-
                             </div>
                             :
                             <p className='desc'>
-                                {productdata.ProductShortDesc ?
-                                    productdata.ProductShortDesc
-                                    :
-                                    <span>
-                                        Basically, tom yum is a soup dish originated in Laos and Thailand. It is also known as ‘tom yam’ in Royal Thai General System of Transcription. Since the time of its origin, this soup is popular in Thai cuisine as well as in neighboring cuisines such as Malay cuisine as well as in cuisine of Singapore. The term tom yum is also associated with the financial crisis aroused in Asia in the year 1997. The crisis is often called as ‘Tom Yum Goong Crisis’.
-                                        <br />
-                                        <br />
-                                        Tom yum is referred to the two identical soups hailing from South East Asian countries. The basic characteristics of this soup are the hot and sour taste along with fragrance of distinct herbs.
-                                        <br />
-                                        <br />
+                                {/* {ProductDescription} */}
 
-                                        Preparation method:<br /> 1) Thaw fully<br />
-                                        2) Heat on stovetop (stir frequently) or microwave (stir halfway through)<br />
-                                        3) Serve
-                                        <br />
-                                        <br />
-
-
-                                        – Suitable for 1 pax only<br />
-                                        – No added MSG and preservatives<br />
-                                        – Product comes frozen<br />
-
-                                        <br />
-                                        Every soup is prepared beforehand in our kitchen and packed. Every pack is filled with ingredients and is suitable for home cooking as there are no preservatives added. Recommended for housewife or young adult that wishes to cook at home.
-                                        <br /><br />
-                                        Ingredients: Prawn, Dory Fish, Mussel, Tom Yum leaf, Squid, Red Chili & Green Chili, Garlic, Onion, Tom Yum Soup, Lemongrass.
-                                    </span>
-                                }
+                                {/* product descrition is a html code */}
+                                <div dangerouslySetInnerHTML={{ __html: ProductDescription }} />
                             </p>
                     }
                 </div>
-                <div className='right'>
-                    <h1 className='head2'>Addons</h1>
-                    <div className='addons'>
-                        <div className='addon'>
+                {
+                    categoryaddons && categoryaddons.length > 0 && <div className='right'>
+                        <h1 className='head2'>Addons</h1>
+                        <div className='addons'>
+                            {/* <div className='addon'>
                             <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' />
                             <p className='addonname'>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
                             <p className='addonprice'>$25</p>
                             <button className='addonbtn'>Add</button>
-                        </div>
+                        </div> */}
 
-                        <div className='addon'>
-                            <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' />
-                            <p className='addonname'>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
-                            <p className='addonprice'>$25</p>
-                            <button className='addonbtn'>Add</button>
-                        </div>
 
-                        <div className='addon'>
-                            <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' />
-                            <p className='addonname'>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
-                            <p className='addonprice'>$25</p>
-                            <button className='addonbtn'>Add</button>
-                        </div>
+                            {
+                                categoryaddons
+                                    .map((product,index) => {
+                                        // console.log(product)
+                                        return (
+                                            <div className='product1'
+                                                key={index}
+                                            >
+                                                <div className='product1image'>
+                                                    <img src={product.ProductImageURL} alt='product' />
+                                                </div>
+                                                <div className='product1info'>
+                                                    <h3>{product.ProductName}</h3>
+                                                    <p>$ {product.SalesPrice}</p>
+                                                </div>
+                                                {
+                                                    selectedcategoryaddon.find((item) => item.product.ProductId === product.ProductId) ?
+                                                        <div
+                                                            className='product1incredecre'
+                                                        >
+                                                            <button
+                                                                onClick={() => {
+                                                                    // find the index of the product in the selectedcategoryaddon array
+                                                                    const index = selectedcategoryaddon.findIndex((item) => item.product.ProductId === product.ProductId)
 
-                        <div className='addon'>
-                            <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' />
-                            <p className='addonname'>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
-                            <p className='addonprice'>$25</p>
-                            <button className='addonbtn'>Add</button>
-                        </div>
+                                                                    // if the quantity is 1 then remove the product from the array
+                                                                    if (selectedcategoryaddon[index].quantity === 1) {
+                                                                        const newselectedcategoryaddon = selectedcategoryaddon.filter((item) => item.product.ProductId !== product.ProductId)
+                                                                        setselectedcategoryaddon(newselectedcategoryaddon)
+                                                                    }
+                                                                    else {
+                                                                        const newselectedcategoryaddon = [...selectedcategoryaddon]
+                                                                        newselectedcategoryaddon[index].quantity = newselectedcategoryaddon[index].quantity - 1
+                                                                        setselectedcategoryaddon(newselectedcategoryaddon)
+                                                                    }
+                                                                }}
+                                                            >-</button>
+                                                            <span>{
+                                                                selectedcategoryaddon.find((item) => item.product.ProductId === product.ProductId).quantity
+                                                            }</span>
+                                                            <button
+                                                                onClick={() => {
+                                                                    const index = selectedcategoryaddon.findIndex((item) => item.product.ProductId === product.ProductId)
+                                                                    const newselectedcategoryaddon = [...selectedcategoryaddon]
+                                                                    newselectedcategoryaddon[index].quantity = newselectedcategoryaddon[index].quantity + 1
+                                                                    setselectedcategoryaddon(newselectedcategoryaddon)
+                                                                }}
+                                                            >+</button>
+                                                        </div>
+                                                        :
+                                                        <button
+                                                            onClick={() => {
+                                                                setselectedcategoryaddon(
+                                                                    [
+                                                                        ...selectedcategoryaddon,
+                                                                        {
+                                                                            quantity: 1,
+                                                                            product: product
+                                                                        }
+                                                                    ]
+                                                                )
+                                                            }}
+                                                        >Add</button>
+                                                }
 
-                        <div className='addon'>
-                            <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' />
-                            <p className='addonname'>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
-                            <p className='addonprice'>$25</p>
-                            <button className='addonbtn'>Add</button>
-                        </div>
-
-                        <div className='addon'>
-                            <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' />
-                            <p className='addonname'>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
-                            <p className='addonprice'>$25</p>
-                            <button className='addonbtn'>Add</button>
-                        </div>
-
-                        <div className='addon'>
-                            <img src='https://makanmate.com/wp-content/uploads/2023/02/1-30-300x300.jpeg' />
-                            <p className='addonname'>Marinated Chicken Satay with Peanut Sauce 25pcs</p>
-                            <p className='addonprice'>$25</p>
-                            <button className='addonbtn'>Add</button>
+                                            </div>
+                                        )
+                                    })
+                            }
                         </div>
                     </div>
-                </div>
+                }
             </div>
 
 

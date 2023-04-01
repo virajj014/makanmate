@@ -376,7 +376,7 @@ const CateringMenu = () => {
                                 }>Wow Wow West</p>
                         }
                     </div>
-                    <div className='filterbyprice'>
+                    {/* <div className='filterbyprice'>
                         <h2 className='head3'>Filter by price</h2>
                         <div>
                             <p>0$</p>
@@ -384,7 +384,7 @@ const CateringMenu = () => {
                             <p>100$</p>
                         </div>
                         <button>sort</button>
-                    </div>
+                    </div> */}
 
                     <div className='latestaddon'>
                         <h2 className='head3'>Latest Addons</h2>

@@ -133,7 +133,7 @@ const Cart = () => {
 
     React.useEffect(() => {
         getcartitemsfromlocalstorage()
-        checklogin()
+        // checklogin()
     }, [])
     useEffect(() => {
         // window.scrollTo('150vh', 50)
@@ -214,13 +214,13 @@ const Cart = () => {
         // get difference in days
         let diff = deliverydateobj.getDate() - currentdate.getDate()
 
-        if (diff < 2) {
-            toast.error('Delivery Date Should be atleast 2 days from today')
-            return false
-        }
-        else {
-            return true
-        }
+        // if (diff < 2) {
+        //     toast.error('Delivery Date Should be atleast 2 days from today')
+        //     return false
+        // }
+        // else {
+        return true
+        // }
     }
     const checkpaymentmethod = () => {
         if (paymentmethod == null) {
@@ -260,61 +260,18 @@ const Cart = () => {
 
     const placeorder = async () => {
         let orderdetail = [];
-
-        await cartdata.map(async (item, index) => {
-            let orderaddons = [];
-            // await item.addons.map((addon, index) => {
-            //     orderaddons.push(
-            //          {
-            //             "OrgId": 1,
-            //             "OrderNo": "",
-            //             "ProductCode": item.productdata.ProductId,
-            //             "CustomAddOnCode": addon.CustomAddOnCode,
-            //             "Price": converttofloat(addon.Price),
-            //             "CreatedBy": "admin",
-            //             "CreatedOn": new Date(),
-            //         }
-            //     )
-            // })
-            let temp = {
-                "OrgId": 1,
-                "OrderNo": "",
-                "SlNo": index + 1,
-                "ProductId": item.productdata.ProductId,
-                "ProductCode": item.productdata.ProductId,
-                "ProductName": item.productdata.ProductName,
-                "Qty": item.quantity,
-                "Price": converttofloat(item.productdata.SalesPrice),
-                "Foc": 0,
-                "Total": converttofloat(item.productdata.SalesPrice) * item.quantity,
-                "ItemDiscount": 0,
-                "ItemDiscountPerc": 0,
-                "SubTotal": converttofloat(item.productdata.SalesPrice) * item.quantity,
-                "Tax": converttofloat((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity)),
-                "NetTotal": converttofloat(
-                    ((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity))
-                    + (item.productdata.SalesPrice) * item.quantity),
-                "TaxCode": 1,
-                "TaxType": "e",
-                "TaxPerc": item.productdata.TaxPerc,
-                "Remarks": "",
-                "CreatedBy": "admin",
-                "ChangedBy": "admin",
-                "Weight": 0,
-                "ProductAddOn": orderaddons
-            }
-            orderdetail.push(temp)
-        })
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString();
 
         let orderobj = {
             "OrgId": 1,
             "BrachCode": cartdata[0].productdata.BranchCode ? cartdata[0].productdata.BranchCode : 'MT',
             "OrderNo": "",
-            "OrderDate": `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
+            "OrderDate": formattedDate,
             "CustomerId": user.B2CCustomerId,
             "CustomerName": user.B2CCustomerName,
             "CustomerAddress": `${selectedaddress.AddressLine1} ${selectedaddress.AddressLine2} ${selectedaddress.AddressLine3}`,
-            "PostalCode": selectedaddress.PostalCode,
+            "PostalCode": "string",
             "TaxCode": 1,
             "TaxType": "e",
             "TaxPerc": 0,
@@ -343,34 +300,93 @@ const Cart = () => {
             "CreatedFrom": "W",
             "RatingValue": 0,
             "CustomerFeedback": "",
-            "OrderDetail": orderdetail
+            "OrderDetail": cartdata.map((item, index) => {
+
+                let productaddons = item?.addons ? item.addons.map((addon, index) => {
+                    return {
+                        "OrgId": 1,
+                        "OrderNo": "",
+                        "ProductCode": item.productdata.ProductId,
+                        "CustomAddOnCode": addon.CustomAddOnCode,
+                        "Price": addon.Price,
+                        "CreatedBy": "admin",
+                        "CreatedOn": formattedDate,
+                    }
+
+                }) : []
+
+                let categoryaddons = item?.categoryaddons ? item.categoryaddons.map((addon, index) => {
+                    return {
+                        "OrgId": 1,
+                        "OrderNo": "",
+                        "ProductCode": item.productdata.ProductId ,
+                        "CustomAddOnCode": addon.product.ProductId,
+                        "Price": addon.product.SalesPrice,
+                        "CreatedBy": "admin",
+                        "CreatedOn": formattedDate,
+                    }
+                })
+                    : []
+
+                return {
+                    "OrgId": 1,
+                    "OrderNo": "",
+                    "SlNo": index + 1,
+                    "ProductId": item.productdata.ProductId,
+                    "ProductCode": item.productdata.ProductId,
+                    "ProductName": item.productdata.ProductName,
+                    "Qty": item.quantity,
+                    "Price": converttofloat(item.productdata.SalesPrice),
+                    "Foc": 0,
+                    "Total": converttofloat(item.productdata.SalesPrice) * item.quantity,
+                    "ItemDiscount": 0,
+                    "ItemDiscountPerc": 0,
+                    "SubTotal": converttofloat(item.productdata.SalesPrice) * item.quantity,
+                    "Tax": converttofloat((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity)),
+                    "NetTotal": converttofloat(
+                        ((item.productdata.TaxPerc) / 100 * (item.productdata.SalesPrice) * (item.quantity))
+                        + (item.productdata.SalesPrice) * item.quantity),
+                    "TaxCode": 1,
+                    "TaxType": "e",
+                    "TaxPerc": item.productdata.TaxPerc,
+                    "Remarks": "",
+                    "CreatedBy": "admin",
+                    "ChangedBy": "admin",
+                    "Weight": 0,
+                    "ProductAddOn": [
+                        ...productaddons,
+                        ...categoryaddons
+                    ]
+                }
+            }),
         }
 
-        console.log(orderobj)
+        // console.log(cartdata)
+        // console.log(orderobj)
 
-        // fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Create', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(orderobj)
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log('orderobj ', orderobj)
-        //         // console.log(data)
-        //         if (data.Status === true && data.Data) {
-        //             //  setordersuccessful({})
-        //             toast.success('Order Placed Successfully')
-        //             getsuccessfulorder(data.Data)
-        //         }
-        //         else {
-        //             toast.error('Error in Placing Order')
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     })
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderobj)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('orderobjafterorder ', data)
+                // console.log(data)
+                if (data.Status === true && data.Data) {
+                    //  setordersuccessful({})
+                    toast.success('Order Placed Successfully')
+                    getsuccessfulorder(data.Data)
+                }
+                else {
+                    toast.error('Error in Placing Order')
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            })
 
 
         // console.log(orderdetail)
@@ -511,7 +527,7 @@ const Cart = () => {
                 active == 1 &&
                 <div className='cartcont'>
                     {
-                        cartdata.length > 0 ?
+                        cartdata && cartdata.length > 0 ?
                             <table className='carttable'>
                                 <thead>
                                     <tr>
@@ -542,14 +558,28 @@ const Cart = () => {
                                                             <div className='productnameandaddon'>
                                                                 <p>{item.productdata.ProductName}</p>
                                                                 {
-                                                                    item.customaddons?.map((addon, index) => {
+                                                                    item?.customaddons?.map((addon, index) => {
                                                                         return (
                                                                             <span>
-                                                                                {addon.AddOnDescription} - ${addon.Price}
+                                                                                {addon.ProductName} - - ${addon.Price}
                                                                             </span>
                                                                         )
                                                                     })
 
+                                                                }
+                                                                {
+                                                                    item?.categoryaddons?.map((addon, index) => {
+                                                                        console.log(addon)
+                                                                        return (
+                                                                            <div className='product'>
+                                                                                <img src={addon.product.ProductImageURL
+                                                                                } alt='product1' />
+                                                                                <div className='productnameandaddon'>
+                                                                                    <p>{addon.product.ProductName}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        )
+                                                                    })
                                                                 }
                                                             </div>
                                                         </div>
@@ -588,11 +618,7 @@ const Cart = () => {
 
                                                     <td>
                                                         <p>$ {
-                                                            ((
-                                                                item.productdata.SalesPrice
-                                                            )
-                                                                *
-                                                                item.quantity).toFixed(2)
+                                                            ((item.productdata.SalesPrice) * item.quantity).toFixed(2)
                                                         }</p>
                                                     </td>
 
@@ -693,12 +719,13 @@ const Cart = () => {
                         <h2 className='mainhead1'>Previous Address</h2>
 
                         {
-                            savedaddresses.length > 0 &&
+                            savedaddresses && savedaddresses.length > 0 &&
                             savedaddresses.map((item, index) => {
                                 return (
                                     <div className='radio' key={index}>
                                         <input type='radio' name='address' id={'address' + index}
                                             onChange={() => {
+                                                // console.log(item)
                                                 setselectedaddress(item)
                                             }}
                                         />
@@ -904,7 +931,7 @@ const Cart = () => {
 
                                 {
 
-                                    ordersuccessitems.map((item, index) => {
+                                    ordersuccessitems && ordersuccessitems.map((item, index) => {
 
                                         return (
                                             <tr key={index}>
@@ -1005,6 +1032,9 @@ const Cart = () => {
                         if (temp && checkpaymentmethod() && checktnc()) {
                             // setActive(active + 1)
                             placeorder()
+                        }
+                        else {
+                            alert('Please Select Payment Method')
                         }
                     }}>Next</button>
                 </div>
