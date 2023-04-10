@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 10px 0px;
+    margin: 30px 0px;
     /* background-color: aqua; */
 }
 
@@ -47,8 +47,8 @@
 
 
 .homeabout .row .right p{
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 14px;
+    font-weight: 400;
     margin-bottom: 1rem;
     width: 100%;
     text-align: left;
@@ -64,23 +64,4 @@
 
 .homeabout .row .right a{
     color: var(--col2);
-}
-
-.homeabout button{
-    background: none;
-    border: 1px solid var(--col2);
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin: 1rem;
-    cursor: pointer;
-    color: var(--col2);
-}
-
-.homeabout button:hover{
-    background-color: var(--col2);
-    color: white;
-    transform: scale(1.1);
-    transition: all 0.6s ease-in-out;
 }

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../../ASSETS/logo1.png'
 
-import './CategoriesSlider.css'
+import './HomeOurCateringMenu.css'
 import { Link, useNavigation } from 'react-router-dom'
 
-const CategoriesSlider = () => {
+const HomeOurCateringMenu = () => {
     const [data, setData] = useState([])
     const [showall, setShowall] = useState(false)
     const [current, setCurrent] = useState('')
@@ -88,4 +88,4 @@ const CategoriesSlider = () => {
     )
 }
 
-export default CategoriesSlider
+export default HomeOurCateringMenu

@@ -38,46 +38,66 @@ code {
 
 /* bring text animating up */
 .mainhead1 {
-  color: var(--col2);
-  font-size: 35px;
-  font-weight: 300;
+  color: black;
+  font-size: 40px;
+  font-weight: 400;
   padding: 5px 10px;
   margin-top: 10px;
+  font-family: 'Cinzel', serif;
+
+}
+.mainhead2 {
+  color: black;
+  font-size: 35px;
+  font-weight: 400;
+  padding: 5px 10px;
+  margin-top: 10px;
+  font-family: 'Cinzel', serif;
+
 }
 
 .mainpg1 {
-  color: var(--col3);
-  font-size: 25px;
-  font-weight: 300;
-  max-width: 1000px;
+  color: black;
+  font-size: 17px;
+  font-weight: 400;
+  max-width: 1500px;
   text-align: center;
   margin-bottom: 40px;
+  font-family: 'Cinzel', serif;
+
 }
 
 .mainpg2 {
   color: var(--col3);
-  font-size: 25px;
-  font-weight: 400;
+  font-size: 17px;
+  font-weight: 600;
   max-width: 1000px;
   text-align: left;
   margin-bottom: 20px;
+  font-family: 'Cinzel', serif;
+}
+
+.mainpg3 {
+  color: black;
+  font-size: 17px;
+  font-weight: 400;
+  max-width: 1500px;
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: 'Cinzel', serif;
+
 }
 
 .mainbutton1 {
-  background: none;
-  border: 1px solid var(--col2);
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 1.5rem;
-  font-weight: 300;
-  margin: 1rem;
-  cursor: pointer;
-  color: var(--col2);
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 5px 0px;
 }
 
 .mainbutton1:hover {
-  background-color: var(--col2);
-  color: white;
+  color: var(--col2);
+  border-bottom: 1px solid var(--col2);
   transform: scale(1.1);
   transition: all 0.6s ease-in-out;
 }
@@ -183,4 +203,69 @@ input[type="checkbox"]:checked {
 .stylenone{
   text-decoration: none;
   color: var(--col3);
+}
+
+
+form input{
+  border: 1px solid lightgray;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+form textarea{
+  border: 1px solid lightgray;
+  padding: 10px 10px;
+  border-radius: 5px;
+  resize: none;
+}
+form input:focus{
+  outline: none;
+  border: 1px solid var(--col2);
+}
+form textarea:focus{
+  outline: none;
+  border: 1px solid var(--col2);
+}
+form label{
+  font-size: 14px;
+  font-weight: 500;
+  color: gray;
+  margin: 0px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+form{
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  width: 100%;
+  margin: 20px 0px;
+}
+form .form-container{
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+form .form-group{
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  width: 100%;
+}
+form button{
+  border: 1px solid var(--col2);
+  padding: 10px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: white;
+  width: 250px;
+  align-self: center;
+  margin: 20px 0px;
+  color: var(--col2);
+}
+
+form button:hover{
+  background-color: var(--col2);
+  color: white;
+  transform: scale(1.1);
+  transition: all 0.6s ease-in-out;
 }

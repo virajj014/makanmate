@@ -1,6 +1,8 @@
 .homesliderout {
     display: flex;
     justify-content: center;
+    font-family: 'Cinzel', serif;
+
 }
 
 .homeslider {
@@ -27,9 +29,9 @@
     color: #ffffff;
     transition: all 0.6s ease-in-out;
     z-index: 2;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.418);
     margin: 0px 10px;
-    padding: 10px 10px;
+    padding: 50px 20px;
 }
 
 

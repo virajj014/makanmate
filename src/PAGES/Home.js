@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../COMPONENTS/Navbar/Navbar'
 import AddressTop from '../COMPONENTS/Navbar/AddressTop'
 import BannerSlider from '../COMPONENTS/Banner/BannerSlider'
-import CategoriesSlider from '../COMPONENTS/Product/CategoriesSlider'
+import HomeOurCateringMenu from '../COMPONENTS/Product/HomeOurCateringMenu'
 import Welcomecont from '../COMPONENTS/Welcome/Welcomecont'
 import HomeSlider from '../COMPONENTS/HomeSlider/HomeSlider'
 import HomeAbout from '../COMPONENTS/HomeAboutBottom/HomeAbout'
@@ -38,7 +38,7 @@ const Home = () => {
         <Welcomecont />
       </div>
       <div className='showup'>
-        <CategoriesSlider />
+        <HomeOurCateringMenu />
       </div>
       {/* <div className='showup'>
         <MakanMart />

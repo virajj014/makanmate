@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './SubmitForm.css'
 import { Rating } from 'react-simple-star-rating'
 import { toast } from 'react-toastify';
@@ -26,28 +25,18 @@ const SubmitForm = () => {
         }
     )
 
-    const uploadTestimonial = () => {
-
+    const uploadTestimonial = (e) => {
+        e.preventDefault()
         if (!user) {
             toast.error("Please login to submit a testimonial")
             return
         }
 
         const getradiovalue = () => {
-            var ele = document.getElementsByName('recommendation');
-            for (let i = 0; i < ele.length; i++) {
-                if (ele[i].checked) {
-                    if (ele[i].value == 'Yes') {
-                        return true
-                    }
-                    else {
-                        return false
-                    }
-                }
-
-                else {
-                    return false
-                }
+            var ele = document.getElementsByName('RecomendMakanmate');
+            for (var i = 0; i < ele.length; i++) {
+                if (ele[i].checked)
+                    return ele[i].value;
             }
         }
         // getradiovalue()
@@ -64,17 +53,15 @@ const SubmitForm = () => {
             "CreatedOn": new Date(),
         }
 
-        // alert(user.B2CCustomerId)
-        // console.log(temp)
 
-        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerTestimonial/Getbycode?OrganizationId=1&CustomerId=' + user.B2CCustomerId)
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerTestimonial/Getbycode?OrganizationId=1&CustomerId=' + user.B2CCustomerId)
             .then(response => response.json())
             .then(data => {
                 if (data.Data[0].B2CCustomerId == user.B2CCustomerId) {
                     toast("You have already submitted a testimonial")
                 }
                 else {
-                    fetch(process.env.REACT_APP_BACKEND_URL+'/B2CCustomerTestimonial/Create',
+                    fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerTestimonial/Create',
                         {
                             method: 'POST',
                             headers: {
@@ -87,7 +74,7 @@ const SubmitForm = () => {
                         .then(data => {
                             console.log(data)
                             if (data.Message == "Sucess") {
-                                toast.success("Your request has been submitted successfully. We will get back to you soon.")
+                                toast.success("Your request has been submitted successfully. Thanks FOr Your Response.")
                             }
                             else {
                                 toast.error("Something went wrong. Please try again later.")
@@ -103,96 +90,60 @@ const SubmitForm = () => {
             <h2
                 className='mainhead1'
             >Leave a Testimonial</h2>
-            <Formik
-                initialValues={{
-                    name: '',
-                    email: '',
-                    experience: '',
-                    favorite: '',
-                    recommendation: ''
-                }}
-                validate={values => {
-                    const errors = {};
-                    // if (!values.name) {
-                    //     errors.name = 'Required';
-                    // }
-                    // if (!values.email) {
-                    //     errors.email = 'Required';
-                    // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-                    //     errors.email = 'Invalid email address';
-                    // }
-                    // if (!values.experience) {
-                    //     errors.experience = 'Required';
-                    // }
-                    // if (!values.favorite) {
-                    //     errors.favorite = 'Required';
-                    // }
-                    // if (!values.recommendation) {
-                    //     errors.recommendation = 'Required';
-                    // }
-                    return errors;
-                }}
-                onSubmit={
-                    () => uploadTestimonial()
-                }
-            >
-                {({ isSubmitting }) => (
-                    <Form>
-                        <label>Enter Your Name <span>*</span></label>
-                        <div className='form-input'>
-                            <Field type='text' name='name' placeholder='Name'
-                                value={user ? user.B2CCustomerName : ''}
 
-                                disabled={user ? true : false}
-                            />
-                            <ErrorMessage name='name' component='div' className='error' />
-                        </div>
 
-                        <label>Enter Your Email <span>*</span></label>
-                        <div className='form-input'>
-                            <Field type='text' name='email' placeholder='Email'
-                                value={user ? user.EmailId : ''}
-                                disabled={user ? true : false}
-                            />
-                            <ErrorMessage name='email' component='div' className='error' />
-                        </div>
+            <form>
+                <div className='form-container'>
+                    <div className="form-group">
+                        <label htmlFor="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter your name"
+                            value={user?.B2CCustomerName}
+                            disabled
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email"
+                            value={user?.EmailId}
+                            disabled
+                        />
+                    </div>
+                </div>
 
-                        <label>How was your overall experience with Makan Mate? <span>*</span></label>
-                        <div className='form-input'>
-                            <Field component='textarea' name='experience' placeholder=''
-                                value={testimonial.OverallExperience}
-                                onChange={(e) => setTestimonial({ ...testimonial, OverallExperience: e.target.value })}
-                            />
-                            <ErrorMessage name='experience' component='div' className='error' />
-                        </div>
 
-                        <label>What do you like best about Makan Mate? <span>*</span></label>
-                        <div className='form-input'>
-                            <Field component='textarea' name='favorite' placeholder=''
-                                value={testimonial.LikesAboutMakanmate}
-                                onChange={(e) => setTestimonial({ ...testimonial, LikesAboutMakanmate: e.target.value })}
-                            />
-                            <ErrorMessage name='favorite' component='div' className='error' />
-                        </div>
 
+                <div className="form-group">
+                    <label>How was your overall experience with Makan Mate? <span>*</span></label>
+                    <textarea id="message" rows="3" placeholder="Enter your response"
+                        onChange={(e) => setTestimonial({ ...testimonial, OverallExperience: e.target.value })}
+                    ></textarea>
+                </div>
+                <div className="form-group">
+                    <label>What do you like best about Makan Mate? <span>*</span></label>
+                    <textarea id="message" rows="3" placeholder="Enter your response"
+                        onChange={(e) => setTestimonial({ ...testimonial, LikesAboutMakanmate: e.target.value })}
+                    ></textarea>
+                </div>
+                <div className="form-container">
+                    <div className="form-group">
                         <label>Would you recommend everyone to Makan Mate?  <span>*</span></label>
-                        <div className='form-input'>
-                            <div className='radio'>
-                                <div>
-                                    <Field type='radio' id='yes' name='recommendation' value='yes'
-                                    />
-                                    <label htmlFor='
-yes'>Yes</label>
-                                </div>
-                                <div>
-                                    <Field type='radio' id='no' name='recommendation' value='no'
-                                    />
-                                    <label htmlFor='no'>No</label>
-                                </div>
-                            </div>
-                            <ErrorMessage name='recommendation' component='div' className='error' />
-                        </div>
+                        {/* radio yes no */}
+                        <div className="form-check">
+                            <input type="radio" name="RecomendMakanmate" id="flexRadioDefault1" value="Yes" />
+                            <label htmlFor="flexRadioDefault1"
 
+                            >
+                                Yes
+                            </label>
+                        </div>
+                        <div className="form-check">
+                            <input type="radio" name="RecomendMakanmate" id="flexRadioDefault2" value="No" />
+                            <label htmlFor="flexRadioDefault2">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div className="form-group">
                         <label>Star Rating</label>
                         <div className='star-rating'>
                             {
@@ -300,15 +251,15 @@ yes'>Yes</label>
                                     </div>
                             }
                         </div>
-                        <button type='submit' disabled={isSubmitting}
-                            className="mainbutton1"
-                            onClick={() => {
-                                uploadTestimonial()
-                            }}
-                        >Submit</button>
-                    </Form>
-                )}
-            </Formik>
+                    </div>
+                </div>
+
+                <button 
+                 onClick={(e)=>{
+                    uploadTestimonial(e)
+                 }}
+                >Submit</button>
+            </form>
         </div>
     )
 }

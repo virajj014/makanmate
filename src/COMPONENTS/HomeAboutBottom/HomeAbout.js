@@ -20,7 +20,9 @@ const HomeAbout = () => {
             </div>
 
             <Link to='/about'>
-                <button>ABOUT MAKANMATE</button>
+                <button
+                    className='mainbutton1'
+                >ABOUT MAKANMATE</button>
             </Link>
         </div>
     )

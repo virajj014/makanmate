@@ -1,7 +1,7 @@
 .contact {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .contactin{
@@ -31,40 +31,13 @@
     font-weight: 700;
 }
 
-.contact form{
-    width: 50%;
+ .contact form{
+    width:60%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
-}
-
-.contact form input{
-    width: 100%;
-    height: 40px;
-    margin: 5px 0px;
-    border: 1px solid var(--col2);
-    border-radius: 5px;
-    padding: 0px 10px;
-}
-
-.contact form textarea{
-    width: 100%;
-    height: 200px;
-    margin: 5px 0px;
-    border: 1px solid var(--col2);
-    border-radius: 5px;
-    padding: 10px;
-}
-
-
-.contact form label{
-    font-weight: 400;
-    font-size: 18px;
-    margin-top: 10px;
-    width: 100%;
-}
-
-.contact form label span{
-    color: red;
+    align-self: center;
+    margin: 50px 0px;
+    /* background-color: aqua; */
 }

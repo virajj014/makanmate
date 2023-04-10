@@ -5,7 +5,12 @@ import './Contact.css'
 import Footer from '../COMPONENTS/Footer/Footer'
 import { toast } from 'react-toastify';
 import StaticBanner from '../COMPONENTS/Banner/StaticBanner';
+import { useEffect } from 'react';
 const Contact = () => {
+
+    useEffect (() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     const [formData, setFormData] = useState({
         name: '',
@@ -38,7 +43,7 @@ const Contact = () => {
         // console.log(formData);
         // Add your own code here to submit the form data to your backend or server
 
-        fetch(process.env.REACT_APP_BACKEND_URL+'/B2CContactEnquiry/Create',
+        fetch(process.env.REACT_APP_BACKEND_URL + '/B2CContactEnquiry/Create',
             {
                 method: 'POST',
                 headers: {
@@ -89,10 +94,16 @@ const Contact = () => {
             </div>
             <form onSubmit={handleSubmit}>
                 <h1 className='mainhead1'>Contact Us</h1>
-                <label htmlFor="name">Name <span>*</span></label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} />
-                <label htmlFor="phone">Phone <span>*</span></label>
-                <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
+                <div className='form-container'>
+                    <div className='form-group'>
+                        <label htmlFor="name">Name <span>*</span></label>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="phone">Phone <span>*</span></label>
+                        <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
+                    </div>
+                </div>
                 <label htmlFor="email">Email <span>*</span></label>
                 <input type="text" name="email" value={formData.email} onChange={handleChange} />
                 <label htmlFor="subject">Subject <span>*</span></label>
@@ -100,7 +111,6 @@ const Contact = () => {
                 <label htmlFor="message">Your Request Message <span>*</span></label>
                 <textarea type="text" name="message" value={formData.message} onChange={handleChange} />
                 <button type="submit"
-                    className='mainbutton1'
                 >Submit</button>
             </form>
 

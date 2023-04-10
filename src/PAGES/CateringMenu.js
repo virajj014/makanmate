@@ -16,6 +16,7 @@ const CateringMenu = () => {
     const [selectedCategory, setselectedCategory] = React.useState(mycategoryid)
     const [loading, setloading] = React.useState(false)
     const getproducts = async (categoryname) => {
+        window.scrollTo(0, 0)
         setsearch('')
         setloading(true)
         let temp = [];
@@ -150,6 +151,7 @@ const CateringMenu = () => {
                                 <p className='active'>Bento Set</p>
                                 :
                                 <p onClick={() => {
+                                    
                                     setselectedCategory('Bento Set')
                                     getproducts('Bento Set')
                                 }}>Bento Set</p>
@@ -435,14 +437,7 @@ const CateringMenu = () => {
                                 </svg>
                             </div>
                             <div className='selecttagout'>
-                                {/* <select name="category" id="category">
-                                    <option value="popularity">Sort by popularity</option>
-                                    <option value="rating">Sort by average rating</option>
-                                    <option value="latest">Sort by latest</option>
-                                    <option value="price">Sort by price: low to high</option>
-                                    <option value="price-desc">Sort by price: high to low</option>
-                                </select> */}
-
+                        
                                 <Dropdown>
                                     <Dropdown.Toggle variant="success" id="dropdown-basic">
                                         Sort by {sortproductsby}

@@ -44,7 +44,7 @@ const HomeSlider = () => {
 
 
 
-        }, 3000);
+        }, 5000);
         return () => clearInterval(interval);
     }, [index]);
 
