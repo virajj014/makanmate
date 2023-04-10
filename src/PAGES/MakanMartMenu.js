@@ -11,8 +11,8 @@ import LoadingSpinner from '../LOADER/LoadingSpinner'
 
 
 
-let pagetype = 'MT'
-const CateringMenu = () => {
+let pagetype = 'MM'
+const MakanMartMenu = () => {
 
     const { mycategoryid } = useParams();
     const [products, setproducts] = React.useState([])
@@ -140,284 +140,16 @@ const CateringMenu = () => {
 
 
     const [sortproductsby, setsortproductsby] = React.useState('Latest')
-    // const sortproducts = () => {
-    //     if(sortproductsby == 'Price: Low to High'){
-    //         setproducts(products.sort((a, b) => (a.Price > b.Price) ? 1 : -1))
-    //     }
-    //     else if(sortproductsby == 'Price: High to Low'){
-    //         setproducts(products.sort((a, b) => (a.Price < b.Price) ? 1 : -1))
-    //     }
-    //     else if(sortproductsby == 'Latest'){
-    //         setproducts(products.sort((a, b) => (a.ChangedOn < b.ChangedOn) ? 1 : -1))
-    //     }
-    //     else if(sortproductsby == 'Name: Z to A'){
-    //         setproducts(products.sort((a, b) => (a.Name < b.Name) ? 1 : -1))
-    //     }
-    // }
 
-    // React.useEffect(() => {
-    //     sortproducts()
-    // }, [sortproductsby])
 
     return (
         <div className='categorymenu'>
             <Navbar />
-            <StaticBanner name='Catering Menu' />
+            <StaticBanner name='Makan Mart' />
 
             <div className='c2'>
                 <div className='c2col1'>
                     <h2 className='head3'>Menu Categories</h2>
-                    {/* <div className='c12'>
-                        {
-                            selectedCategory == 'All' ?
-                                <p className='active'>All</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('All')
-                                    getproducts('')
-                                }}>All</p>
-                        }
-                        {
-                            selectedCategory == 'Bento Set' ?
-                                <p className='active'>Bento Set</p>
-                                :
-                                <p onClick={() => {
-                                    
-                                    setselectedCategory('Bento Set')
-                                    getproducts('Bento Set')
-                                }}>Bento Set</p>
-                        }
-
-                        {
-                            selectedCategory == 'Bento Special' ?
-
-                                <p className='active'>Bento Special</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Bento Special')
-                                    getproducts('Bento Special')
-                                }
-                                }>Bento Special</p>
-                        }
-                        {
-                            selectedCategory == 'Chinese New Year Addons' ?
-
-                                <p className='active'>Chinese New Year Addons</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Chinese New Year Addons')
-                                    getproducts('Chinese New Year Addons')
-                                }
-                                }>Chinese New Year Addons</p>
-                        }
-
-                        {
-                            selectedCategory == 'Chinese New Year Menu' ?
-
-                                <p className='active'>Chinese New Year Menu</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Chinese New Year Menu')
-                                    getproducts('Chinese New Year Menu')
-                                }
-                                }>Chinese New Year Menu</p>
-                        }
-
-                        {
-                            selectedCategory == 'Delight Menu' ?
-
-                                <p className='active'>Delight Menu</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Delight Menu')
-                                    getproducts('Delight Menu')
-                                }
-                                }>Delight Menu</p>
-                        }
-
-                        {
-                            selectedCategory == 'Healthier Choice' ?
-
-                                <p className='active'>Healthier Choice</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Healthier Choice')
-                                    getproducts('Healthier Choice')
-                                }
-                                }>Healthier Choice</p>
-                        }
-
-                        {
-                            selectedCategory == 'High Tea' ?
-
-                                <p className='active'>High Tea</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('High Tea')
-                                    getproducts('High Tea')
-                                }
-                                }>High Tea</p>
-                        }
-
-                        {
-                            selectedCategory == 'Indian Menu' ?
-
-                                <p className='active'>Indian Menu</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Indian Menu')
-                                    getproducts('Indian Menu')
-                                }
-                                }>Indian Menu</p>
-                        }
-
-                        {
-                            selectedCategory == 'Korean Menu' ?
-
-                                <p className='active'>Korean Menu</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Korean Menu')
-                                    getproducts('Korean Menu')
-                                }
-                                }>Korean Menu</p>
-                        }
-
-                        {
-                            selectedCategory == 'Makanmart' ?
-
-                                <p className='active'>Makanmart</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Makanmart')
-                                    getproducts('Makanmart')
-                                }
-                                }>Makanmart</p>
-                        }
-
-                        {
-                            selectedCategory == 'Delicious Dim Sum' ?
-
-                                <p className='active'>Delicious Dim Sum</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Delicious Dim Sum')
-                                    getproducts('Delicious Dim Sum')
-                                }
-                                }>Delicious Dim Sum</p>
-                        }
-
-                        {
-                            selectedCategory == 'Tantalising Meat' ?
-
-                                <p className='active'>Tantalising Meat</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Tantalising Meat')
-                                    getproducts('Tantalising Meat')
-                                }
-                                }>Tantalising Meat</p>
-
-                        }
-                        {
-                            selectedCategory == 'Mini Catering' ?
-
-                                <p className='active'>Mini Catering</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Mini Catering')
-                                    getproducts('Mini Catering')
-                                }
-                                }>Mini Catering</p>
-
-                        }
-
-                        {
-                            selectedCategory == 'Premium Bento' ?
-                                <p className='active'>Premium Bento</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Premium Bento')
-                                    getproducts('Premium Bento')
-                                }
-                                }>Premium Bento</p>
-
-                        }
-
-                        {
-                            selectedCategory == 'Sedap Menu' ?
-                                <p className='active'>Sedap Menu</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Sedap Menu')
-                                    getproducts('Sedap Menu')
-                                }
-                                }>Sedap Menu</p>
-                        }
-                        {
-                            selectedCategory == 'Seminar' ?
-                                <p className='active'>Seminar</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Seminar')
-                                    getproducts('Seminar')
-                                }
-                                }>Seminar</p>
-                        }
-
-                        {
-                            selectedCategory == 'Special Celebration' ?
-                                <p className='active'>Special Celebration</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Special Celebration')
-                                    getproducts('Special Celebration')
-                                }
-                                }>Special Celebration</p>
-                        }
-
-                        {
-                            selectedCategory == 'Vegetarian Catering' ?
-                                <p className='active'>Vegetarian Catering</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Vegetarian Catering')
-                                    getproducts('Vegetarian Catering')
-                                }
-                                }>Vegetarian Catering</p>
-                        }
-
-                        {
-                            selectedCategory == 'Western Seminar' ?
-                                <p className='active'>Western Seminar</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Western Seminar')
-                                    getproducts('Western Seminar')
-                                }
-                                }>Western Seminar</p>
-                        }
-
-                        {
-                            selectedCategory == 'Wow Wow West' ?
-                                <p className='active'>Wow Wow West</p>
-                                :
-                                <p onClick={() => {
-                                    setselectedCategory('Wow Wow West')
-                                    getproducts('Wow Wow West')
-                                }
-                                }>Wow Wow West</p>
-                        }
-                    </div> */}
-                    {/* <div className='filterbyprice'>
-                        <h2 className='head3'>Filter by price</h2>
-                        <div>
-                            <p>0$</p>
-                            <input type='range' min='0' max='100' />
-                            <p>100$</p>
-                        </div>
-                        <button>sort</button>
-                    </div> */}
                     <div className='c12'>
                         {
                             selectedCategory == 'All' ?
@@ -563,11 +295,12 @@ const CateringMenu = () => {
                                                 <div className='product'
                                                     key={product.ProductId}
 
+
                                                 >
                                                     <div className='productimage'
-                                                     onClick={() => {
-                                                        navigate(`/product/${product.ProductId}`)
-                                                    }}
+                                                        onClick={() => {
+                                                            navigate(`/product/${product.ProductId}`)
+                                                        }}
                                                     >
                                                         <img src={
                                                             product.ProductImageURL ?
@@ -663,4 +396,4 @@ const CateringMenu = () => {
     )
 }
 
-export default CateringMenu
+export default MakanMartMenu

@@ -9,6 +9,8 @@ import Cart from './PAGES/Cart';
 import Contact from './PAGES/Contact';
 import Event from './PAGES/Event';
 import UserProfile from './PAGES/UserProfile';
+import MakanMart from './COMPONENTS/Product/MakanMart';
+import MakanMartMenu from './PAGES/MakanMartMenu';
 // import Login from './PAGES/Auth/Login';
 // import Signup from './PAGES/Auth/Signup';
 
@@ -21,6 +23,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About/>} />
         <Route path="/menu/cateringmenu/:mycategoryid" element={<CateringMenu/>} />
+        <Route path="/menu/makanmart/:mycategoryid" element={<MakanMartMenu/>} />
+
         <Route path="/product/:prodid" element={<ProductPage/>} />
         <Route path="/cart" element={<Cart/>} />
         <Route path="/contact" element={<Contact/>} />

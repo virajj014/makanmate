@@ -23,24 +23,19 @@ const Cart = () => {
     const getcartitemsfromlocalstorage = () => {
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
-            console.log(cart)
+            console.log(cart[0])
             setcartdata(cart)
 
             let total = 0
             cart.forEach(item => {
-                total += (
-                    item.productdata.SalesPrice
-                )
-                    *
-                    item.quantity
-
-                let customaddontotal = 0
-                item.customaddons.forEach(addon => {
-                    customaddontotal += addon.Price *
-                        item.quantity
-                })
-                total += customaddontotal
+                 total += (item?.productdata?.SalesPrice * item?.quantity)
+                 let customaddontotal = 0
+                 item?.productdata?.customaddons?.forEach(addon => {
+                    customaddontotal += addon.Price *item.quantity
+                 })
+                    total += customaddontotal
             })
+           
             setsubtotal(total)
             setshipping(80)
             settax(total * 0.08 + 80 * 0.08)
@@ -541,7 +536,7 @@ const Cart = () => {
 
                                 <tbody>
                                     {
-                                        cartdata.map((item, index) => {
+                                        cartdata?.map((item, index) => {
                                             return (
                                                 <tr key={index}
                                                     className='cartitemrow'

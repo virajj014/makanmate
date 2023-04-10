@@ -251,7 +251,7 @@ const Navbar = ({ pagename }) => {
                             {/* fresh vegetables */}
                             <Dropdown.Item href="/menu/cateringmenu/All">CATERING  MENU</Dropdown.Item>
                             {/* fresh fruits */}
-                            <Dropdown.Item href="#/action-2">MAKAN MART</Dropdown.Item>
+                            <Dropdown.Item href="/menu/makanmart/All">MAKAN MART</Dropdown.Item>
 
                         </Dropdown.Menu>
                     </Dropdown>
