@@ -1,0 +1,47 @@
+.popupout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popupin {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 400px;
+  }
+  
+  .popupin h4 {
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+  }
+  
+  .yesorno {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .yesorno button {
+    background-color: var(--col3);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .yesorno button:hover {
+    background-color: var(--col2);
+  }

@@ -8,6 +8,9 @@ import logo from '../ASSETS/logo.png'
 import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
 import Dropdown from 'react-bootstrap/Dropdown';
 import LoadingSpinner from '../LOADER/LoadingSpinner'
+import { useRecoilState } from 'recoil'
+import { clearCartState } from '../Provider/ClearCartProvider'
+import PopupYesOrNo from '../COMPONENTS/Popups/PopupYesOrNo'
 
 
 
@@ -104,49 +107,76 @@ const MakanMartMenu = () => {
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
             // check if item is already in cart
-            let itemincart = cart.find(item => item.productdata.ProductId === productdata.ProductId)
-            if (itemincart) {
-                // update quantity
-                cart = cart.map(item => {
-                    if (item.productdata.ProductId === productdata.ProductId) {
-                        return {
-                            ...item,
-                            quantity: item.quantity + count
-                        }
-                    }
-                    else {
-                        return item
-                    }
-                })
-                localStorage.setItem('cart', JSON.stringify(cart))
+
+
+
+            let flag = false;
+            // this item is of type MT, check cart if all the items are MT, if there is any MM item then return 
+            cart.forEach(element => {
+                if (element.productdata.BranchCode != pagetype) {
+                    flag = true;
+                }
+            });
+
+            if (flag) {
+                toast.error('You can not add items from both MT and MM in the same cart')
+                setShowPopup(true)
             }
             else {
-                // add new item to cart
-                cart = [...cart, { productdata, quantity: count, url: window.location.href }]
-                localStorage.setItem('cart', JSON.stringify(cart))
+                let itemincart = cart.find(item => item.productdata.ProductId === productdata.ProductId)
+                if (itemincart) {
+                    // update quantity
+                    cart = cart.map(item => {
+                        if (item.productdata.ProductId === productdata.ProductId) {
+                            return {
+                                ...item,
+                                quantity: item.quantity + count
+                            }
+                        }
+                        else {
+                            return item
+                        }
+                    })
+                    localStorage.setItem('cart', JSON.stringify(cart))
+                }
+                else {
+                    // add new item to cart
+                    cart = [...cart, { productdata, quantity: count, url: window.location.href }]
+                    localStorage.setItem('cart', JSON.stringify(cart))
+                }
+                window.location.reload()
+                toast.success('Item added to cart')
             }
+
         }
         else {
             // create cart and add item object to cart
             cart = [{ productdata, quantity: count }]
             localStorage.setItem('cart', JSON.stringify(cart))
+            window.location.reload()
+            toast.success('Item added to cart')
         }
-        window.location.reload()
-        toast.success('Item added to cart')
+
     }
+
 
 
     const [search, setsearch] = React.useState('');
 
 
     const [sortproductsby, setsortproductsby] = React.useState('Latest')
+    const [showpopup, setShowPopup] = useRecoilState(clearCartState)
 
 
     return (
         <div className='categorymenu'>
             <Navbar />
             <StaticBanner name='Makan Mart' />
-
+            {
+                showpopup && <PopupYesOrNo message={`Found Catering Menu items in your cart, for adding Makan Mart items into cart it's required to clear cart first.`}
+                    yes={'Clear Cart'} no={'Cancel'} taskfunc={'clearcart'}
+                />
+            }
             <div className='c2'>
                 <div className='c2col1'>
                     <h2 className='head3'>Menu Categories</h2>
@@ -310,7 +340,7 @@ const MakanMartMenu = () => {
 
                                                         } alt='product' />
                                                     </div>
-                                                    <div className='productinfo'   onClick={() => {
+                                                    <div className='productinfo' onClick={() => {
                                                         navigate(`/product/${product.ProductId}`)
                                                     }}>
                                                         <h3>{product.ProductName}</h3>

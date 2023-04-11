@@ -40,9 +40,9 @@ const Home = () => {
       <div className='showup'>
         <HomeOurCateringMenu />
       </div>
-      {/* <div className='showup'>
+      <div className='showup'>
         <MakanMart />
-      </div> */}
+      </div>
       <div className='showup'>
         <HomeAbout />
       </div>
