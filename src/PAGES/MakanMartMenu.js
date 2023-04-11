@@ -200,7 +200,7 @@ const MakanMartMenu = () => {
                                                 :
                                                 <p onClick={() => {
                                                     setselectedCategory(category.CategoryName)
-                                                    getproducts(category.CategoryName)
+                                                    getproducts(category.CategoryId)
                                                 }
                                                 }>{category.CategoryName}</p>
 

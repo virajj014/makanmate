@@ -88,7 +88,7 @@ const SubmitForm = () => {
     return (
         <div className='submitform'>
             <h2
-                className='mainhead1'
+                className='mainhead3'
             >Leave a Testimonial</h2>
 
 
@@ -128,19 +128,23 @@ const SubmitForm = () => {
                     <div className="form-group">
                         <label>Would you recommend everyone to Makan Mate?  <span>*</span></label>
                         {/* radio yes no */}
-                        <div className="form-check">
-                            <input type="radio" name="RecomendMakanmate" id="flexRadioDefault1" value="Yes" />
-                            <label htmlFor="flexRadioDefault1"
+                        <div
+                        style={{ display: 'flex', justifyContent: 'flex-start' }}
+                        >
+                            <div className="form-check">
+                                <input type="radio" name="RecomendMakanmate" id="flexRadioDefault1" value="Yes" />
+                                <label htmlFor="flexRadioDefault1"
 
-                            >
-                                Yes
-                            </label>
-                        </div>
-                        <div className="form-check">
-                            <input type="radio" name="RecomendMakanmate" id="flexRadioDefault2" value="No" />
-                            <label htmlFor="flexRadioDefault2">
-                                No
-                            </label>
+                                >
+                                    Yes
+                                </label>
+                            </div>
+                            <div className="form-check">
+                                <input type="radio" name="RecomendMakanmate" id="flexRadioDefault2" value="No" />
+                                <label htmlFor="flexRadioDefault2">
+                                    No
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div className="form-group">
@@ -254,10 +258,10 @@ const SubmitForm = () => {
                     </div>
                 </div>
 
-                <button 
-                 onClick={(e)=>{
-                    uploadTestimonial(e)
-                 }}
+                <button
+                    onClick={(e) => {
+                        uploadTestimonial(e)
+                    }}
                 >Submit</button>
             </form>
         </div>

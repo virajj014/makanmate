@@ -114,7 +114,7 @@ const ProductPage = () => {
         await fetch(process.env.REACT_APP_BACKEND_URL + `/CategoryR/GetCategoryAddOnDetail?OrganizationId=1&CategoryId=${categoryid}`)
             .then(res => res.json())
             .then(res => {
-                // console.log(res)
+                console.log(categoryid)
                 if (res.Code == 200) {
 
                     let categoryproducts = [];

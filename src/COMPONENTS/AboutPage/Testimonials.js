@@ -30,7 +30,7 @@ const Testimonials = () => {
     return (
         <div className='testimonials'>
             <h2
-                className='mainhead1'
+                className='mainhead3'
             >Testimonials From Our Happy Customers</h2>
             <Carousel
                 additionalTransfrom={0}
@@ -80,7 +80,8 @@ const Testimonials = () => {
                     testimonials1.map((testimonial) => {
                         return (
                             <div className='card'>
-                                <h1>{testimonial.B2CCustomerName}</h1>
+                                <h1
+                                >{testimonial.B2CCustomerName}</h1>
                                 <p>{testimonial.LikesAboutMakanmate}</p>
 
                                 <div className='star-rating'>

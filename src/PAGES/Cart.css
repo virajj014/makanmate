@@ -564,9 +564,14 @@
 }
 
 .confirmationcont .c3 .right div p {
-    font-weight: 300;
+    font-weight: 400;
     color: var(--col3);
-    font-size: 25px;
+    font-size: 17px;
+}
+.confirmationcont .c3 .right div p:last-child {
+    font-weight: 600;
+    color: var(--col3);
+    font-size: 17px;
 }
 
 

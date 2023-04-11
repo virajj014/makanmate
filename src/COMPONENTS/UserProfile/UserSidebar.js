@@ -72,7 +72,7 @@ const UserSidebar = ({ activepage }) => {
 
                     </Link>
             }
-            {
+            {/* {
                 activepage === 'legalnotice' ?
                     <Link to='/user/legalnotice' className='stylenone'>
                         <div className='s2'>
@@ -93,7 +93,7 @@ const UserSidebar = ({ activepage }) => {
                             <span>Legal Notice</span>
                         </div>
                     </Link>
-            }
+            } */}
 
             {
                 activepage === 'changepassword' ?

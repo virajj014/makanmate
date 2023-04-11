@@ -135,22 +135,28 @@
     width: 100%;
 }
 
-.confirmationcont1 .c2 div {
+.confirmationcont1 .c2 .multirow {
     display: flex;
     width: 45%;
     justify-content: space-between;
 }
-
-.confirmationcont1 .c2 div p {
-    width: 45%;
-
+.confirmationcont1 .c2 .singlerow{
+    display: flex;
+    width: 100%;
+    gap: 70px;
 }
+
+.confirmationcont1 .c2 .multirow p {
+    width: 45%;
+}
+
 
 .confirmationcont1 .c2 div p:first-child {
     font-weight: 300;
     color: var(--col3);
     font-size: 15px;
 }
+
 
 .confirmationcont1 .c2 div p:last-child {
     font-weight: 600;
@@ -206,13 +212,19 @@
 .confirmationcont1 .c3 .c4 div {
     display: flex;
     gap: 20px;
-    min-width: 20%;
+    min-width: 25%;
     justify-content: space-between;
 }
 
 .confirmationcont1 .c3 .c4 div p {
     font-weight: 300;
     color: var(--col3);
-    font-size: 25px;
+    font-size: 17px;
+}
+
+.confirmationcont1 .c3 .c4 div p:last-child {
+    font-weight: 600;
+    color: var(--col3);
+    font-size: 17px;
 }
 

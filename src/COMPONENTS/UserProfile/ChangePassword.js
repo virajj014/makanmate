@@ -54,7 +54,7 @@ const ChangePassword = ({ userid, oldpass }) => {
   }
   return (
     <div className='changepassword'>
-      <h1 className='mainhead1'>Change Password</h1>
+      <h1 className='mainhead3'>Change Password</h1>
       <div className='form'>
         <div className='form-group'>
           <label htmlFor='email'>Old Password <span>*</span></label>

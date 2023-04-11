@@ -160,7 +160,7 @@ const UserAddress = () => {
     return (
         <div className='useraddress'>
             {
-                !show && <h1 className='mainhead1'>Your Address</h1>
+                !show && <h1 className='mainhead3'>Your Address</h1>
             }
             {
                 !show && <div className='addressin'>

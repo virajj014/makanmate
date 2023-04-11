@@ -877,10 +877,10 @@ const Cart = () => {
                             </p>
                         </div>
 
-                        <div>
+                        {/* <div>
                             <p>Order Subtotal</p>
                             <p>$ {ordersuccessful.SubTotal}</p>
-                        </div>
+                        </div> */}
 
                         <div>
                             <p>Payment Method</p>
@@ -893,20 +893,20 @@ const Cart = () => {
                             }</p>
                         </div>
 
-                        <div>
+                        {/* <div>
                             <p>Shipping Charges</p>
                             <p>$ 80.00</p>
-                        </div>
+                        </div> */}
 
-                        <div>
+                        {/* <div>
                             <p>Tax</p>
                             <p>$ {ordersuccessful.Tax}</p>
-                        </div>
+                        </div> */}
 
-                        <div>
+                        {/* <div>
                             <p>Total</p>
                             <p>$ {ordersuccessful.Total}</p>
-                        </div>
+                        </div> */}
 
                     </div>
 

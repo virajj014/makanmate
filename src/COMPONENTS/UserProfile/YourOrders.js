@@ -119,9 +119,9 @@ const YourOrders = ({ userid, EmailId }) => {
         <div className='yourorders'>
             {
                 showorder ?
-                    <h1 className='mainhead1'>{ordersuccessful.OrderNo}</h1>
+                    <h1 className='mainhead3'>{ordersuccessful.OrderNo}</h1>
                     :
-                    <h1 className='mainhead1'>Your Orders</h1>
+                    <h1 className='mainhead3'>Your Orders</h1>
             }
             {
                 showorder ?
@@ -133,25 +133,25 @@ const YourOrders = ({ userid, EmailId }) => {
 
                         <div className='c2'>
                             <h2>Order Summary</h2>
-                            <div>
+                            <div className='multirow'>
                                 <p>Order Number</p>
                                 <p>{ordersuccessful.OrderNo}</p>
                             </div>
 
-                            <div>
+                            <div className='multirow'>
                                 <p>Order Date</p>
                                 <p>{
                                     new Date().toLocaleDateString()
                                 }</p>
                             </div>
 
-                            <div>
+                            <div className='multirow'>
                                 <p>Name</p>
                                 <p>{ordersuccessful.CustomerName
                                 }</p>
                             </div>
 
-                            <div>
+                            <div className='multirow'>
                                 <p>Email</p>
                                 <p>
                                     {
@@ -160,23 +160,27 @@ const YourOrders = ({ userid, EmailId }) => {
                                 </p>
                             </div>
 
-                            <div>
+                            {/* <div>
                                 <p>Order Subtotal</p>
                                 <p>$ {ordersuccessful.SubTotal}</p>
-                            </div>
+                            </div> */}
 
-                            <div>
-                                <p>Payment Method</p>
-                                <p>{ordersuccessful.PaymentType}</p>
-                            </div>
+                           
 
-                            <div>
+                            <div
+                             className='singlerow'
+                            >
                                 <p>Shipping Address</p>
                                 <p>{ordersuccessful.CustomerShipToAddress
                                 }</p>
                             </div>
 
-                            <div>
+                            <div className='multirow'>
+                                <p>Payment Method</p>
+                                <p>{ordersuccessful.PaymentType}</p>
+                            </div>
+
+                            {/* <div>
                                 <p>Shipping Charges</p>
                                 <p>$ 80.00</p>
                             </div>
@@ -189,7 +193,7 @@ const YourOrders = ({ userid, EmailId }) => {
                             <div>
                                 <p>Total</p>
                                 <p>$ {ordersuccessful.Total}</p>
-                            </div>
+                            </div> */}
 
                         </div>
 

@@ -450,8 +450,9 @@ const CateringMenu = () => {
                                                 <p className='active'>{category.CategoryName}</p>
                                                 :
                                                 <p onClick={() => {
+                                                    console.log(category)
                                                     setselectedCategory(category.CategoryName)
-                                                    getproducts(category.CategoryName)
+                                                    getproducts(category.CategoryId)
                                                 }
                                                 }>{category.CategoryName}</p>
 
