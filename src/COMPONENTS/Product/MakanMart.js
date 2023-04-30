@@ -7,14 +7,26 @@ const MakanMart = () => {
     const [showall, setShowall] = useState(false)
     const [current, setCurrent] = useState('')
 
-    const getbannerdata = () => {
+    const gatdata = () => {
         // MM and MT filter
         fetch(process.env.REACT_APP_BACKEND_URL+"/CategoryR/GetAllActive?OrganizationId=1")
             .then(res => res.json())
             .then(res => {
                 if (res.Code == 200) {
-                    console.log(res.Data[1])
-                    setData(res.Data)
+                    console.log(res.Data)
+                    // setData(res.Data)
+
+                    let temp = []
+
+                    temp = res.Data.filter((item) => {
+                        return item.BranchCode == 'MM'
+                    })
+                    if(showall){
+                       
+                    }else{
+                        temp = temp.slice(0, 6)
+                    }
+                    setData(temp)
                 }
             })
             .catch(err => {
@@ -23,8 +35,8 @@ const MakanMart = () => {
     }
 
     useEffect(() => {
-        getbannerdata()
-    }, [])
+        gatdata()
+    }, [showall])
 
     return (
         <div className='categoriesout'>
@@ -36,21 +48,7 @@ const MakanMart = () => {
                     <h3>Breakfast</h3>
                 </div> */}
                 {
-                    data.filter(
-                        (item, index) => {
-                            if (showall && item.BranchCode == "MM") {
-                                return true
-                            }
-                            else {
-                                if (index < 20 && item.BranchCode == "MM") {
-                                    return true
-                                }
-                                else {
-                                    return false
-                                }
-                            }
-                        }
-                    ).map((item, index) => {
+                    data.map((item, index) => {
                         console.log(item)
                         return (
                             <div className='card'>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../COMPONENTS/Navbar/Navbar'
-import AddressTop from '../COMPONENTS/Navbar/AddressTop'
-import BannerSlider from '../COMPONENTS/Banner/BannerSlider'
-import HomeOurCateringMenu from '../COMPONENTS/Product/HomeOurCateringMenu'
-import Welcomecont from '../COMPONENTS/Welcome/Welcomecont'
-import HomeSlider from '../COMPONENTS/HomeSlider/HomeSlider'
-import HomeAbout from '../COMPONENTS/HomeAboutBottom/HomeAbout'
-import Footer from '../COMPONENTS/Footer/Footer'
-import MakanMart from '../COMPONENTS/Product/MakanMart'
+import Navbar from '../../COMPONENTS/Navbar/Navbar'
+import AddressTop from '../../COMPONENTS/Navbar/AddressTop'
+import BannerSlider from '../../COMPONENTS/Banner/BannerSlider'
+import HomeOurCateringMenu from '../../COMPONENTS/Product/HomeOurCateringMenu'
+import Welcomecont from '../../COMPONENTS/Welcome/Welcomecont'
+import HomeSlider from '../../COMPONENTS/HomeSlider/HomeSlider'
+import HomeAbout from '../../COMPONENTS/HomeAboutBottom/HomeAbout'
+import Footer from '../../COMPONENTS/Footer/Footer'
+import MakanMart from '../../COMPONENTS/Product/MakanMart'
 const Home = () => {
 
   // const getaddress = () => {

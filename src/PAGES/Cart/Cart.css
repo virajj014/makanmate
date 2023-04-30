@@ -1,0 +1,165 @@
+.cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+}
+
+
+
+
+
+
+
+/* //////////////////////////////////////////////////////////////////// */
+ 
+.confirmationcont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    width: 90%;
+}
+
+.confirmationcont .c1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.confirmationcont .c1 svg {
+    width: 100px;
+    height: 100px;
+    color: var(--col2);
+}
+
+.confirmationcont .c1 h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--col2);
+    margin-top: 10px;
+}
+
+.confirmationcont .c2 h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--col2);
+    margin-top: 10px;
+    width: 100%;
+}
+
+.confirmationcont .c2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 100%;
+}
+
+.confirmationcont .c2 div {
+    display: flex;
+    width: 45%;
+    justify-content: space-between;
+}
+
+.confirmationcont .c2 div p {
+    width: 45%;
+
+}
+
+.confirmationcont .c2 div p:first-child {
+    font-weight: 300;
+    color: var(--col3);
+    font-size: 15px;
+}
+
+.confirmationcont .c2 div p:last-child {
+    font-weight: 600;
+    color: var(--col3);
+    font-size: 15px;
+}
+
+.confirmationcont .c3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 100%;
+}
+
+.confirmationcont .c3 table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--col3);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.confirmationcont .c3 table tr {
+    border: 1px solid var(--col3);
+
+}
+
+.confirmationcont .c3 table tr th {
+    padding: 10px;
+    border: 1px solid var(--col3);
+    text-align: center;
+}
+
+.confirmationcont .c3 table tr td {
+    padding: 10px;
+    border: 1px solid var(--col3);
+    text-align: center;
+}
+
+.confirmationcont .c3 .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0px 20px;
+}
+
+.confirmationcont .c3 .right div {
+    display: flex;
+    gap: 20px;
+    min-width: 20%;
+    justify-content: space-between;
+}
+
+.confirmationcont .c3 .right div p {
+    font-weight: 400;
+    color: var(--col3);
+    font-size: 17px;
+}
+.confirmationcont .c3 .right div p:last-child {
+    font-weight: 600;
+    color: var(--col3);
+    font-size: 17px;
+}
+
+
+
+
+.totaltableleft {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.totaltableright {
+    font-size: 21px;
+    font-weight: 600;
+    min-width: 100px;
+} 

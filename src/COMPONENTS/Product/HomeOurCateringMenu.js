@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../../ASSETS/logo1.png'
 
-import './HomeOurCateringMenu.css'
+import './MakanMart.css'
 import { Link, useNavigation } from 'react-router-dom'
 
 const HomeOurCateringMenu = () => {
@@ -9,13 +9,26 @@ const HomeOurCateringMenu = () => {
     const [showall, setShowall] = useState(false)
     const [current, setCurrent] = useState('')
 
-    const getbannerdata = () => {
+    const gatdata = () => {
+        // MM and MT filter
         fetch(process.env.REACT_APP_BACKEND_URL+"/CategoryR/GetAllActive?OrganizationId=1")
             .then(res => res.json())
             .then(res => {
                 if (res.Code == 200) {
-                    console.log(res.Data[1])
-                    setData(res.Data)
+                    console.log(res.Data)
+                    // setData(res.Data)
+
+                    let temp = []
+
+                    temp = res.Data.filter((item) => {
+                        return item.BranchCode == 'MT'
+                    })
+                    if(showall){
+                       
+                    }else{
+                        temp = temp.slice(0, 6)
+                    }
+                    setData(temp)
                 }
             })
             .catch(err => {
@@ -24,9 +37,8 @@ const HomeOurCateringMenu = () => {
     }
 
     useEffect(() => {
-        getbannerdata()
-    }, [])
-
+        gatdata()
+    }, [showall])
 
 
     return (
@@ -39,21 +51,7 @@ const HomeOurCateringMenu = () => {
                     <h3>Breakfast</h3>
                 </div> */}
                 {
-                    data.filter(
-                        (item, index) => {
-                            if (showall && item.BranchCode == "MT") {
-                                return true
-                            }
-                            else {
-                                if (index <=15 && item.BranchCode == "MT") {
-                                    return true
-                                }
-                                else {
-                                    return false
-                                }
-                            }
-                        }
-                    ).map((item, index) => {
+                    data.map((item, index) => {
                         
                         return (
                             <Link to={`/menu/cateringmenu/${item.CategoryName}`} key={index}

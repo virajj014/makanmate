@@ -1,0 +1,68 @@
+.about {
+    width: 100%;
+    /* min-height: 100vh; */
+    display: flex;
+    flex-direction: column;
+    /* background-color: var(--col3); */
+    /* background: linear-gradient(to bottom, #000066 57%, #ff99cc 100%); */
+}
+.about .aboutin{
+    background: linear-gradient(to bottom, var(--col3) 70%, var(--col1) 100%);
+}
+.about  .aboutin .pgcont {
+    width: 90%;
+    padding: 50px 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.about  .aboutin .pgcont.left {
+    flex-direction: row-reverse;
+    align-self: flex-start;
+}
+
+.about  .aboutin .pgcont.right {
+    flex-direction: row;
+    align-self: flex-end;
+}
+
+.about  .aboutin .pgcont img {
+    flex: 0 0 auto;
+    margin-right: 20px;
+    max-width: 600px;
+    width: 50%;
+
+}
+
+.about  .aboutin .pgcont div {
+    width: 50%;
+}
+
+.about  .aboutin .pgcont h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--col1);
+    font-family: 'Cinzel', serif;
+
+}
+
+.about  .aboutin .pgcont p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: lightgray;
+    font-family: 'Cinzel', serif;
+
+}
+
+.about  .aboutin .pgcont p span {
+    font-weight: bold;
+    color: var(--col2);
+
+}
+
+.about .extra{
+    height: 100px;
+}

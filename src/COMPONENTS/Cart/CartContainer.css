@@ -1,0 +1,70 @@
+.cartcont {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.123);
+    margin: 10px;
+}
+
+.cartcont table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0px;
+}
+
+.cartcont table th {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--col3);
+    padding: 10px 0px;
+    text-align: left;
+}
+
+.cartcont table tr{
+    border-bottom: 1px solid lightgray;
+}
+
+.cartcont .product {
+    display: flex;
+    width: 300px;
+    gap: 5px;
+    margin: 5px 0px;
+}
+
+.cartcont .product img {
+    width: 30px;
+    height: 30px;
+}
+
+.cartcont .product p {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--col2);
+    margin: 0px;
+}
+.cartcont .categoryaddon{
+    margin-left: 20px;
+}
+
+.cartcont .product span{
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--col3);
+    margin: 0px;
+}
+
+.cartcont .line{
+    border-bottom: 1px solid lightgray;
+    margin: 10px 0px;
+}
+
+.cartcont .delbtn{
+    width: 20px;
+    height: 20px;
+    color: var(--col2);
+    cursor: pointer;
+}

@@ -1,18 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
-import Home from './PAGES/Home';
-import About from './PAGES/About';
-import CateringMenu from './PAGES/CateringMenu';
-import ProductPage from './PAGES/ProductPage';
-import Cart from './PAGES/Cart';
-import Contact from './PAGES/Contact';
-import Event from './PAGES/Event';
-import UserProfile from './PAGES/UserProfile';
-import MakanMart from './COMPONENTS/Product/MakanMart';
-import MakanMartMenu from './PAGES/MakanMartMenu';
+import Home from './PAGES/Home/Home';
+import About from './PAGES/About/About';
+import CateringMenu from './PAGES/Menu/CateringMenu';
+import MakanMartMenu from './PAGES/Menu/MakanMartMenu';
+import ProductPage from './PAGES/Product/ProductPage';
+import Cart from './PAGES/Cart/Cart';
+import Contact from './PAGES/Contact/Contact';
+import Event from './PAGES/Event/Event';
+import UserProfile from './PAGES/User/UserProfile';
+
 // import Login from './PAGES/Auth/Login';
 // import Signup from './PAGES/Auth/Signup';
+// import Signup from './PAGES/Auth/Signup';
+
 
 function App() {
   return (
@@ -25,7 +27,7 @@ function App() {
         <Route path="/menu/cateringmenu/:mycategoryid" element={<CateringMenu/>} />
         <Route path="/menu/makanmart/:mycategoryid" element={<MakanMartMenu/>} />
 
-        <Route path="/product/:prodid" element={<ProductPage/>} />
+        <Route path="/product/:pagetype/:prodid" element={<ProductPage/>} />
         <Route path="/cart" element={<Cart/>} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/event" element={

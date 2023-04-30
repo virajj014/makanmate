@@ -11,7 +11,7 @@
     height: 70vh;
     overflow: hidden;
     background: white;
-    margin: 10px 0px;
+    /* margin: 10px 0px; */
     display: flex;
     justify-content: center;
     align-items: center;

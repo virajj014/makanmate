@@ -1,10 +1,18 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
-import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
-import Footer from '../COMPONENTS/Footer/Footer'
-import Navbar from '../COMPONENTS/Navbar/Navbar'
+import StaticBanner from '../../COMPONENTS/Banner/StaticBanner'
+import Footer from '../../COMPONENTS/Footer/Footer'
+import Navbar from '../../COMPONENTS/Navbar/Navbar'
 import './Cart.css'
+import './Progress.css'
+import './BottomButtons.css'
+import CartContainer from '../../COMPONENTS/Cart/CartContainer'
+import './ShippingContainer.css'
+import './PaymentContainer.css'
+
+
+
 const Cart = () => {
     const [active, setActive] = React.useState(1);
     const [cartdata, setcartdata] = React.useState([])
@@ -23,19 +31,19 @@ const Cart = () => {
     const getcartitemsfromlocalstorage = () => {
         let cart = JSON.parse(localStorage.getItem('cart'))
         if (cart) {
-            console.log(cart[0])
+            console.log(cart)
             setcartdata(cart)
 
             let total = 0
             cart.forEach(item => {
-                 total += (item?.productdata?.SalesPrice * item?.quantity)
-                 let customaddontotal = 0
-                 item?.productdata?.customaddons?.forEach(addon => {
-                    customaddontotal += addon.Price *item.quantity
-                 })
-                    total += customaddontotal
+                total += (item?.productdata?.SalesPrice * item?.quantity)
+                let customaddontotal = 0
+                item?.productdata?.customaddons?.forEach(addon => {
+                    customaddontotal += addon.Price * item.quantity
+                })
+                total += customaddontotal
             })
-           
+
             setsubtotal(total)
             setshipping(80)
             settax(total * 0.08 + 80 * 0.08)
@@ -44,19 +52,11 @@ const Cart = () => {
             console.log('no items in cart')
         }
     }
-
-
-
-
-    const removeitemfromcart = (index) => {
-        let temp = cartdata
-        temp.splice(index, 1)
-        console.log(temp)
-        // console.log(index)
-        localStorage.setItem('cart', JSON.stringify(temp))
-        setcartdata(temp)
+    useEffect(() => {
         getcartitemsfromlocalstorage()
-    }
+    }, [])
+
+
 
     const [user, setuser] = React.useState({})
     const checklogin = () => {
@@ -73,7 +73,10 @@ const Cart = () => {
         }
         else {
             console.log('not logged in')
-            toast.error('Please Login First')
+            toast.error('Please Login First', {
+                position: "top-center",
+                autoClose: 1000,
+            })
             return false
         }
     }
@@ -126,13 +129,7 @@ const Cart = () => {
 
     }
 
-    React.useEffect(() => {
-        getcartitemsfromlocalstorage()
-        // checklogin()
-    }, [])
-    useEffect(() => {
-        // window.scrollTo('150vh', 50)
-    }, [active])
+
 
 
     const [newaddress, setnewaddress] = React.useState({
@@ -235,8 +232,6 @@ const Cart = () => {
             return true
         }
     }
-
-
     const converttofloat = (value) => {
         // console.log(parseFloat(value) + 0.001)
         value = value.toFixed(2)
@@ -251,8 +246,6 @@ const Cart = () => {
             return parseFloat(value) + 0.001
         }
     }
-
-
     const placeorder = async () => {
         let orderdetail = [];
         const currentDate = new Date();
@@ -297,7 +290,7 @@ const Cart = () => {
             "CustomerFeedback": "",
             "OrderDetail": cartdata.map((item, index) => {
 
-                let productaddons = item?.addons ? item.addons.map((addon, index) => {
+                let productaddons = item?.customaddons ? item?.customaddons.map((addon, index) => {
                     return {
                         "OrgId": 1,
                         "OrderNo": "",
@@ -310,18 +303,7 @@ const Cart = () => {
 
                 }) : []
 
-                let categoryaddons = item?.categoryaddons ? item.categoryaddons.map((addon, index) => {
-                    return {
-                        "OrgId": 1,
-                        "OrderNo": "",
-                        "ProductCode": item.productdata.ProductId ,
-                        "CustomAddOnCode": addon.product.ProductId,
-                        "Price": addon.product.SalesPrice,
-                        "CreatedBy": "admin",
-                        "CreatedOn": formattedDate,
-                    }
-                })
-                    : []
+
 
                 return {
                     "OrgId": 1,
@@ -349,15 +331,14 @@ const Cart = () => {
                     "ChangedBy": "admin",
                     "Weight": 0,
                     "ProductAddOn": [
-                        ...productaddons,
-                        ...categoryaddons
+                        ...productaddons
                     ]
                 }
             }),
         }
 
         // console.log(cartdata)
-        // console.log(orderobj)
+        console.log('orderobj ',orderobj)
 
         fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Create', {
             method: 'POST',
@@ -386,7 +367,6 @@ const Cart = () => {
 
         // console.log(orderdetail)
     }
-
     const [ordersuccessitems, setordersuccessitems] = useState([])
     const getsuccessfulorder = (ordrid) => {
         fetch(process.env.REACT_APP_BACKEND_URL + '/B2CCustomerOrder/Getbycode?OrganizationId=1&OrderNo=' + ordrid, {
@@ -415,13 +395,16 @@ const Cart = () => {
     return (
         <div className='cart'>
             <Navbar pagename={'cart'} />
-            <StaticBanner name="Your Cart" />
-            <div className='progress'>
+            <StaticBanner name='cart' />
+            <div className='progresscontainer'>
                 {
                     active === 1 ?
                         <div className='c11'
                             onClick={() => {
-                                checklogin() && setActive(1)
+                                if (active == 4) { }
+                                else {
+                                    checklogin() && setActive(1)
+                                }
                             }
                             }
                         >
@@ -433,7 +416,13 @@ const Cart = () => {
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => checklogin() && setActive(1)}
+                            onClick={() => {
+                                if (active == 4) { }
+                                else {
+                                    checklogin() && setActive(1)
+                                }
+                            }
+                            }
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
@@ -444,7 +433,12 @@ const Cart = () => {
                 {
                     active === 2 ?
                         <div className='c11'
-                            onClick={() => checklogin() && setActive(2)}
+                            onClick={() => {
+                                if (active == 4) { }
+                                else {
+                                    checklogin() && setActive(2)
+                                }
+                            }}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
@@ -453,7 +447,12 @@ const Cart = () => {
                         </div>
                         :
                         <div className='c1'
-                            onClick={() => checklogin() && setActive(2)}
+                            onClick={() => {
+                                if (active == 4) { }
+                                else {
+                                    checklogin() && setActive(2)
+                                }
+                            }}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
@@ -465,7 +464,12 @@ const Cart = () => {
                 {
                     active === 3 ?
                         <div className='c11'
-                            onClick={() => checklogin() && setActive(3)}
+                            onClick={() => {
+                                let temp = checklogin()
+                                if (checkdeliverydate() && temp && checkaddress() && active != 4) {
+                                    setActive(3)
+                                }
+                            }}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
@@ -477,7 +481,7 @@ const Cart = () => {
                             onClick={() => {
 
                                 let temp = checklogin()
-                                if (checkdeliverydate() && temp && checkaddress()) {
+                                if (checkdeliverydate() && temp && checkaddress() && active != 4) {
                                     setActive(3)
                                 }
                             }
@@ -520,179 +524,7 @@ const Cart = () => {
 
             {
                 active == 1 &&
-                <div className='cartcont'>
-                    {
-                        cartdata && cartdata.length > 0 ?
-                            <table className='carttable'>
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {
-                                        cartdata?.map((item, index) => {
-                                            return (
-                                                <tr key={index}
-                                                    className='cartitemrow'
-                                                >
-                                                    <td>
-                                                        <div className='product'
-                                                            onClick={() => {
-                                                                console.log(item.productdata)
-                                                                window.location.href = `/product/${item.productdata.ProductId}`
-                                                            }}
-                                                        >
-                                                            <img src={item.productdata.ProductImageURL
-                                                            } alt='product1' />
-                                                            <div className='productnameandaddon'>
-                                                                <p>{item.productdata.ProductName}</p>
-                                                                {
-                                                                    item?.customaddons?.map((addon, index) => {
-                                                                        return (
-                                                                            <span>
-                                                                                {addon.ProductName} - - ${addon.Price}
-                                                                            </span>
-                                                                        )
-                                                                    })
-
-                                                                }
-                                                                {
-                                                                    item?.categoryaddons?.map((addon, index) => {
-                                                                        console.log(addon)
-                                                                        return (
-                                                                            <div className='product'>
-                                                                                <img src={addon.product.ProductImageURL
-                                                                                } alt='product1' />
-                                                                                <div className='productnameandaddon'>
-                                                                                    <p>{addon.product.ProductName}</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className='quantity'>
-                                                            <button className='minus'
-                                                                onClick={() => {
-                                                                    let newcartdata = [...cartdata]
-                                                                    // console.log(newcartdata[index].quantity)
-                                                                    if (newcartdata[index].quantity > 1) {
-                                                                        newcartdata[index].quantity--
-                                                                        setcartdata(newcartdata)
-                                                                        localStorage.setItem('cart', JSON.stringify(newcartdata))
-                                                                        getcartitemsfromlocalstorage()
-
-                                                                    }
-                                                                }}
-                                                            >-</button>
-                                                            <span>{item.quantity}</span>
-                                                            <button className='plus'
-                                                                onClick={() => {
-                                                                    let newcartdata = [...cartdata]
-                                                                    // console.log(newcartdata[index].quantity)
-                                                                    newcartdata[index].quantity++
-                                                                    setcartdata(newcartdata)
-                                                                    localStorage.setItem('cart', JSON.stringify(newcartdata))
-                                                                    getcartitemsfromlocalstorage()
-                                                                }}
-                                                            >+</button>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <p>$ {item.productdata.SalesPrice ? item.productdata.SalesPrice.toFixed(2) : 0.00}</p>
-                                                    </td>
-
-                                                    <td>
-                                                        <p>$ {
-                                                            ((item.productdata.SalesPrice) * item.quantity).toFixed(2)
-                                                        }</p>
-                                                    </td>
-
-                                                    <td>
-                                                        <div className='delbtn'
-                                                            onClick={() => {
-                                                                removeitemfromcart(index)
-                                                            }}
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                                                            </svg>
-
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })
-                                    }
-
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td className='totaltableleft'>
-                                            Total
-                                        </td>
-                                        <td className='totaltableright'>
-                                            $ {subtotal.toFixed(2)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td className='totaltableleft'>
-                                            Shipping
-                                        </td>
-                                        <td className='totaltableright'>
-                                            $ {shipping.toFixed(2)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td className='totaltableleft'>
-                                            Subtotal
-                                        </td>
-                                        <td className='totaltableright'>
-                                            $ {(shipping + subtotal).toFixed(2)}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td className='totaltableleft'>
-                                            Tax
-                                        </td>
-                                        <td className='totaltableright'>
-                                            $ {tax.toFixed(2)}
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td className='totaltableleft'>
-                                            Net Total
-                                        </td>
-                                        <td className='totaltableright'>
-                                            $ {(subtotal + shipping + tax).toFixed(2)}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            :
-                            <div className='emptycart'>
-                                <p>Your Cart is empty</p>
-                            </div>
-                    }
-                </div>
+                <CartContainer />
             }
             {
                 active == 2 &&
@@ -789,32 +621,29 @@ const Cart = () => {
                     <h2 className='mainhead1'>Select Payment Method</h2>
 
                     <div className='paymenttypes'>
-                        <div className='c1'>
-                            <input type='radio' name='payment' id='payment1'
-                                onChange={() => {
-                                    setpaymentmethod('paypal')
-                                }}
-                            />
+                        <div className={paymentmethod == 'paypal' ? 'c1 c1active' : 'c1'}
+                            onClick={() => {
+                                setpaymentmethod('paypal')
+                            }}
+                        >
                             <img src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' alt='paypal' />
                         </div>
 
-                        <div className='c1'>
-                            <input type='radio' name='payment' id='payment2'
-                                onChange={() => {
-                                    setpaymentmethod('razorpay')
-                                }}
-                            />
+                        <div className={paymentmethod == 'razorpay' ? 'c1 c1active' : 'c1'}
+                            onClick={() => {
+                                setpaymentmethod('razorpay')
+                            }}
+
+                        >
 
                             {/* razor pay */}
                             <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAY0AAAB/CAMAAAAkVG5FAAAAw1BMVEX///8HJlQzlf8AIFEAAEI+Tm8ADUkAIlIAAEUAAEYAJFMAAEMAGE0AHU8AAEAAHlAACUghOGAAFkwAE0vs7vHW2d67wMoAF0wACEj4+frk5up2f5SwtcEpkv99hJhYZH/Dx9BPXHlGVXQSjP+KkqOjqbZibYY5mP8PK1iYn64yRGifpbPMz9dZpf+ZxP90sf/R5P/H3v8AADkqPWNtd47q8//b6v9Inv+00/+u0P+CuP+hyf9hqP8cMlzo8v+Nvv8AAC8CAnkoAAAOZUlEQVR4nO1caXuiyBaGgOzgAtqCu6Ktxp5etCe9OT3//1ddljqnFiBzk/CM9yb1fhOLoqizv6dUUSQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQk3iQ+33oBEoivD3/cegkSgJ+bzZ+3XoNEiT8fZnezWy9CosTvTSaMj7dehUSOT+9nd3d3s2+3XodEhh+buxybv269EAnl892sEMbd+1uvRCL+WBpG5qh+3Hotbx7fZsQwMmnI2u+2+PoLDCMPG/Gtl/O28X0zo8K4e7j1ct40/vrAGEbmqCQtckP85Awjc1Sfbr2it4ucCOHB0CKR1q/ifFxM7k+3W/Erxu/NnSiMX/TbkW3WwfdCy7okt1v160RJhAjS+E6/v3hqI7xgfruFv0b8qBhGHjYYNt13mqWhquPF7Zb+6vCZ1nt3jIkwYSNxHxOGqtrp7Vb/yvCdGsZs85MW4gybvjUel4YTyDqxJfxCAWx+xZ+oNBg2feGTbdc8BOe8jO3t1v+6gBxhvv+/qWi+0iFgGtpqDpgs9vqARvLL7db/qvCJSGPzMfc279FrMbTIySKbbg3ZO6MUrqva+l9e9WvFH7PSMAq+9ivGkNlvOuQQgkMS7p2COLTOv7ji14yHwjBIJ+NbLZve0co993fizVen6RuJ5yC3htn7nJEaZmnqRxo2aJYUB42xetEtvxnIFLcVfJvNNoVTSv8eKQo1jQ90yHJMpKFXOJA1sZreiL0aj9LdurOYj8ThT0W0PEwW6876ko6ifxg63E4Wi8m0LtNe5qtZzadNU0TT+aLT2aX/A5Tbj81DXnOf9oYbK3/SsPGTDpmT3MlRK3dDVRgwb3pa6OOBr2n+wLIO2ef4i1HiS5kDnOBzBWMuLsX3R90KvWymbKqe3hFku7DKm/Q8nZv2dcPzfe/vXF/SgHyTu89kYtuhp2ldLxtZJ4/pUTey5Xaz5e7zRyzJ8noB88HQReOPyON7X9qk6TbFtl8CMw/EtPZjaZGrSdLYiXgzWI12xEtJR4fiJE/CsklHZJBJ9hpzggrYB0QT3dDYLzWrw22mQULWeKQM+1a5RPOcf3Mk99nZ5s4DhmHz7Ir6L/cWfYqTM26ge35O90Q63CoGxg55S336xA1/DF/zXR952QrCA1sIsmw6rKhX8TwQ3nu4pDTgtlANV8qE7Id/4W+qgnnAQfcq1JhvMwn2ENI5XZkGRF3K8BWDwdpKovKSdwIuRVeUnW5yAzJj7pMrZZC0yRfmkb8x7ZEntp2+xAs9f3HrRAtBjhaZQu2ni4Z+IFrveHBlZakC3GWfbKtRigxzgirQ30XHXh1NaY7pCsDCtNU0wLHWUqEG618S1xRn6LLrj/bvhO8dF6XsFh4IVIe+YoEheQmHm68FTO1Cdx2LFoICm05sUlQPJQWjsYhpxGfx7bK7QNdAmJgTVIee4V3tbv0If4UPx23qMOqv59/MiS16h4EojEwlDnT9ybhqpQ4s19GKMWDYqsXlBw4ZFbQb+aM10YXcTf5BwwZzyDAkqjc4cDdOz2AzHhTiR+qjtYFhDIqXhR0xr+WgeWOrJCSRcqijsufTGEwc0sHTUAtjjKhbCAvCnONkXzl+aITMBIyORyEKqxhVuka4RmIY8qUcDbEjscVoN7G/x5Cbu8kHSqfTIWi62mI+IbisHBpjTY+ozQ611NPX6Xabnlm/5ZGelBHoLOhOaXaZnSQoDF/vpNPR9mKjDmOc5y3M9IrdDLfF7VROjhFe7rfby5g+he7qFWZ1Qntx2G7nGhtkSAxDUmi8pFsyJZFJOystIjmOUbMyN8nQIswhw3tcIyVw/S71AaZFUrwtLNxxIZWcMuIYkxAds6B+UPX35KY9zG2vyMzRETwXJtlzyliqnnue32/vJ2qR304p+69BuRqv0CCxggX9Vh09Jeo0Z0RM/CqmMEzlG1lwY5vJLZv/5OHocy0tsmrw4bCJA9gyVGmdpkb3dGvqWyArkHXYAQuDXdKpZ4wNcZY+VQcdG/PL4n60A/9MH3nFtIuY6Ai22ezSPd2h0DCGDchbvaNOCTJoq8U2wvDKtpBySvxHLZtuP9aEdSzYRGUFu6AvmafgM2p5xagPW29DprjE1IANUxhsiCFG1B3ZS35OzIy1PnMVLQa4f5+IxxwwmWKCtoxUT5WjS8lUXov950nAJRx5+lnPpttqI0yD2u8J9mfMBXvU1JC7TF7eA7ujpS4osc+966gH0ijdPm6uowsVBIY51WITcuwlk6rngGk7dz+KssiVc4AeYEZ5guTWaK3fudSEgjhzk3/VsunpQG2Ccb2n44Cx0vg8mCp1NRdcQunlBFg9jojwHW4vqU4Q28BoY4mlMIY54567DjkYyQMgYA748y40HYcrmFTZ5ecYep6cC3gJ4p0uuB8zs+rv1FExhwyPmKFqJdCkfFbbh2AaLr/rKI1xZRVb2CCTkdTZrN0lSlyWQsJmZMX/QZgzNf46PKy0UZq48goOlSrtnqEekCcvyAuFFZromZiOKyl//vIMm07HooM2z+sCHdXFpPhI9Rd2XTAN7Kj7FSc7h5l9k4ZRFKqQrsDuOWE5DNyRGDQUBSYQPCPNjQpjahC6MqjcjTeWPhISR6ieXopoZVXjcu4maUbFHjIcc4vJkWBd4dElQYkotkDMhuvKAiJBeGTUE/yiKFQQdlnfoTsiwmGAqhxE9dcLV4c1ictHnQiiC1PrwY1FwZG45H1Ewuu5CJjKFNHIpiMzYDNTQIygOR4WSQKXhZrl8roeH0EL+ZNxEMPFmN/nr4M7qh6OAHGaQmGG4cRmPzl7fhQkC6yU4WXDPA71IbmtyUmeg1OF11NL91vPpu+h1cpuGmY06F6BwzPZrJIZ6fBePHEwHeZcheAWmq7HNk9EMoAwJzYjUX477pPgqJBuZphZMMvcqc3J6/htHcqozZFylftQx6YnNaUom0VCbMbXE2IbhA1eiU8WpAIB78CoX+SDK4YNp7xfiKwUTex/bNFuSAarQZphzXV4dqaPS0hux//UifxvcazymoXKxY+z6ZynQfeK2wFpX8inlULshEmBAjcxqydAExO6jGfwFqXGN7mjal0CoHlqLmYsPoTu0wj9LfO2IPrsYdDg0l/cYiagRSyLMUeLMIcMoXgT6H2chLx0XLvrDJvEKjES8b4v8jwTsdQqsYRdIqEZhPOuQqFOhJodAMlEabs4nzAKKA+u5Yw7tgdDH7R2lG9U113Ig8LvR9l0IVxCNAGHgIwCnzqhn2PDyQ7czLtzpZjd1bdSIB8lq6BRZClOYILl8/uMlXdQXJ7W0uSU4+T9LaVayOKqxwOei0ldd4Fn05mf7GOAEHQekyrimXAcHxZB1xgljrE5ZKyUCiiPwl4FYsghFobuSBfFSdl0Lm5gXkqiM/otgx0VjZ26m5W1QJu2ldwqjFaz4Nn0ukOGQrjEH9eQ3Ufb4DzaAtkXVOJoD/vt1tWyNJ9mHPpUZMDg6dXjpvQsPZsDRsAQgjjRNrqMRsTY71Bd7m2F9liLHaakLmzkbHr9IUOwATFxxcSMvDTGDXWAmxytKRXmEiUeYu/T4sM9AVYFTHzGMNMF9+U0FCUsm666qN8nbMiCOJeUWUSbH6poAoKf5H8uIdalL8G07ocYuZv8UXvIEDZCzN5xGhCTg5masSoMeZi61MBBiUd4nsBLkyGPcktwm/zrKF9HNEXe3+kRjU0aipIMLBWqp3mMiJcr2koEUotJZfR5Meq0o0cdxLflWWyrreRW4ZSHIg8KtAfLsOnLujZk8QXkAg4p0S90Xt/qXa+G9Y5xiUSJh1/oNc/ioJOi2EepmmNrf+26Blyg1Dn1+uLbDbnK9p3rX1WLNmHNAeoZ00z3XO+6t23WGwl5L5eGVjjjl6D2N0qZN2VoEeYn++iQxL4dfW3iYpfcPjjly+I+ECVuPtaG6nhgF2g6dNNM2odAIrJylAkf0IV1MCph2jTNStmVOKVhO9gm14VpmXdrs8MkKA9B3muvZ9Mhr6/w1niADL1Fv1pU2mgwpGJ/pKeL6rivP/rmMe3ShjxPoWGuu6vOoo0Zv1ZTdWl7uKkrJnuYQdIDGa2gVjtzvXz8kGE1XOI84MOGgZCsafop5VmfuIY7JnBseMvEqhGHqS/oLpzqCubyAViDjlLRCRhnzt9vRXF4ZtSB5EBMMGhS1e7xqXWd5jWz6Q00g8KYApZ7U04czvic4I87yJhHerqMOiaquJGafV0yj04b+Fe+ZD9zdJwXiGnpnBNHLu64gWVncpaw1R/Gx4FWgywofNrMAOwhw7Ac0K327RYDcrOBCzxpPa3cfse3vEwACTytLICzIq7u6QXGrDqmroG/8HR8IxAOpx+98p5q8y0lJx2LRG+BnQMtDHbVozZbN8RDne55mZNU5G09cSgyBP3KLC/B6dypQeZHvn8APDC0CI6oFmrpkXx1ZNRl2rEs27Z0b1fs3wjGkPx2VffwEmdOHePpwtOzmbKptMW9sJFxH568FBd15tj0087IJrHc8fq+NimND2e9WO5+fmJf6SgaAJ4TC/7P/sIjTk6nYSsJeTTMZho+KWZW6atkeBo+toNx/pB/egYlfGsLVol6YGfLajPxwXZfax2mtwGgr7qt/j53DkmD3WIR/gYAzHfdObpnA9p97XWY3gaSmvMeL0YM7b72OkxvA8301QuwhuS2UtxIPIpm+ur5OODprBbt7U0ANq7FvwOCX/epPfnnBE8D0lduezUa/K6n3SztLQDoK9NpbcoLcF2uTG6fCDgRUf2LgecC+/Fumx2mNwHsuFT/YuCZiPAcjPwPzadi9KVX4ktbXqXvlhPaofzPxqdiOAK0NGEyhQn/z5hbCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCYln4T/KHg6z4t0jQwAAAABJRU5ErkJggg==' alt='razorpay' />
                         </div>
 
-                        <div className='c1'>
-                            <input type='radio' name='payment' id='payment2'
-                                onClick={() => setpaymentmethod('paypal')}
-                            />
+                        <div className={paymentmethod === 'cod' ? 'c1 c1active' : 'c1'}
+                            onClick={() => setpaymentmethod('cod')}
+                        >
 
-                            {/* razor pay */}
                             <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTNWCF8wJc5uTF53dvaZ1m5vi89PoixSBPAA&usqp=CAU' alt='razorpay' />
                         </div>
                     </div>
@@ -852,7 +681,7 @@ const Cart = () => {
                         <h2>Order Summary</h2>
                         <div>
                             <p>Order Number</p>
-                            <p>{ordersuccessful.OrderNo}</p>
+                            <p>{ordersuccessful?.OrderNo}</p>
                         </div>
 
                         <div>
@@ -864,7 +693,7 @@ const Cart = () => {
 
                         <div>
                             <p>Name</p>
-                            <p>{ordersuccessful.CustomerName
+                            <p>{ordersuccessful?.CustomerName
                             }</p>
                         </div>
 
@@ -879,17 +708,17 @@ const Cart = () => {
 
                         {/* <div>
                             <p>Order Subtotal</p>
-                            <p>$ {ordersuccessful.SubTotal}</p>
+                            <p>$ {ordersuccessful?.SubTotal}</p>
                         </div> */}
 
                         <div>
                             <p>Payment Method</p>
-                            <p>{ordersuccessful.PaymentType}</p>
+                            <p>{ordersuccessful?.PaymentType}</p>
                         </div>
 
                         <div>
                             <p>Shipping Address</p>
-                            <p>{ordersuccessful.CustomerShipToAddress
+                            <p>{ordersuccessful?.CustomerShipToAddress
                             }</p>
                         </div>
 
@@ -900,12 +729,12 @@ const Cart = () => {
 
                         {/* <div>
                             <p>Tax</p>
-                            <p>$ {ordersuccessful.Tax}</p>
+                            <p>$ {ordersuccessful?.Tax}</p>
                         </div> */}
 
                         {/* <div>
                             <p>Total</p>
-                            <p>$ {ordersuccessful.Total}</p>
+                            <p>$ {ordersuccessful?.Total}</p>
                         </div> */}
 
                     </div>
@@ -1018,19 +847,18 @@ const Cart = () => {
                     }}>Next</button>
                 </div>
             }
+
             {
                 active == 3 &&
                 <div className='btns'>
                     <button className='backbtn' onClick={() => checklogin() && setActive(active - 1)}>Back</button>
                     <button className='nextbtn' onClick={() => {
                         let temp = checklogin()
-                        if (temp && checkpaymentmethod() && checktnc()) {
+                        if (checkdeliverydate() && temp && checkaddress()) {
                             // setActive(active + 1)
                             placeorder()
                         }
-                        else {
-                            alert('Please Select Payment Method')
-                        }
+
                     }}>Next</button>
                 </div>
             }
@@ -1044,7 +872,7 @@ const Cart = () => {
                         if (temp) {
                             alert('Order Placed')
                         }
-                    }}>Place Order</button>
+                    }}>Show Order</button>
                 </div>
             }
 

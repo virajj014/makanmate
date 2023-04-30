@@ -1,16 +1,16 @@
 import React from 'react'
-import Navbar from '../COMPONENTS/Navbar/Navbar'
+import Navbar from '../../COMPONENTS/Navbar/Navbar'
 import './Event.css'
 import Carousel from 'react-multi-carousel'
-import img1 from '../ASSETS/HomeSlider/slide-1.jpg'
-import img2 from '../ASSETS/HomeSlider/slide-2.jpg'
-import Footer from '../COMPONENTS/Footer/Footer'
-import StaticBanner from '../COMPONENTS/Banner/StaticBanner'
+import img1 from '../../ASSETS/HomeSlider/slide-1.jpg'
+import img2 from '../../ASSETS/HomeSlider/slide-2.jpg'
+import Footer from '../../COMPONENTS/Footer/Footer'
+import StaticBanner from '../../COMPONENTS/Banner/StaticBanner'
 const Event = () => {
   return (
     <div className='event'>
       <Navbar />
-      <StaticBanner name="Our Events"/>
+      <StaticBanner name="event"/>
 
 
 

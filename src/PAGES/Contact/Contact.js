@@ -1,10 +1,10 @@
 import React from 'react'
 import { useState } from 'react';
-import Navbar from '../COMPONENTS/Navbar/Navbar'
+import Navbar from '../../COMPONENTS/Navbar/Navbar'
 import './Contact.css'
-import Footer from '../COMPONENTS/Footer/Footer'
+import Footer from '../../COMPONENTS/Footer/Footer'
 import { toast } from 'react-toastify';
-import StaticBanner from '../COMPONENTS/Banner/StaticBanner';
+import StaticBanner from '../../COMPONENTS/Banner/StaticBanner';
 import { useEffect } from 'react';
 const Contact = () => {
 
@@ -68,7 +68,7 @@ const Contact = () => {
     return (
         <div className='contact'>
             <Navbar />
-            <StaticBanner name="Contact Us" />
+            <StaticBanner name="contact" />
 
             <div className='contactin'>
                 <p className="description">
